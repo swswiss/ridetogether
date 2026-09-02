@@ -1,0 +1,112 @@
+/* app/assets/stylesheets/toasts.css
+ *
+ * Stiluri pentru notificările toast (dreapta-sus).
+ * Se potrivesc cu paleta RideTogether (curat, minimalist).
+ */
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  width: calc(100% - 40px);
+  pointer-events: none; /* containerul nu blochează click-urile; toast-urile da */
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #ececE6;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px -12px rgba(28, 28, 26, 0.25);
+  /* stare inițială: în afara ecranului, transparent */
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.22,1,.36,1), opacity .3s ease;
+}
+
+/* stare vizibilă (adăugată de Stimulus la connect) */
+.toast--visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* stare de ieșire */
+.toast--leaving {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.toast__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast__msg {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #1c1c1a;
+  margin: 4px 0;
+  font-weight: 400;
+}
+
+.toast__close {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: #c7c7c0;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, color .15s;
+}
+.toast__close:hover {
+  background: #f3f3ef;
+  color: #1c1c1a;
+}
+
+/* ---- variante de culoare pe tip ---- */
+
+/* succes (login/register reușit) — verde discret */
+.toast--success .toast__icon { background: #e7f4ec; color: #2e9e5b; }
+
+/* eroare — roșu (folosește accentul RideTogether) */
+.toast--error .toast__icon { background: #fbeae6; color: #e5533d; }
+
+/* info — neutru închis */
+.toast--info .toast__icon { background: #f0f0ec; color: #1c1c1a; }
+
+/* pe mobil, întinde toast-urile aproape pe toată lățimea */
+@media (max-width: 480px) {
+  .toast-container {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { transition: opacity .2s ease; transform: none; }
+  .toast--visible { transform: none; }
+  .toast--leaving { transform: none; }
+}

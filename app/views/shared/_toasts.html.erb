@@ -1,0 +1,44 @@
+<%# app/views/shared/_toasts.html.erb %>
+<%#
+  Randează flash-urile Rails ca notificări (toast) în colțul dreapta-sus.
+  Pui asta în layout, chiar înainte de </body> (vezi INSTRUCTIUNI.md).
+
+  Rails setează flash-uri cu chei ca :notice, :alert, :success, :error.
+  Mapăm fiecare tip la o culoare/iconiță.
+%>
+<div class="toast-container" aria-live="polite" aria-atomic="true">
+  <% flash.each do |type, message| %>
+    <%
+      # normalizează tipul Rails la unul din: success / error / info
+      kind = case type.to_s
+             when "notice", "success" then "success"
+             when "alert", "error"    then "error"
+             else "info"
+             end
+    %>
+    <div class="toast toast--<%= kind %>"
+         role="alert"
+         data-controller="toast"
+         data-toast-delay-value="4000"
+         data-action="mouseenter->toast#pause mouseleave->toast#resume">
+
+      <span class="toast__icon">
+        <% if kind == "success" %>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <% elsif kind == "error" %>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        <% else %>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <% end %>
+      </span>
+
+      <p class="toast__msg"><%= message %></p>
+
+      <button class="toast__close"
+              data-action="toast#dismiss"
+              aria-label="Închide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  <% end %>
+</div>
