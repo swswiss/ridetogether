@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideTogether — Ture de grup pentru cicliști</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --ink: #1c1c1a;
     --muted: #8f8f88;
     --faint: #c7c7c0;
-    --line: #eceCe6;
+    --line: #ececE6;
     --line2: #f3f3ef;
     --paper: #fbfbf9;
     --card: #ffffff;
     --accent: #e5533d;
+    --accent-soft: #fbeae6;
   }
   html { scroll-behavior: smooth; }
   body {
@@ -24,14 +26,13 @@
     background: var(--paper); color: var(--ink);
     line-height: 1.6; font-weight: 400;
     -webkit-font-smoothing: antialiased;
-    display: flex; flex-direction: column; min-height: 100vh;
   }
-  /* wider container so laptop uses the screen */
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; width: 100%; }
 
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 30px 0; }
+  /* NAV */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 26px 0; }
   .brand { display: flex; align-items: center; gap: 11px; }
-  .brand-name { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand-name { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
   .nav-links { display: flex; align-items: center; gap: 28px; }
   .nav-link { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
   .nav-link:hover { color: var(--ink); }
@@ -41,41 +42,20 @@
   }
   .nav-cta:hover { opacity: .88; }
 
-  main { flex: 1; display: flex; align-items: center; padding: 30px 0 80px; }
-
-  /* two-column hero on laptop */
-  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; width: 100%; }
-
+  /* HERO */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; padding: 50px 0 90px; }
   .eyebrow { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 20px; letter-spacing: 0.02em; }
-  h1 {
-    font-size: clamp(38px, 4.5vw, 60px); font-weight: 300; letter-spacing: -0.03em;
-    line-height: 1.06; margin-bottom: 24px; max-width: 13ch;
-  }
-  h1 strong { font-weight: 500; }
+  h1 { font-size: clamp(38px, 4.5vw, 60px); font-weight: 300; letter-spacing: -0.03em; line-height: 1.06; margin-bottom: 24px; max-width: 13ch; }
+  h1 strong { font-weight: 600; }
   .lede { font-size: 18px; color: var(--muted); max-width: 42ch; margin-bottom: 36px; }
-  .cta-row { display: flex; align-items: center; gap: 22px; margin-bottom: 52px; }
-  .btn {
-    display: inline-block; font-size: 15px; font-weight: 500; color: #fff;
-    background: var(--ink); text-decoration: none;
-    padding: 14px 32px; border-radius: 100px;
-    transition: opacity .2s, transform .15s;
-  }
+  .cta-row { display: flex; align-items: center; gap: 22px; }
+  .btn { display: inline-block; font-size: 15px; font-weight: 500; color: #fff; background: var(--ink); text-decoration: none; padding: 14px 32px; border-radius: 100px; transition: opacity .2s, transform .15s; }
   .btn:hover { opacity: 0.88; transform: translateY(-1px); }
   .btn-text { font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; }
   .btn-text:hover { color: var(--accent); }
 
-  /* steps under the text column */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; padding-top: 34px; border-top: 1px solid var(--line); max-width: 520px; }
-  .step-n { font-size: 13px; color: var(--faint); margin-bottom: 9px; }
-  .step h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-  .step p { font-size: 13px; color: var(--muted); line-height: 1.5; }
-
-  /* right column: a clean ride card, visual anchor for laptop */
-  .ride-card {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 18px; overflow: hidden;
-    box-shadow: 0 24px 50px -28px rgba(28,28,26,0.22);
-  }
+  /* ride card */
+  .ride-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 24px 50px -28px rgba(28,28,26,0.22); }
   .rc-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line2); }
   .rc-type { font-size: 12px; color: var(--muted); border: 1px solid var(--line); padding: 3px 11px; border-radius: 100px; }
   .rc-group { font-size: 12px; color: var(--faint); }
@@ -92,22 +72,84 @@
   .going { font-size: 12px; color: var(--muted); margin-left: 10px; }
   .rc-btn { font-size: 13px; font-weight: 500; color: #fff; background: var(--accent); border: none; padding: 8px 20px; border-radius: 100px; cursor: pointer; font-family: inherit; }
 
-  footer { padding: 26px 0 40px; }
-  .foot-inner { border-top: 1px solid var(--line); padding-top: 22px; display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
-  .foot-inner a { color: var(--muted); text-decoration: none; }
-  .foot-inner a:hover { color: var(--ink); }
+  /* SECTION shared */
+  section { padding: 90px 0; }
+  .sec-head { max-width: 620px; margin-bottom: 56px; }
+  .sec-eyebrow { font-size: 13px; color: var(--accent); font-weight: 500; letter-spacing: 0.02em; margin-bottom: 14px; }
+  .sec-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.12; }
+  .sec-title strong { font-weight: 600; }
+  .sec-sub { font-size: 17px; color: var(--muted); margin-top: 16px; }
 
-  /* --- tablet / mobile: collapse to one clean column --- */
-  @media (max-width: 820px) {
-    .wrap { max-width: 640px; padding: 0 28px; }
-    .hero { grid-template-columns: 1fr; gap: 44px; }
-    .ride-card { order: 2; max-width: 420px; }
-    .steps { max-width: none; }
-    main { padding: 20px 0 60px; }
+  /* FEATURES */
+  .features { border-top: 1px solid var(--line); }
+  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 36px; }
+  .feat-ico {
+    width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
   }
-  @media (max-width: 520px) {
-    .steps { grid-template-columns: 1fr; gap: 20px; }
-    .foot-inner { flex-direction: column; gap: 8px; }
+  .feat-ico svg { stroke: var(--accent); }
+  .feat h3 { font-size: 18px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .feat p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+
+  /* HOW IT WORKS */
+  .how { border-top: 1px solid var(--line); background: #fff; }
+  .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 10px; }
+  .how-step { position: relative; padding-top: 30px; border-top: 2px solid var(--ink); }
+  .how-n { position: absolute; top: -16px; left: 0; background: var(--paper); padding-right: 12px; font-size: 13px; font-weight: 600; color: var(--accent); }
+  .how-step h3 { font-size: 19px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .how-step p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+
+  /* COMMUNITY / STATS */
+  .community { border-top: 1px solid var(--line); }
+  .comm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .stats-row { display: flex; gap: 48px; margin-top: 8px; }
+  .stat-big .n { font-size: 40px; font-weight: 300; letter-spacing: -0.02em; }
+  .stat-big .l { font-size: 13px; color: var(--muted); }
+  .comm-list { list-style: none; }
+  .comm-list li { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--line2); }
+  .comm-list li:last-child { border-bottom: none; }
+  .check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .comm-list h4 { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .comm-list p { font-size: 13.5px; color: var(--muted); }
+
+  /* FINAL CTA */
+  .final-cta { border-top: 1px solid var(--line); }
+  .cta-box { background: var(--ink); border-radius: 24px; padding: 72px 40px; text-align: center; }
+  .cta-box h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 300; letter-spacing: -0.02em; color: var(--paper); line-height: 1.05; margin-bottom: 16px; }
+  .cta-box h2 strong { font-weight: 600; color: #fff; }
+  .cta-box p { font-size: 17px; color: #a9a9a2; margin-bottom: 34px; }
+  .cta-box .btn { background: var(--accent); }
+  .cta-box .btn:hover { opacity: .9; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--line); padding: 60px 0 40px; }
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+  .foot-brand .brand { margin-bottom: 14px; }
+  .foot-brand p { font-size: 14px; color: var(--muted); max-width: 30ch; }
+  .foot-col h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); margin-bottom: 16px; font-weight: 600; }
+  .foot-col a { display: block; font-size: 14px; color: var(--muted); text-decoration: none; margin-bottom: 11px; transition: color .2s; }
+  .foot-col a:hover { color: var(--ink); }
+  .foot-bottom { border-top: 1px solid var(--line2); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); }
+  .foot-social { display: flex; gap: 16px; }
+  .foot-social a { color: var(--muted); transition: color .2s; }
+  .foot-social a:hover { color: var(--ink); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .feat-grid, .how-grid { grid-template-columns: 1fr 1fr; gap: 34px; }
+    .comm-grid { grid-template-columns: 1fr; gap: 40px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 24px; }
+    .hero { grid-template-columns: 1fr; gap: 44px; padding: 30px 0 60px; }
+    .ride-card { order: 2; max-width: 420px; }
+    .feat-grid, .how-grid { grid-template-columns: 1fr; }
+    .stats-row { gap: 32px; }
+    section { padding: 60px 0; }
+    .cta-box { padding: 52px 24px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .foot-bottom { flex-direction: column; gap: 14px; }
     .nav-links .nav-link { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto; } }
@@ -115,6 +157,7 @@
 </style>
 </head>
 <body>
+  <!-- NAV -->
   <div class="wrap">
     <nav>
       <div class="brand">
@@ -127,80 +170,214 @@
         <span class="brand-name">RideTogether</span>
       </div>
       <div class="nav-links">
-        <a href="#" class="nav-link">Cum funcționează</a>
+        <a href="#features" class="nav-link">Ce oferă</a>
+        <a href="#how" class="nav-link">Cum funcționează</a>
         <%= link_to "Intră în cont", new_session_path, class: "nav-cta" %>
       </div>
     </nav>
   </div>
 
+  <!-- HERO -->
   <div class="wrap">
-    <main>
-      <div class="hero">
-        <!-- left: copy -->
+    <section class="hero" style="padding-top:50px;">
+      <div>
+        <p class="eyebrow">Ture de grup · Iași</p>
+        <h1>Pedalăm <strong>împreună.</strong></h1>
+        <p class="lede">Toate turele din orașul tău, într-un singur loc. Vezi cine vine, alătură-te, pleci la drum.</p>
+        <div class="cta-row">
+          <%= link_to "Începe", new_registration_path, class: "btn" %>
+          <a href="#how" class="btn-text">Cum funcționează →</a>
+        </div>
+      </div>
+
+      <div class="ride-card">
+        <div class="rc-head">
+          <span class="rc-type">Cursieră</span>
+          <span class="rc-group">Grupul amuzanților</span>
+        </div>
+        <div class="rc-body">
+          <div class="rc-title">Tura de sâmbătă</div>
+          <div class="rc-when">Sâm, 22 aug · 10:00 · start Rosetti</div>
+          <div class="rc-stats">
+            <div class="rc-stat"><div class="n">45 km</div><div class="l">distanță</div></div>
+            <div class="rc-stat"><div class="n">28 km/h</div><div class="l">ritm</div></div>
+            <div class="rc-stat"><div class="n">140 m</div><div class="l">urcare</div></div>
+          </div>
+          <div class="rc-foot">
+            <div class="avs">
+              <div class="av">AS</div>
+              <div class="av">MR</div>
+              <div class="av">DP</div>
+              <div class="av" style="background:#1c1c1a;color:#fff;font-size:9px;">+9</div>
+              <span class="going">11 vin</span>
+            </div>
+            <button class="rc-btn">Vin</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-eyebrow">De ce RideTogether</p>
+        <h2 class="sec-title">Gata cu haosul de pe <strong>Facebook.</strong></h2>
+        <p class="sec-sub">Tot ce-ți trebuie ca să organizezi și să găsești ture, într-un singur loc.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3>Confirmări clare</h3>
+          <p>Un buton „Vin", nu un fir de 40 de comentarii. Vezi dintr-o privire câți sunteți.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5-3V4l5 3 6-3 5 3v13l-5-3-6 3z"/><path d="M9 7v13M15 4v13"/></svg></div>
+          <h3>Ruta pe hartă</h3>
+          <p>Distanță, urcare, punct de start. Știi exact unde mergi înainte să pleci de acasă.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div>
+          <h3>Ritmul potrivit</h3>
+          <p>Tură relaxată la 25 sau atac la 32? Fiecare vine la nivelul care i se potrivește.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg></div>
+          <h3>Grupuri & comunități</h3>
+          <p>Alătură-te grupului tău, discutați, împărtășiți poze de la ture. Nu doar evenimente — comunitate.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <h3>Oriunde pedalezi</h3>
+          <p>Călătorești la Cluj sau Brașov? Comută orașul și găsești turele locale de acolo.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg></div>
+          <h3>Creezi în 30 de secunde</h3>
+          <p>Loc, oră, ritm — postezi tura și gata. Ceilalți văd imediat și confirmă.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-eyebrow">Simplu ca bună ziua</p>
+        <h2 class="sec-title">Trei pași și ești <strong>pe drum.</strong></h2>
+      </div>
+      <div class="how-grid">
+        <div class="how-step">
+          <span class="how-n">PASUL 01</span>
+          <h3>Creează sau alătură-te</h3>
+          <p>Intri într-un grup din orașul tău sau creezi tu unul. Comunitatea ta de cicliști, într-un loc.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-n">PASUL 02</span>
+          <h3>Postează o tură</h3>
+          <p>Aleg locul, ora, ritmul și tipul — MTB, cursieră sau plimbare. Ceilalți o văd instant.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-n">PASUL 03</span>
+          <h3>Confirmă și pedalează</h3>
+          <p>Apeși „Vin", vezi cine mai vine, vă întâlniți la start și plecați împreună la drum.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="community">
+    <div class="wrap">
+      <div class="comm-grid">
         <div>
-          <p class="eyebrow">Ture de grup · Iași</p>
-          <h1>Pedalăm <strong>împreună.</strong></h1>
-          <p class="lede">Toate turele din orașul tău, într-un singur loc. Vezi cine vine, alătură-te, pleci la drum.</p>
-          <div class="cta-row">
-            <%= link_to "Începe", new_registration_path, class: "btn" %>
-            <a href="#" class="btn-text">Cum funcționează →</a>
-          </div>
-          <div class="steps">
-            <div class="step">
-              <div class="step-n">01</div>
-              <h3>Creează</h3>
-              <p>Postezi tura: loc, oră, ritm.</p>
-            </div>
-            <div class="step">
-              <div class="step-n">02</div>
-              <h3>Confirmă</h3>
-              <p>Un buton „Vin", nimic complicat.</p>
-            </div>
-            <div class="step">
-              <div class="step-n">03</div>
-              <h3>Pedalează</h3>
-              <p>Vă întâlniți și plecați.</p>
-            </div>
+          <p class="sec-eyebrow">Comunitatea crește</p>
+          <h2 class="sec-title">Cicliști ca <strong>tine.</strong></h2>
+          <p class="sec-sub">De la ture relaxate prin oraș la expediții în munți — găsești mereu cu cine să pedalezi.</p>
+          <div class="stats-row">
+            <div class="stat-big"><div class="n">12+</div><div class="l">grupuri active</div></div>
+            <div class="stat-big"><div class="n">340</div><div class="l">cicliști</div></div>
+            <div class="stat-big"><div class="n">50+</div><div class="l">ture pe lună</div></div>
           </div>
         </div>
-
-        <!-- right: ride card -->
-        <div class="ride-card">
-          <div class="rc-head">
-            <span class="rc-type">Cursieră</span>
-            <span class="rc-group">Grupul amuzanților</span>
-          </div>
-          <div class="rc-body">
-            <div class="rc-title">Tura de sâmbătă</div>
-            <div class="rc-when">Sâm, 22 aug · 10:00 · start Rosetti</div>
-            <div class="rc-stats">
-              <div class="rc-stat"><div class="n">45 km</div><div class="l">distanță</div></div>
-              <div class="rc-stat"><div class="n">28 km/h</div><div class="l">ritm</div></div>
-              <div class="rc-stat"><div class="n">140 m</div><div class="l">urcare</div></div>
-            </div>
-            <div class="rc-foot">
-              <div class="avs">
-                <div class="av">AS</div>
-                <div class="av">MR</div>
-                <div class="av">DP</div>
-                <div class="av" style="background:#1c1c1a;color:#fff;font-size:9px;">+9</div>
-                <span class="going">11 vin</span>
-              </div>
-              <button class="rc-btn">Vin</button>
-            </div>
-          </div>
+        <div>
+          <ul class="comm-list">
+            <li>
+              <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e5533d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <div><h4>Grupuri pe orice gust</h4><p>Fetele, băieții, copiii, amatorii de trasee lungi — sau creează-ți propriul grup.</p></div>
+            </li>
+            <li>
+              <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e5533d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <div><h4>Feed cu poze și mesaje</h4><p>Împărtășiți amintiri de la ture, discutați trasee, țineți legătura între pedalări.</p></div>
+            </li>
+            <li>
+              <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e5533d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <div><h4>Vizitatorii sunt bineveniți</h4><p>Ești din alt oraș, dar treci pe la noi? Vezi turele publice și alătură-te fără bătăi de cap.</p></div>
+            </li>
+          </ul>
         </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </section>
 
-  <div class="wrap">
-    <footer>
-      <div class="foot-inner">
-        <span>RideTogether</span>
-        <a href="#">Făcut în Iași, pe bicicletă</a>
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Următoarea tură <strong>te așteaptă.</strong></h2>
+        <p>Gratuit pentru cicliștii din România. Fără instalări complicate.</p>
+        <%= link_to "Creează-ți contul", new_registration_path, class: "btn" %>
       </div>
-    </footer>
-  </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="brand">
+            <svg width="34" height="21" viewBox="0 0 84 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="RideTogether">
+              <circle cx="18" cy="36" r="14" stroke="#1c1c1a" stroke-width="3"/>
+              <circle cx="66" cy="36" r="14" stroke="#1c1c1a" stroke-width="3"/>
+              <path d="M18 36 L38 36 L52 16 L30 16" stroke="#1c1c1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M38 36 L52 16 M66 36 L52 16 M18 36 L28 16" stroke="#1c1c1a" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span class="brand-name">RideTogether</span>
+          </div>
+          <p>Turele tale de grup, într-un singur loc. Făcut în Iași, pe bicicletă.</p>
+        </div>
+        <div class="foot-col">
+          <h5>Produs</h5>
+          <a href="#features">Ce oferă</a>
+          <a href="#how">Cum funcționează</a>
+          <%= link_to "Creează cont", new_registration_path %>
+          <%= link_to "Intră în cont", new_session_path %>
+        </div>
+        <div class="foot-col">
+          <h5>Comunitate</h5>
+          <a href="#">Grupuri</a>
+          <a href="#">Ture populare</a>
+          <a href="#">Orașe</a>
+        </div>
+        <div class="foot-col">
+          <h5>Legal</h5>
+          <a href="#">Termeni</a>
+          <a href="#">Confidențialitate</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2028 RideTogether. Toate drepturile rezervate.</span>
+        <div class="foot-social">
+          <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="#" aria-label="Strava"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l4-8 4 8h-3l-1-2-1 2z"/><path d="M13 14l2 4 2-4h-1.5l-.5 1-.5-1z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
