@@ -28,7 +28,7 @@ aside { border-right: 1px solid var(--line); padding: 28px 20px; display: flex; 
 
 main { padding: 40px 56px; }
 .grp-eyebrow { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
-.grp-title { font-size: 30px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 4px; }
+.grp-title { font-size: 25px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 4px; }
 .grp-lede { font-size: 14.5px; color: var(--muted); margin-bottom: 30px; }
 
 /* two-column page layout */
@@ -122,82 +122,318 @@ main { padding: 40px 56px; }
 
 <div class="grp-cols">
   <!-- LEFT: form -->
-  <form class="grp-card" onsubmit="return false;">
+  <%= form_with model: @group, class: "grp-card", data: { group_form: true } do |form| %>
+
     <div class="grp-2">
+
       <div class="grp-field">
-        <label>Numele grupului</label>
-        <input type="text" placeholder="Grupul amuzanților">
+        <%= form.label :name, "Numele grupului" %>
+
+        <%= form.text_field :name,
+            placeholder: "Grupul amuzanților" %>
       </div>
+
       <div class="grp-field">
-        <label>Orașul</label>
+        <%= form.label :city, "Orașul" %>
+
         <div class="grp-select">
-          <select><option>Iași</option><option>Cluj-Napoca</option><option>București</option><option>Brașov</option></select>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          <%= form.select :city,
+              ["Iași", "Cluj-Napoca", "București", "Brașov"] %>
+
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
         </div>
       </div>
+
     </div>
 
+
     <div class="grp-field">
-      <label>Descriere</label>
-      <textarea placeholder="Cine sunteți, ce fel de ture faceți..."></textarea>
+      <%= form.label :description, "Descriere" %>
+
+      <%= form.text_area :description,
+          placeholder: "Cine sunteți, ce fel de ture faceți..." %>
     </div>
+
 
     <div class="grp-section">
+
       <p class="grp-section-label">Cine se poate alătura?</p>
+
       <div class="grp-radios">
-        <label class="grp-radio selected" data-radio="join">
-          <span class="dot"><i></i></span>
-          <span><span class="grp-radio-title">Cu aprobare</span><span class="grp-radio-sub">Tu aprobi cine intră.</span></span>
+
+        <label
+          class="grp-radio <%= 'selected' if @group.join_requires_approval != false %>"
+          data-radio="join"
+          data-value="true"
+        >
+          <span class="dot">
+            <i></i>
+          </span>
+
+          <span>
+            <span class="grp-radio-title">Cu aprobare</span>
+            <span class="grp-radio-sub">Tu aprobi cine intră.</span>
+          </span>
         </label>
-        <label class="grp-radio" data-radio="join">
-          <span class="dot"><i></i></span>
-          <span><span class="grp-radio-title">Deschis</span><span class="grp-radio-sub">Oricine intră instant.</span></span>
+
+
+        <label
+          class="grp-radio <%= 'selected' if @group.join_requires_approval == false %>"
+          data-radio="join"
+          data-value="false"
+        >
+          <span class="dot">
+            <i></i>
+          </span>
+
+          <span>
+            <span class="grp-radio-title">Deschis</span>
+            <span class="grp-radio-sub">Oricine intră instant.</span>
+          </span>
         </label>
+
       </div>
+
+      <%= hidden_field_tag "group[join_requires_approval]",
+          @group.join_requires_approval == false ? "false" : "true",
+          id: "group_join_requires_approval" %>
+
     </div>
+
 
     <div class="grp-field">
-      <p class="grp-section-label">Ce tipuri de ture faceți? <span class="grp-muted">(informativ)</span></p>
+
+      <p class="grp-section-label">
+        Ce tipuri de ture faceți?
+        <span class="grp-muted">(informativ)</span>
+      </p>
+
       <div class="grp-chips">
-        <span class="grp-chip selected" data-chip><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>MTB</span>
-        <span class="grp-chip" data-chip><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Cursieră</span>
-        <span class="grp-chip selected" data-chip><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Plimbare</span>
-        <span class="grp-chip" data-chip><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Gravel</span>
+
+        <span
+          class="grp-chip <%= 'selected' if @group.ride_types.include?('MTB') %>"
+          data-chip
+          data-value="MTB"
+        >
+          <span class="tick">
+            <svg width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor"
+                 stroke-width="3"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+          MTB
+        </span>
+
+
+        <span
+          class="grp-chip <%= 'selected' if @group.ride_types.include?('Cursieră') %>"
+          data-chip
+          data-value="Cursieră"
+        >
+          <span class="tick">
+            <svg width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor"
+                 stroke-width="3"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+          Cursieră
+        </span>
+
+
+        <span
+          class="grp-chip <%= 'selected' if @group.ride_types.include?('Plimbare') %>"
+          data-chip
+          data-value="Plimbare"
+        >
+          <span class="tick">
+            <svg width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor"
+                 stroke-width="3"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+          Plimbare
+        </span>
+
+
+        <span
+          class="grp-chip <%= 'selected' if @group.ride_types.include?('Gravel') %>"
+          data-chip
+          data-value="Gravel"
+        >
+          <span class="tick">
+            <svg width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor"
+                 stroke-width="3"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+          Gravel
+        </span>
+
       </div>
+
+      <%= hidden_field_tag "group[ride_types][]",
+          "",
+          id: "group_ride_types" %>
+
     </div>
 
-    <div class="grp-toggle on" data-toggle>
+
+    <div
+      class="grp-toggle <%= 'on' if @group.public != false %>"
+      data-toggle
+    >
       <span>Vizibil în lista publică din oraș</span>
-      <span class="track"><span class="knob"></span></span>
+
+      <span class="track">
+        <span class="knob"></span>
+      </span>
+
+      <%= hidden_field_tag "group[public]",
+          @group.public != false ? "true" : "false",
+          id: "group_public" %>
     </div>
 
-    <button type="submit" class="grp-submit">Creează grupul</button>
-  </form>
+
+    <%= form.submit "Creează grupul", class: "grp-submit" %>
+
+  <% end %>
 
   <!-- RIGHT: your groups -->
   <div class="grp-aside-card">
-    <p class="grp-list-label">Grupurile tale</p>
-    <a href="#" class="grp-row">
-      <div><div class="grp-row-top"><span class="grp-row-name">Grupul amuzanților</span><span class="grp-badge">admin</span></div><span class="grp-row-meta">Iași · 34 membri · 8 ture</span></div>
-      <svg class="chev-r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
-    <a href="#" class="grp-row">
-      <div><div class="grp-row-top"><span class="grp-row-name">Ture lungi de weekend</span><span class="grp-badge">admin</span></div><span class="grp-row-meta">Iași · 12 membri · 2 ture</span></div>
-      <svg class="chev-r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
-  </div>
+
+      <p class="grp-list-label">Grupurile tale</p>
+
+      <% @groups.each do |group| %>
+
+        <%= link_to "#", class: "grp-row" do %>
+
+          <div>
+
+            <div class="grp-row-top">
+              <span class="grp-row-name">
+                <%= group.name %>
+              </span>
+
+              <span class="grp-badge">admin</span>
+            </div>
+
+            <span class="grp-row-meta">
+              <%= group.city %> · 0 membri · 0 ture
+            </span>
+
+          </div>
+
+          <svg
+            class="chev-r"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
 </div>
 </main>
 </div>
 
 <script>
-document.querySelectorAll('[data-radio]').forEach(function(r){
-  r.addEventListener('click', function(){
-    var name = r.getAttribute('data-radio');
-    document.querySelectorAll('[data-radio="'+name+'"]').forEach(function(x){ x.classList.remove('selected'); });
-    r.classList.add('selected');
+document.querySelectorAll('[data-radio]').forEach(function(r) {
+
+    r.addEventListener('click', function() {
+
+      var name = r.getAttribute('data-radio');
+      var value = r.getAttribute('data-value');
+
+      document
+        .querySelectorAll('[data-radio="' + name + '"]')
+        .forEach(function(x) {
+          x.classList.remove('selected');
+        });
+
+      r.classList.add('selected');
+
+      if (name === 'join') {
+        document.getElementById('group_join_requires_approval').value = value;
+      }
+
+    });
+
   });
-});
-document.querySelectorAll('[data-chip]').forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('selected'); }); });
-document.querySelectorAll('[data-toggle]').forEach(function(t){ t.addEventListener('click', function(){ t.classList.toggle('on'); }); });
+
+
+  document.querySelectorAll('[data-chip]').forEach(function(c) {
+
+    c.addEventListener('click', function() {
+      c.classList.toggle('selected');
+    });
+
+  });
+
+
+  document.querySelectorAll('[data-toggle]').forEach(function(t) {
+
+    t.addEventListener('click', function() {
+
+      t.classList.toggle('on');
+
+      var input = document.getElementById('group_public');
+
+      input.value = t.classList.contains('on')
+        ? 'true'
+        : 'false';
+
+    });
+
+  });
+
+
+  document.querySelector('[data-group-form]').addEventListener('submit', function() {
+
+    var form = this;
+
+    form.querySelectorAll(
+      'input[name="group[ride_types][]"]'
+    ).forEach(function(input) {
+      input.remove();
+    });
+
+    document.querySelectorAll('[data-chip].selected').forEach(function(chip) {
+
+      var input = document.createElement('input');
+
+      input.type = 'hidden';
+      input.name = 'group[ride_types][]';
+      input.value = chip.getAttribute('data-value');
+
+      form.appendChild(input);
+
+    });
+
+  });
 </script>
