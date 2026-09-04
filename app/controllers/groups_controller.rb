@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   layout "dashboard"
 
   def index
-    @groups = Current.user.created_groups
+    @my_own_groups= Current.user.created_groups
   end
 
   def new
@@ -12,6 +12,10 @@ class GroupsController < ApplicationController
     )
 
     @groups = Current.user.created_groups
+  end
+
+  def show
+    @group = Group.find(params[:id])
   end
 
   def create

@@ -14,4 +14,20 @@ module ApplicationHelper
 
     class_names(active: active)
   end
+
+  def group_initials(name)
+    name.to_s
+        .split
+        .reject(&:empty?)
+        .first(3)
+        .map { |word| word[0] }
+        .join
+        .upcase
+  end
+
+  def created_at_label(date)
+    months = %w[ian feb mar apr mai iun iul aug sep oct nov dec]
+  
+    "creat în #{months[date.month - 1]} #{date.year}"
+  end
 end

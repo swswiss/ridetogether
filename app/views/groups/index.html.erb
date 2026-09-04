@@ -99,37 +99,29 @@
         </div>
 
         <!-- ADMIN -->
-        <div class="section">
-          <div class="section-head">
-            <span class="section-title">Unde sunt admin</span>
-            <span class="section-count">2 grupuri</span>
+        <% if @my_own_groups.present? %>
+          <div class="section">
+            <div class="section-head">
+              <span class="section-title">Unde sunt admin</span>
+            </div>
+            <% @my_own_groups.each do |group| %>
+              <div class="grid">
+                <%= link_to group_path(group), class: "gcard" do %>
+                  <div class="gcard-top">
+                    <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                    <span class="gcard-badge badge-admin">admin</span>
+                  </div>
+                  <div class="gcard-name"><%= group.name %></div>
+                  <div class="gcard-meta">Iași · 34 membri</div>
+                  <div class="gcard-foot">
+                    <span class="gcard-stats">8 ture</span>
+                    <span class="gcard-pending">3 cereri</span>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
           </div>
-          <div class="grid">
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">GA</div>
-                <span class="gcard-badge badge-admin">admin</span>
-              </div>
-              <div class="gcard-name">Grupul amuzanților</div>
-              <div class="gcard-meta">Iași · 34 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">8 ture</span>
-                <span class="gcard-pending">3 cereri</span>
-              </div>
-            </a>
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">TL</div>
-                <span class="gcard-badge badge-admin">admin</span>
-              </div>
-              <div class="gcard-name">Ture lungi de weekend</div>
-              <div class="gcard-meta">Iași · 12 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">2 ture</span>
-              </div>
-            </a>
-          </div>
-        </div>
+        <% end %>
 
         <!-- MEMBER -->
         <div class="section">
