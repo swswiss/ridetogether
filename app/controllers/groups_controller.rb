@@ -11,6 +11,16 @@ class GroupsController < ApplicationController
 
   def my_groups
     @my_own_groups= Current.user.created_groups
+    @my_groups_member = Group.where(
+      id: Current.user.group_memberships
+        .where(role: "member", status: "active")
+        .select(:group_id)
+    )
+    @my_groups_moderator = Group.where(
+      id: Current.user.group_memberships
+        .where(role: "moderator", status: "active")
+        .select(:group_id)
+    )
   end
 
   def new

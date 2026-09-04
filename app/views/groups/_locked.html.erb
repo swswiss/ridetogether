@@ -4,9 +4,15 @@
   </div>
   <h2>Grup privat</h2>
   <p>Trebuie să fii membru ca să vezi evenimentele, feed-ul și discuțiile din acest grup.</p>
-  <a href="#" class="btn-join">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-    Cere să te alături
-  </a>
-  <p class="locked-note">Adminul grupului îți va aproba cererea.</p>
+  <% if @group.join_requires_approval == true %>
+    <a href="#" class="btn-join">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Cere să te alături
+    </a>
+    <p class="locked-note">Adminul grupului îți va aproba cererea.</p>
+  <% else %>
+    <a href="#" class="btn-join">
+      Intra in grup
+    </a>
+  <% end %>
 </div>

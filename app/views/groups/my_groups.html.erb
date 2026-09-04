@@ -124,47 +124,52 @@
         <% end %>
 
         <!-- MEMBER -->
-        <div class="section">
-          <div class="section-head">
-            <span class="section-title">Unde sunt membru</span>
-            <span class="section-count">3 grupuri</span>
+        <% if @my_groups_member.present? %>
+          <div class="section">
+            <div class="section-head">
+              <span class="section-title">Unde sunt membru</span>
+            </div>
+            <% @my_groups_member.each do |group| %>
+              <div class="grid">
+                <%= link_to group_path(group), class: "gcard" do %>
+                  <div class="gcard-top">
+                    <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                    <span class="gcard-badge badge-admin">member</span>
+                  </div>
+                  <div class="gcard-name"><%= group.name %></div>
+                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
+                  <div class="gcard-foot">
+                    <span class="gcard-stats">8 ture</span>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
           </div>
-          <div class="grid">
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">MB</div>
-                <span class="gcard-badge badge-member">membru</span>
+        <% end %>
+
+        <!-- MODERATOR -->
+        <% if @my_groups_moderator.present? %>
+          <div class="section">
+            <div class="section-head">
+              <span class="section-title">Unde sunt moderator</span>
+            </div>
+            <% @my_groups_moderator.each do |group| %>
+              <div class="grid">
+                <%= link_to group_path(group), class: "gcard" do %>
+                  <div class="gcard-top">
+                    <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                    <span class="gcard-badge badge-admin">moderator</span>
+                  </div>
+                  <div class="gcard-name"><%= group.name %></div>
+                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
+                  <div class="gcard-foot">
+                    <span class="gcard-stats">8 ture</span>
+                  </div>
+                <% end %>
               </div>
-              <div class="gcard-name">MTB Iași</div>
-              <div class="gcard-meta">Iași · 87 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">12 ture</span>
-              </div>
-            </a>
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">CB</div>
-                <span class="gcard-badge badge-member">membru</span>
-              </div>
-              <div class="gcard-name">Cursiere Botoșani</div>
-              <div class="gcard-meta">Botoșani · 41 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">5 ture</span>
-              </div>
-            </a>
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">GF</div>
-                <span class="gcard-badge badge-member">membru</span>
-              </div>
-              <div class="gcard-name">Grupul fetelor</div>
-              <div class="gcard-meta">Iași · 28 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">6 ture</span>
-              </div>
-            </a>
+            <% end %>
           </div>
-        </div>
+        <% end %>
       </main>
   </div>
 </body>
