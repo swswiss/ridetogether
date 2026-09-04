@@ -2,7 +2,11 @@ class GroupsController < ApplicationController
   layout "dashboard"
 
   def index
-    @my_own_groups= Current.user.created_groups
+    @groups_per_city = Group
+      .where(city: Current.user.city)
+      .where.not(
+        id: Current.user.group_memberships.select(:group_id)
+      )
   end
 
   def my_groups

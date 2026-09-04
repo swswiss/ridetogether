@@ -35,6 +35,15 @@
   .mobile-top { display: none; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #fff; z-index: 10; }
   .mobile-top .avatar { width: 30px; height: 30px; }
 
+  /* locked state */
+  .locked { text-align: center; padding: 40px 20px 60px; max-width: 420px; margin: 0 auto; }
+  .lock-ico { width: 68px; height: 68px; border-radius: 20px; background: var(--line-soft); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; color: var(--muted); }
+  .locked h2 { font-size: 21px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .locked p { font-size: 14.5px; color: var(--muted); margin-bottom: 26px; line-height: 1.55; }
+  .btn-join { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #fff; background: var(--ink); border: none; cursor: pointer; padding: 13px 28px; border-radius: 100px; text-decoration: none; transition: opacity .2s; }
+  .btn-join:hover { opacity: 0.85; }
+  .locked-note { font-size: 12.5px; color: var(--faint); margin-top: 16px; }
+
   main { padding: 40px 56px; }
   .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; gap: 16px; flex-wrap: wrap; }
   .head-eyebrow { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
@@ -94,17 +103,14 @@
       <main>
         <div class="head">
           <div>
-            <h1>Grupurile mele</h1>
+            <h1>Grupurile din orasul meu</h1>
           </div>
         </div>
 
         <!-- ADMIN -->
-        <% if @my_own_groups.present? %>
+        <% if @groups_per_city.present? %>
           <div class="section">
-            <div class="section-head">
-              <span class="section-title">Unde sunt admin</span>
-            </div>
-            <% @my_own_groups.each do |group| %>
+            <% @groups_per_city.each do |group| %>
               <div class="grid">
                 <%= link_to group_path(group), class: "gcard" do %>
                   <div class="gcard-top">
@@ -112,7 +118,7 @@
                     <span class="gcard-badge badge-admin">admin</span>
                   </div>
                   <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta">Iași · 34 membri</div>
+                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
                   <div class="gcard-foot">
                     <span class="gcard-stats">8 ture</span>
                     <span class="gcard-pending">3 cereri</span>
@@ -121,50 +127,9 @@
               </div>
             <% end %>
           </div>
+        <% else %>
+          <%= render "no_groups" %>
         <% end %>
-
-        <!-- MEMBER -->
-        <div class="section">
-          <div class="section-head">
-            <span class="section-title">Unde sunt membru</span>
-            <span class="section-count">3 grupuri</span>
-          </div>
-          <div class="grid">
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">MB</div>
-                <span class="gcard-badge badge-member">membru</span>
-              </div>
-              <div class="gcard-name">MTB Iași</div>
-              <div class="gcard-meta">Iași · 87 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">12 ture</span>
-              </div>
-            </a>
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">CB</div>
-                <span class="gcard-badge badge-member">membru</span>
-              </div>
-              <div class="gcard-name">Cursiere Botoșani</div>
-              <div class="gcard-meta">Botoșani · 41 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">5 ture</span>
-              </div>
-            </a>
-            <a href="#" class="gcard">
-              <div class="gcard-top">
-                <div class="gcard-avatar">GF</div>
-                <span class="gcard-badge badge-member">membru</span>
-              </div>
-              <div class="gcard-name">Grupul fetelor</div>
-              <div class="gcard-meta">Iași · 28 membri</div>
-              <div class="gcard-foot">
-                <span class="gcard-stats">6 ture</span>
-              </div>
-            </a>
-          </div>
-        </div>
       </main>
   </div>
 </body>

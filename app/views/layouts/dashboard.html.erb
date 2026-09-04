@@ -228,6 +228,14 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M15 20c0-2 1.5-3.5 4-3.5"/></svg>
               Grupurile mele
           <% end %>
+          <%= link_to groups_path, class: nav_item_class(groups_path) do %>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="m15.5 8.5-2.5 5-5 2.5 2.5-5 5-2.5Z"/>
+            </svg>
+            Descopera grupuri
+          <% end %>
           <a href="#" class="nav-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5-3V4l5 3 6-3 5 3v13l-5-3-6 3z"/><path d="M9 7v13M15 4v13"/></svg>
               Hartă
@@ -287,8 +295,16 @@
           <span>Ture</span>
       </a>
       <%= link_to my_groups_path, class: nav_item_class_bottom(my_groups_path) do %>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M15 20c0-2 1.5-3.5 4-3.5"/></svg>
-          <span>Grupuri Mele</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="m15.5 8.5-2.5 5-5 2.5 2.5-5 5-2.5Z"/>
+        </svg>
+        <span>Grupurile Mele</span>
+      <% end %>
+      <%= link_to groups_path, class: nav_item_class_bottom(groups_path) do %>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M15 20c0-2 1.5-3.5 4-3.5"/></svg>
+        <span>Descopera grupuri</span>
       <% end %>
       <%= link_to new_group_path, class: nav_item_class_bottom(new_group_path) do %>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
