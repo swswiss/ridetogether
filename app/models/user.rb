@@ -5,6 +5,11 @@ class User < ApplicationRecord
            class_name: "Group",
            foreign_key: :user_id,
            dependent: :destroy
+  has_many :group_memberships,
+            dependent: :destroy
+
+  has_many :groups,
+           through: :group_memberships
 
   validates :role, presence: true
   validates :email_address,

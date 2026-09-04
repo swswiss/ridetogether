@@ -27,10 +27,20 @@ class GroupsController < ApplicationController
 
     @group = Current.user.created_groups.build(group_params)
 
-    if @group.save
+    begin
+      Group.transaction do
+        @group.save!
+  
+        @group.group_memberships.create!(
+          user: Current.user,
+          role: "admin",
+          status: "active"
+        )
+      end
+  
       redirect_to new_group_path,
                   notice: "Grupul a fost creat cu succes."
-    else
+    rescue ActiveRecord::RecordInvalid
       @groups = Current.user.created_groups.reload
       flash.now[:alert] = "Grupul nu a putut fi creat."
       render :new, status: :unprocessable_entity
