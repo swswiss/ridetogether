@@ -5,6 +5,10 @@ class GroupsController < ApplicationController
     @my_own_groups= Current.user.created_groups
   end
 
+  def my_groups
+    @my_own_groups= Current.user.created_groups
+  end
+
   def new
     @group = Group.new(
       join_requires_approval: true,
@@ -16,6 +20,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
+    @membership = @group.group_memberships.find_by(user: Current.user)
   end
 
   def create

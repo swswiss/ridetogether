@@ -1,0 +1,25 @@
+<div class="g-header">
+  <div class="g-avatar"><%= group_initials(@group.name) %></div>
+  <div class="g-head-main">
+    <div class="g-name-row">
+      <span class="g-name"><%= @group.name %></span>
+      <% if @membership&.active? %>
+        <span class="g-badge">admin</span>
+      <% end %>
+    </div>
+    <div class="g-meta"><%= @group.city %> · 34 membri · <%= created_at_label(@group.created_at) %></div>
+    <div class="g-types">
+      <% @group.ride_types.each do |ride_type| %>
+        <span class="g-type"><%= ride_type %></span>
+      <% end %>
+    </div>
+  </div>
+  <% if @membership&.active? %>
+    <div class="g-action">
+      <a href="#" class="btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Creează o tură
+      </a>
+    </div>
+  <% end %>
+</div>

@@ -33,7 +33,7 @@
   .mobile-top { display: none; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #fff; z-index: 10; }
   .mobile-top .avatar { width: 30px; height: 30px; }
 
-  main { padding: 0; max-width: 940px; min-width: 0; }
+  main { padding: 0; min-width: 0; }
   .inner { padding: 36px 56px; }
 
   /* group header */
@@ -75,6 +75,15 @@
   .btn-rsvp:hover { border-color: var(--ink); }
   .btn-rsvp.filled { background: var(--ink); color: #fff; border: none; }
 
+  /* locked state */
+  .locked { text-align: center; padding: 40px 20px 60px; max-width: 420px; margin: 0 auto; }
+  .lock-ico { width: 68px; height: 68px; border-radius: 20px; background: var(--line-soft); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; color: var(--muted); }
+  .locked h2 { font-size: 21px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .locked p { font-size: 14.5px; color: var(--muted); margin-bottom: 26px; line-height: 1.55; }
+  .btn-join { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #fff; background: var(--ink); border: none; cursor: pointer; padding: 13px 28px; border-radius: 100px; text-decoration: none; transition: opacity .2s; }
+  .btn-join:hover { opacity: 0.85; }
+  .locked-note { font-size: 12.5px; color: var(--faint); margin-top: 16px; }
+
   .bottom-nav { display: none; }
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
@@ -115,77 +124,18 @@
 </head>
 <main>
   <div class="inner">
-    <%= link_to groups_path, class: "g-back" do %>
+    <%= link_to my_groups_path, class: "g-back" do %>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       Grupurile mele
     <% end %>
 
-    <div class="g-header">
-      <div class="g-avatar"><%= group_initials(@group.name) %></div>
-      <div class="g-head-main">
-        <div class="g-name-row">
-          <span class="g-name"><%= @group.name %></span>
-          <span class="g-badge">admin</span>
-        </div>
-        <div class="g-meta"><%= @group.city %> · 34 membri · <%= created_at_label(@group.created_at) %></div>
-        <div class="g-types">
-          <% @group.ride_types.each do |ride_type| %>
-            <span class="g-type"><%= ride_type %></span>
-          <% end %>
-        </div>
-      </div>
-      <div class="g-action">
-        <a href="#" class="btn-primary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          Creează o tură
-        </a>
-      </div>
-    </div>
-
-    <!-- TAB MENU -->
-    <div class="tabs">
-      <span class="tab active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Evenimente</span>
-      <span class="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><circle cx="9" cy="9" r="1.5"/></svg>Feed</span>
-      <span class="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>Membri</span>
-      <span class="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Chat</span>
-      <span class="tab">Cereri <span class="count">3</span></span>
-      <span class="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1L14.5 2h-5l-.3 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5L3.1 11a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.3 2.5h5l.3-2.5a7 7 0 001.7-1l2.4 1 2-3.5-2-1.5a7 7 0 00.1-1z"/></svg>Setări</span>
-    </div>
-
-    <!-- EVENTS TAB CONTENT -->
-    <p class="section-label">Ture care urmează</p>
-
-    <div class="ride">
-      <div>
-        <div class="ride-top"><span class="ride-title">Tura de sâmbătă dimineața</span><span class="ride-type">plimbare</span></div>
-        <div class="ride-meta">Sâm, 22 aug · 10:00<span class="dot">·</span>start Rosetti<span class="dot">·</span>45 km · 28 km/h</div>
-      </div>
-      <div class="ride-right">
-        <span class="going-count">11 vin</span>
-        <button class="btn-rsvp filled">Vin</button>
-      </div>
-    </div>
-
-    <div class="ride">
-      <div>
-        <div class="ride-top"><span class="ride-title">Trail în Bârnova</span><span class="ride-type">mtb</span></div>
-        <div class="ride-meta">Dum, 23 aug · 09:00<span class="dot">·</span>start Bârnova<span class="dot">·</span>22 km · 18 km/h</div>
-      </div>
-      <div class="ride-right">
-        <span class="going-count">6 vin</span>
-        <button class="btn-rsvp">Vin</button>
-      </div>
-    </div>
-
-    <div class="ride">
-      <div>
-        <div class="ride-top"><span class="ride-title">Tur relaxat prin Copou</span><span class="ride-type">plimbare</span></div>
-        <div class="ride-meta">Mar, 25 aug · 18:30<span class="dot">·</span>start Copou<span class="dot">·</span>12 km · 15 km/h</div>
-      </div>
-      <div class="ride-right">
-        <span class="going-count">8 vin</span>
-        <button class="btn-rsvp">Vin</button>
-      </div>
-    </div>
+    <%= render "header" %>
+    
+    <% if !@membership&.active? %>
+      <%= render "locked" %>
+    <% else %>
+      <%= render "tabs" %>
+      <%= render "events" %>
+    <% end %>
   </div>
 </main>
