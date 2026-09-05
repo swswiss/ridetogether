@@ -1,14 +1,37 @@
 Rails.application.routes.draw do
-  get "groups/index"
-  get "groups/new"
-  get "registrations/new"
-  get "dashboard/index"
-  get "home/index"
+  # get "group_settings/show"
+  # get "group_chats/show"
+  # get "group_membership_requests/index"
+  # get "group_members/index"
+  # get "group_events/index"
+  # get "groups/index"
+  # get "groups/new"
+  # get "registrations/new"
+  # get "dashboard/index"
+  # get "home/index"
   resource :session
   resources :passwords, param: :token
   resource :registration, only: [:new, :create]
 
-  resources :groups, only: [:index, :new, :create, :show]
+  resources :groups, only: [:index, :new, :create, :show] do
+    resource :membership, only: [:create, :destroy]
+
+    get "events",               to: "group_events#index"
+    get "members",              to: "group_members#index"
+    get "chat",                 to: "group_chats#show"
+    get "settings",             to: "group_settings#show"
+
+    get "membership_requests",
+          to: "group_membership_requests#index"
+
+    patch "membership_requests/:id/approve",
+          to: "group_membership_requests#approve",
+          as: :approve_membership_request
+
+    patch "membership_requests/:id/reject",
+          to: "group_membership_requests#reject",
+          as: :reject_membership_request
+  end
   get "my_groups", to: "groups#my_groups"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

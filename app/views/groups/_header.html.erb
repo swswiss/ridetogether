@@ -4,7 +4,7 @@
     <div class="g-name-row">
       <span class="g-name"><%= @group.name %></span>
       <% if @membership&.active? %>
-        <span class="g-badge">admin</span>
+        <span class="g-badge"><%= @membership.role %></span>
       <% end %>
     </div>
     <div class="g-meta"><%= @group.city %> · 34 membri · <%= created_at_label(@group.created_at) %></div>

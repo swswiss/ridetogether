@@ -5,7 +5,9 @@ class GroupsController < ApplicationController
     @groups_per_city = Group
       .where(city: Current.user.city)
       .where.not(
-        id: Current.user.group_memberships.select(:group_id)
+        id: Current.user.group_memberships
+          .where(status: "active")
+          .select(:group_id)
       )
   end
 

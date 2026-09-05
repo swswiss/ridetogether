@@ -135,7 +135,8 @@
       <%= render "locked" %>
     <% else %>
       <%= render "tabs" %>
-      <%= render "events" %>
+      <%= turbo_frame_tag "group_content" do %>
+      <% end %>
     <% end %>
   </div>
 </main>

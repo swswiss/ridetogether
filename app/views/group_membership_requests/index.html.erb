@@ -1,0 +1,128 @@
+
+
+<%= turbo_frame_tag "group_content" do %>
+  <style>
+  /* ===== REQUESTS (matches your ERB class names) ===== */
+  .requests-header { margin-bottom: 18px; }
+  .requests-header h2 { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+
+  .requests-list { display: flex; flex-direction: column; }
+
+  .request-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 16px 4px; border-bottom: 1px solid var(--line-soft);
+  }
+  .request-user { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .request-avatar {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--line-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 500; color: var(--muted); flex-shrink: 0;
+  }
+  .request-user > div { min-width: 0; }
+  .request-user strong { font-size: 14.5px; font-weight: 500; display: block; }
+  .request-user span { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+
+  .request-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  /* button_to renders a <form> — kill its default margin so buttons align */
+  .request-actions form { margin: 0; }
+  .btn-accept, .btn-reject {
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: inherit; white-space: nowrap; transition: all .15s;
+  }
+  .btn-accept { border: none; background: var(--ink); color: #fff; }
+  .btn-accept:hover { opacity: 0.85; }
+  .btn-reject { border: 1px solid #e0e0e0; background: #fff; color: var(--muted); }
+  .btn-reject:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* rejected section */
+  .requests-section { margin-top: 36px; }
+  .requests-section-header { margin-bottom: 12px; }
+  .requests-section-header h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+  .request-row-rejected { opacity: 0.6; }
+
+  /* empty state */
+  .empty-requests { padding: 40px 20px; text-align: center; border: 1px dashed var(--line); border-radius: 12px; }
+  .empty-requests p { font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 400px) {
+    .request-user span { max-width: 130px; }
+  }
+  :focus-visible { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+</style>
+
+  <div class="requests">
+
+<div class="requests-header">
+  <h2>Cereri de înscriere</h2>
+</div>
+
+<% if @pending_requests.any? %>
+  <div class="requests-list">
+    <% @pending_requests.each do |membership| %>
+      <div class="request-row">
+        <div class="request-user">
+          <div>
+            <strong>
+              <%= membership.user.name %>
+            </strong>
+            <span>
+              <%= membership.user.email_address %>
+            </span>
+          </div>
+        </div>
+        <div class="request-actions">
+          <%= button_to "Respinge",
+                        group_reject_membership_request_path(@group, membership),
+                        method: :patch,
+                        class: "btn-reject",
+                        data: {
+                          turbo_confirm: "Sigur vrei să respingi această cerere?"
+                        } %>
+          <%= button_to "Acceptă",
+                        group_approve_membership_request_path(@group, membership),
+                        method: :patch,
+                        class: "btn-accept" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-requests">
+    <p>Nu există cereri de înscriere în așteptare.</p>
+  </div>
+<% end %>
+
+<% if @rejected_requests.any? %>
+  <div class="requests-section">
+    <div class="requests-section-header">
+      <h3>Cereri respinse</h3>
+    </div>
+    <div class="requests-list">
+      <% @rejected_requests.each do |membership| %>
+        <div class="request-row request-row-rejected">
+          <div class="request-user">
+            <div>
+              <strong>
+                <%= membership.user.name %>
+              </strong>
+              <span>
+                Cerere respinsă
+              </span>
+            </div>
+          </div>
+          <div class="request-actions">
+            <%= button_to "Acceptă",
+                          group_approve_membership_request_path(@group, membership),
+                          method: :patch,
+                          class: "btn-accept" %>
+          </div>
+        </div>
+      <% end %>
+    </div>=
+  </div>
+
+<% end %>
+
+  </div>
+
+<% end %>
