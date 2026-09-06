@@ -1,4 +1,385 @@
-<div>
-  <h1 class="font-bold text-4xl">GroupSettings#show</h1>
-  <p>Find me in app/views/group_settings/show.html.erb</p>
+
+
+<%= turbo_frame_tag "group_content" do %>
+  <style>
+
+  main { padding: 0; min-width: 0; }
+  .inner { padding: 36px 56px; }
+
+  /* ===== SETTINGS ===== */
+  :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; --danger: #d1382c; }
+  .settings { max-width: 620px; }
+  .set-block { padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid var(--line-soft); }
+  .set-block:last-of-type { border-bottom: none; }
+  .set-block h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .set-block .set-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+
+  .set-field { margin-bottom: 18px; }
+  .set-field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
+  .set-field input[type="text"], .set-field textarea, .set-field select {
+    width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+    font-size: 15px; font-family: inherit; color: var(--ink); background: #fff; transition: border-color .15s; appearance: none;
+  }
+  .set-field input:focus, .set-field textarea:focus, .set-field select:focus { outline: none; border-color: var(--ink); }
+  .set-field textarea { resize: vertical; min-height: 76px; }
+  .set-select { position: relative; }
+  .set-select svg { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); }
+
+  /* radio panels */
+  .set-radios { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .set-radio { display: flex; align-items: flex-start; gap: 11px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: border-color .15s; user-select: none; }
+  .set-radio:hover { border-color: #ddd; }
+  .set-radio.selected { border: 1.5px solid var(--ink); }
+  .set-radio .dot { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--faint); margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .set-radio.selected .dot { border-color: var(--ink); }
+  .set-radio .dot i { width: 9px; height: 9px; border-radius: 50%; background: var(--ink); transform: scale(0); transition: transform .15s; }
+  .set-radio.selected .dot i { transform: scale(1); }
+  .set-radio-title { font-size: 14px; font-weight: 500; display: block; }
+  .set-radio-sub { font-size: 12.5px; color: var(--muted); }
+
+  /* chips */
+  .set-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .set-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 0.5px solid #ddd; color: var(--muted); border-radius: 100px; font-size: 13px; cursor: pointer; user-select: none; transition: all .15s; }
+  .set-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .set-chip .tick { display: none; }
+  .set-chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .set-chip.selected .tick { display: inline-flex; }
+
+  /* toggle */
+  .set-toggle { display: flex; align-items: center; justify-content: space-between; gap: 11px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; user-select: none; }
+  .set-toggle .track { flex-shrink: 0; width: 40px; height: 23px; border-radius: 100px; background: #ddd; position: relative; transition: background .2s; }
+  .set-toggle .track .knob { position: absolute; top: 2.5px; left: 2.5px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+  .set-toggle.on .track { background: var(--ink); }
+  .set-toggle.on .track .knob { left: 19px; }
+
+  .set-save { background: #1a1a1a; color: #fff; border: none; padding: 12px 28px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity .2s; }
+  .set-save:hover { opacity: 0.85; }
+
+  /* danger zone */
+  .danger-zone { border: 1px solid #f2d4d1; border-radius: 12px; padding: 20px; margin-top: 8px; }
+  .danger-zone h3 { font-size: 15px; font-weight: 500; color: var(--danger); margin-bottom: 4px; }
+  .danger-zone p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .btn-danger { background: #fff; color: var(--danger); border: 1px solid #e8bbb6; padding: 10px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .btn-danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+  .bottom-nav { display: none; }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .mobile-top { display: flex; }
+    .inner { padding: 20px 16px 96px; }
+    .g-header { gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+    .g-avatar { width: 52px; height: 52px; border-radius: 13px; font-size: 18px; }
+    .g-name { font-size: 21px; }
+    .g-meta { font-size: 13px; margin-bottom: 10px; }
+    .g-action { width: 100%; order: 3; flex-basis: 100%; margin-top: 4px; }
+    .g-action .btn-primary { width: 100%; justify-content: center; padding: 12px; }
+    .tabs { margin-bottom: 24px; gap: 2px; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { padding: 11px 12px; font-size: 13.5px; }
+    .tab svg { display: none; }
+    .set-radios { grid-template-columns: 1fr; }
+    .bottom-nav { display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 20; }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--faint); text-decoration: none; font-size: 10px; font-weight: 500; padding: 4px 12px; }
+    .bottom-nav a.active { color: var(--ink); }
+    .bottom-nav a.create { background: #1a1a1a; color: #fff; width: 46px; height: 46px; border-radius: 50%; justify-content: center; margin-top: -22px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .bottom-nav a.create span { display: none; }
+  }
+  :focus-visible { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+</style>
+
+<div class="inner">
+
+  <!-- ===== SETTINGS CONTENT ===== -->
+  <div class="settings">
+
+    <%= form_with model: @group,
+                  url: group_settings_path(@group),
+                  method: :patch,
+                  data: { group_settings_form: true } do |form| %>
+
+      <div class="set-block">
+        <h3>Detalii grup</h3>
+        <p class="set-desc">Numele și descrierea văzute de membri.</p>
+
+        <div class="set-field">
+          <label>Numele grupului</label>
+          <%= form.text_field :name, value: @group.name %>
+        </div>
+
+        <div class="set-field">
+          <label>Descriere</label>
+          <%= form.text_area :description %>
+        </div>
+      </div>
+
+
+      <div class="set-block">
+        <h3>Confidențialitate</h3>
+        <p class="set-desc">Cine se poate alătura grupului.</p>
+
+        <div class="set-radios">
+
+          <label class="set-radio <%= 'selected' if @group.join_requires_approval? %>"
+                 data-radio="join"
+                 data-value="true">
+
+            <span class="dot"><i></i></span>
+
+            <span>
+              <span class="set-radio-title">Cu aprobare</span>
+              <span class="set-radio-sub">Tu aprobi cine intră.</span>
+            </span>
+
+          </label>
+
+
+          <label class="set-radio <%= 'selected' unless @group.join_requires_approval? %>"
+                 data-radio="join"
+                 data-value="false">
+
+            <span class="dot"><i></i></span>
+
+            <span>
+              <span class="set-radio-title">Deschis</span>
+              <span class="set-radio-sub">Oricine intră instant.</span>
+            </span>
+
+          </label>
+
+
+          <%= form.hidden_field :join_requires_approval,
+                                value: @group.join_requires_approval? ? "true" : "false",
+                                id: "group_join_requires_approval" %>
+
+        </div>
+      </div>
+
+
+      <div class="set-block">
+        <h3>Tipuri de ture</h3>
+        <p class="set-desc">Ce fel de ture organizează grupul (informativ).</p>
+
+        <div class="set-chips">
+
+          <span class="set-chip <%= 'selected' if @group.ride_types.include?('MTB') %>"
+                data-chip
+                data-value="MTB">
+
+            <span class="tick">
+              <svg width="14" height="14" viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="3"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+
+            MTB
+
+          </span>
+
+
+          <span class="set-chip <%= 'selected' if @group.ride_types.include?('Cursieră') %>"
+                data-chip
+                data-value="Cursieră">
+
+            <span class="tick">
+              <svg width="14" height="14" viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="3"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+
+            Cursieră
+
+          </span>
+
+
+          <span class="set-chip <%= 'selected' if @group.ride_types.include?('Plimbare') %>"
+                data-chip
+                data-value="Plimbare">
+
+            <span class="tick">
+              <svg width="14" height="14" viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="3"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+
+            Plimbare
+
+          </span>
+
+
+          <span class="set-chip <%= 'selected' if @group.ride_types.include?('Gravel') %>"
+                data-chip
+                data-value="Gravel">
+
+            <span class="tick">
+              <svg width="14" height="14" viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="3"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+
+            Gravel
+
+          </span>
+
+        </div>
+      </div>
+
+
+      <div class="set-block">
+        <h3>Vizibilitate</h3>
+        <p class="set-desc">Apariția grupului în listele publice.</p>
+
+        <div class="set-toggle <%= 'on' if @group.public? %>"
+             data-toggle>
+
+          <span>Vizibil în lista publică din oraș</span>
+
+          <span class="track">
+            <span class="knob"></span>
+          </span>
+
+        </div>
+
+        <%= form.hidden_field :public,
+                              value: @group.public? ? "true" : "false",
+                              id: "group_public" %>
+
+      </div>
+
+
+      <button type="submit" class="set-save">
+        Salvează modificările
+      </button>
+
+    <% end %>
+
+
+    <!-- danger zone -->
+      <% if @membership&.admin? %>
+    <div class="danger-zone" style="margin-top: 36px;">
+
+  <h3>Zonă periculoasă</h3>
+
+  <p>
+    Ștergerea grupului e permanentă.
+    Toate evenimentele, mesajele și pozele se pierd definitiv.
+  </p>
+
+    <%= button_to "Șterge grupul",
+                  group_settings_path(@group),
+                  method: :delete,
+                  class: "btn-danger",
+                  data: {
+                    turbo_confirm: "Ești sigur că vrei să ștergi grupul „#{@group.name}”? Această acțiune este permanentă."
+                  } %>
+  
+
 </div>
+<% end %>
+
+  </div>
+</div>
+
+
+<script>
+  document.querySelectorAll('[data-radio]').forEach(function(r) {
+
+    r.addEventListener('click', function() {
+
+      var name = r.getAttribute('data-radio');
+      var value = r.getAttribute('data-value');
+
+      document
+        .querySelectorAll('[data-radio="' + name + '"]')
+        .forEach(function(x) {
+          x.classList.remove('selected');
+        });
+
+      r.classList.add('selected');
+
+      if (name === 'join') {
+        document.getElementById('group_join_requires_approval').value = value;
+      }
+
+    });
+
+  });
+
+
+  document.querySelectorAll('[data-chip]').forEach(function(c) {
+
+    c.addEventListener('click', function() {
+      c.classList.toggle('selected');
+    });
+
+  });
+
+
+  document.querySelectorAll('[data-toggle]').forEach(function(t) {
+
+    t.addEventListener('click', function() {
+
+      t.classList.toggle('on');
+
+      var input = document.getElementById('group_public');
+
+      input.value = t.classList.contains('on')
+        ? 'true'
+        : 'false';
+
+    });
+
+  });
+
+
+  document
+    .querySelector('[data-group-settings-form]')
+    .addEventListener('submit', function() {
+
+      var form = this;
+
+      form
+        .querySelectorAll('input[name="group[ride_types][]"]')
+        .forEach(function(input) {
+          input.remove();
+        });
+
+
+      form
+        .querySelectorAll('[data-chip].selected')
+        .forEach(function(chip) {
+
+          var input = document.createElement('input');
+
+          input.type = 'hidden';
+          input.name = 'group[ride_types][]';
+          input.value = chip.getAttribute('data-value');
+
+          form.appendChild(input);
+
+        });
+
+    });
+</script>
+
+<% end %>

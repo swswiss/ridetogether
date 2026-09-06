@@ -19,15 +19,18 @@ Rails.application.routes.draw do
     get "events",               to: "group_events#index"
     get "members",              to: "group_members#index"
     get "chat",                 to: "group_chats#show"
-    get "settings",             to: "group_settings#show"
+    get "settings",
+        to: "group_settings#show"
+    patch "settings",
+        to: "group_settings#update"
+    delete "settings",
+        to: "group_settings#destroy"
 
     get "membership_requests",
           to: "group_membership_requests#index"
-
     patch "membership_requests/:id/approve",
           to: "group_membership_requests#approve",
           as: :approve_membership_request
-
     patch "membership_requests/:id/reject",
           to: "group_membership_requests#reject",
           as: :reject_membership_request
