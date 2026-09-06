@@ -18,9 +18,11 @@
     <p class="locked-note">Adminul grupului îți va aproba cererea.</p>
   <% elsif @group.join_requires_approval == false %>
     <p>Trebuie să fii membru ca să vezi evenimentele, feed-ul și discuțiile din acest grup.</p>
-    <a href="#" class="btn-join">
+    <%= button_to group_membership_path(@group),
+                  method: :post,
+                  class: "btn-join" do %>
       Intra in grup
-    </a>
+    <% end %>
   <% elsif @membership&.pending? %>
     <p>Cererea ta este în așteptare.</p>
     <%= button_to group_membership_path(@group),
