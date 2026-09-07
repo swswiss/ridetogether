@@ -7,7 +7,7 @@
         <span class="g-badge"><%= @membership.role %></span>
       <% end %>
     </div>
-    <div class="g-meta"><%= @group.city %> · 34 membri · <%= created_at_label(@group.created_at) %></div>
+    <div class="g-meta"><%= @group.city %> · <%= @group.active_members.count%> membri · <%= created_at_label(@group.created_at) %></div>
     <div class="g-types">
       <% @group.ride_types.each do |ride_type| %>
         <span class="g-type"><%= ride_type %></span>

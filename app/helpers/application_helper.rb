@@ -30,4 +30,10 @@ module ApplicationHelper
   
     "creat în #{months[date.month - 1]} #{date.year}"
   end
+
+  def din_created_at_label(date)
+    months = %w[ian feb mar apr mai iun iul aug sep oct nov dec]
+  
+    "din #{months[date.month - 1]} #{date.year}"
+  end
 end

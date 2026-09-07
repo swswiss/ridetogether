@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "profiles/show"
+  get "profiles/edit"
   # get "group_settings/show"
   # get "group_chats/show"
   # get "group_membership_requests/index"
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
           as: :reject_membership_request
   end
   get "my_groups", to: "groups#my_groups"
+  resource :profile, only: [:show, :edit, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

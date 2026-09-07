@@ -3,9 +3,15 @@ class Group < ApplicationRecord
 
   has_many :group_memberships,
            dependent: :destroy
-
   has_many :members,
            through: :group_memberships,
+           source: :user
+
+  has_many :active_memberships,
+            -> { where(status: "active") },
+            class_name: "GroupMembership"
+  has_many :active_members,
+           through: :active_memberships,
            source: :user
 
   validates :name, presence: true

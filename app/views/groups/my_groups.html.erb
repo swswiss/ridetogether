@@ -68,7 +68,7 @@
 
   .bottom-nav { display: none; }
   @media (max-width: 900px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: repeat(1, 1fr); }
   }
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
@@ -104,21 +104,20 @@
             <div class="section-head">
               <span class="section-title">Unde sunt admin</span>
             </div>
-            <% @my_own_groups.each do |group| %>
+            
               <div class="grid">
+                <% @my_own_groups.each do |group| %>
                 <%= link_to group_path(group), class: "gcard" do %>
                   <div class="gcard-top">
                     <div class="gcard-avatar"><%= group_initials(group.name) %></div>
                     <span class="gcard-badge badge-admin">admin</span>
                   </div>
                   <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
-                  <div class="gcard-foot">
-                    <span class="gcard-stats">8 ture</span>
-                  </div>
+                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+                <% end %>
                 <% end %>
               </div>
-            <% end %>
+            
           </div>
         <% end %>
 
@@ -128,21 +127,19 @@
             <div class="section-head">
               <span class="section-title">Unde sunt membru</span>
             </div>
-            <% @my_groups_member.each do |group| %>
+            
               <div class="grid">
+                  <% @my_groups_member.each do |group| %>
                 <%= link_to group_path(group), class: "gcard" do %>
                   <div class="gcard-top">
                     <div class="gcard-avatar"><%= group_initials(group.name) %></div>
                     <span class="gcard-badge badge-admin">member</span>
                   </div>
                   <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
-                  <div class="gcard-foot">
-                    <span class="gcard-stats">8 ture</span>
-                  </div>
+                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+                <% end %>
                 <% end %>
               </div>
-            <% end %>
           </div>
         <% end %>
 
@@ -152,21 +149,18 @@
             <div class="section-head">
               <span class="section-title">Unde sunt moderator</span>
             </div>
-            <% @my_groups_moderator.each do |group| %>
               <div class="grid">
+              <% @my_groups_moderator.each do |group| %>
                 <%= link_to group_path(group), class: "gcard" do %>
                   <div class="gcard-top">
                     <div class="gcard-avatar"><%= group_initials(group.name) %></div>
                     <span class="gcard-badge badge-admin">moderator</span>
                   </div>
                   <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
-                  <div class="gcard-foot">
-                    <span class="gcard-stats">8 ture</span>
-                  </div>
+                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+                <% end %>
                 <% end %>
               </div>
-            <% end %>
           </div>
         <% end %>
       </main>

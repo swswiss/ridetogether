@@ -238,7 +238,7 @@
           <% end %>
           <a href="#" class="nav-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5-3V4l5 3 6-3 5 3v13l-5-3-6 3z"/><path d="M9 7v13M15 4v13"/></svg>
-              Hartă
+              Turele tale
           </a>
           <%= link_to new_group_path, class: nav_item_class(new_group_path) do %>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
@@ -252,13 +252,16 @@
           Ieși din cont
         <% end %>
 
-        <div class="user-chip">
-        <div class="avatar"><%= group_initials(Current.user.name) %></div>
-        <div>
-            <div class="name"><%=Current.user.name%></div>
-            <div class="role"><%=Current.user.city%></div>
-        </div>
-        </div>
+        <%= link_to profile_path, class: "user-chip" do %>
+          <div class="avatar">
+            <%= group_initials(Current.user.name) %>
+          </div>
+        
+          <div>
+            <div class="name"><%= Current.user.name %></div>
+            <div class="role"><%= Current.user.city %></div>
+          </div>
+        <% end %>
       </aside>
 
       <!-- Main column -->
@@ -316,12 +319,18 @@
       </a>
       <a href="#">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5-3V4l5 3 6-3 5 3v13l-5-3-6 3z"/><path d="M9 7v13M15 4v13"/></svg>
-          <span>Hartă</span>
+          <span>Turele tale</span>
       </a>
-      <a href="#">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-          <span>Profil</span>
-      </a>
+      <%= link_to profile_path do %>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+      
+        <span>Profil</span>
+      <% end %>
     </nav>
     <%= render "shared/toasts" %>
   </body>

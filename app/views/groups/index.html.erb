@@ -110,20 +110,17 @@
         <!-- ADMIN -->
         <% if @groups_per_city.present? %>
           <div class="section">
-            <% @groups_per_city.each do |group| %>
               <div class="grid">
+                <% @groups_per_city.each do |group| %>
                 <%= link_to group_path(group), class: "gcard" do %>
                   <div class="gcard-top">
                     <div class="gcard-avatar"><%= group_initials(group.name) %></div>
                   </div>
                   <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · 34 membri</div>
-                  <div class="gcard-foot">
-                    <span class="gcard-stats">8 ture</span>
-                  </div>
+                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membrii</div>
+                <% end %>
                 <% end %>
               </div>
-            <% end %>
           </div>
         <% else %>
           <%= render "no_groups" %>
