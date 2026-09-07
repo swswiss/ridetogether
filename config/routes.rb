@@ -19,8 +19,17 @@ Rails.application.routes.draw do
     resource :membership, only: [:create, :destroy]
 
     get "events",               to: "group_events#index"
+
     get "members",              to: "group_members#index"
+    patch "members/:id/promote",
+        to: "group_members#promote",
+        as: :promote_member
+    delete "members/:id",
+          to: "group_members#destroy",
+          as: :remove_member
+
     get "chat",                 to: "group_chats#show"
+
     get "settings",
         to: "group_settings#show"
     patch "settings",

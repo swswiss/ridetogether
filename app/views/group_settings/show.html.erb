@@ -1,5 +1,3 @@
-
-
 <%= turbo_frame_tag "group_content" do %>
   <style>
 
@@ -8,13 +6,30 @@
 
   /* ===== SETTINGS ===== */
   :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; --danger: #d1382c; }
-  .settings { max-width: 620px; }
-  .set-block { padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid var(--line-soft); }
-  .set-block:last-of-type { border-bottom: none; }
+
+  /* settings is now a 2-column grid on desktop */
+  .settings {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 28px;
+    align-items: start;
+  }
+  /* dissolve the form so its blocks join the grid */
+  .settings form { display: contents; }
+
+  /* each block is a bordered card */
+  .set-block {
+    padding: 20px;
+    margin-bottom: 0;
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+  }
   .set-block h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
   .set-block .set-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
 
   .set-field { margin-bottom: 18px; }
+  .set-field:last-child { margin-bottom: 0; }
   .set-field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
   .set-field input[type="text"], .set-field textarea, .set-field select {
     width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
@@ -52,11 +67,12 @@
   .set-toggle.on .track { background: var(--ink); }
   .set-toggle.on .track .knob { left: 19px; }
 
-  .set-save { background: #1a1a1a; color: #fff; border: none; padding: 12px 28px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity .2s; }
+  /* save button spans full width */
+  .set-save { grid-column: 1 / -1; justify-self: start; background: #1a1a1a; color: #fff; border: none; padding: 12px 28px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity .2s; }
   .set-save:hover { opacity: 0.85; }
 
-  /* danger zone */
-  .danger-zone { border: 1px solid #f2d4d1; border-radius: 12px; padding: 20px; margin-top: 8px; }
+  /* danger zone spans full width */
+  .danger-zone { grid-column: 1 / -1; border: 1px solid #f2d4d1; border-radius: 12px; padding: 20px; }
   .danger-zone h3 { font-size: 15px; font-weight: 500; color: var(--danger); margin-bottom: 4px; }
   .danger-zone p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
   .btn-danger { background: #fff; color: var(--danger); border: 1px solid #e8bbb6; padding: 10px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all .15s; }
@@ -78,6 +94,8 @@
     .tabs::-webkit-scrollbar { display: none; }
     .tab { padding: 11px 12px; font-size: 13.5px; }
     .tab svg { display: none; }
+    /* single column on mobile */
+    .settings { grid-template-columns: 1fr; gap: 16px; }
     .set-radios { grid-template-columns: 1fr; }
     .bottom-nav { display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 20; }
     .bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--faint); text-decoration: none; font-size: 10px; font-weight: 500; padding: 4px 12px; }
@@ -276,7 +294,7 @@
 
     <!-- danger zone -->
       <% if @membership&.admin? %>
-    <div class="danger-zone" style="margin-top: 36px;">
+    <div class="danger-zone">
 
   <h3>Zonă periculoasă</h3>
 
