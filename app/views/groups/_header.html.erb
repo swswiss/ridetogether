@@ -16,10 +16,108 @@
   </div>
   <% if @membership&.active? %>
     <div class="g-action">
-      <a href="#" class="btn-primary">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        Creează un eveniment
-      </a>
+    <button class="btn-primary" onclick="document.getElementById('rideModal').classList.add('open')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Creează un eveniment
+    </button>
     </div>
   <% end %>
 </div>
+
+
+<!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="rideModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Creează o tură</h2>
+        <button class="modal-close" onclick="document.getElementById('rideModal').classList.remove('open')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form onsubmit="return false;">
+          <div class="f-field">
+            <label>Titlul turei</label>
+            <input type="text" placeholder="Tura de sâmbătă dimineața">
+          </div>
+
+          <div class="f-field">
+            <p class="f-label-row">Tipul turei</p>
+            <div class="f-chips">
+              <span class="f-chip" data-chip>MTB</span>
+              <span class="f-chip selected" data-chip>Cursieră</span>
+              <span class="f-chip" data-chip>Plimbare</span>
+              <span class="f-chip" data-chip>Gravel</span>
+            </div>
+          </div>
+
+          <div class="f-field f-2">
+            <div>
+              <label>Data</label>
+              <input type="date" value="2028-08-22">
+            </div>
+            <div>
+              <label>Ora</label>
+              <input type="time" value="10:00">
+            </div>
+          </div>
+
+          <div class="f-field">
+            <label>Punct de start</label>
+            <input type="text" placeholder="Podul Rosetti, Iași">
+          </div>
+
+          <div class="f-field f-2">
+            <div>
+              <label>Distanță (km)</label>
+              <input type="number" placeholder="45">
+            </div>
+            <div>
+              <label>Ritm mediu (km/h)</label>
+              <input type="number" placeholder="28">
+            </div>
+          </div>
+
+          <div class="f-field">
+            <p class="f-label-row">Regim</p>
+            <div class="f-radios">
+              <label class="f-radio selected" data-radio="drop">
+                <span class="dot"><i></i></span>
+                <span><span class="f-radio-title">No-drop</span><span class="f-radio-sub">Așteptăm pe toți.</span></span>
+              </label>
+              <label class="f-radio" data-radio="drop">
+                <span class="dot"><i></i></span>
+                <span><span class="f-radio-title">Drop</span><span class="f-radio-sub">Fiecare în ritmul lui.</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="f-field" style="margin-bottom:0;">
+            <label>Detalii (opțional)</label>
+            <textarea placeholder="Ne oprim la cafea la jumate. Aduceți cameră de schimb..."></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="document.getElementById('rideModal').classList.remove('open')">Anulează</button>
+        <button class="btn-save">Publică tura</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('[data-chip]').forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('selected'); }); });
+    document.querySelectorAll('[data-radio]').forEach(function(r){
+      r.addEventListener('click', function(){
+        var name = r.getAttribute('data-radio');
+        document.querySelectorAll('[data-radio="'+name+'"]').forEach(function(x){ x.classList.remove('selected'); });
+        r.classList.add('selected');
+      });
+    });
+    // close on overlay click
+    document.getElementById('rideModal').addEventListener('click', function(e){
+      if (e.target === this) this.classList.remove('open');
+    });
+  </script>

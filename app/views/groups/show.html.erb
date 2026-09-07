@@ -75,6 +75,86 @@
   .btn-rsvp:hover { border-color: var(--ink); }
   .btn-rsvp.filled { background: var(--ink); color: #fff; border: none; }
 
+  
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(20,20,20,0.45);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 48px 20px; z-index: 100; overflow-y: auto;
+    opacity: 0; visibility: hidden; transition: opacity .2s;
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal {
+    background: #fff; border-radius: 18px; width: 100%; max-width: 540px;
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.4);
+    transform: translateY(-12px); transition: transform .25s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-bottom: 1px solid var(--line-soft); }
+  .modal-head h2 { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+  .modal-close { width: 32px; height: 32px; border: none; background: transparent; color: var(--muted); cursor: pointer; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }
+  .modal-close:hover { background: var(--hover); color: var(--ink); }
+  .modal-body { padding: 24px; }
+  .modal-foot { display: flex; gap: 12px; justify-content: flex-end; padding: 18px 24px; border-top: 1px solid var(--line-soft); }
+
+  /* form */
+  .f-field { margin-bottom: 18px; }
+  .f-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .f-field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
+  .f-field input, .f-field textarea, .f-field select {
+    width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px;
+    font-size: 15px; font-family: inherit; color: var(--ink); background: #fff; transition: border-color .15s; appearance: none;
+  }
+  .f-field input:focus, .f-field textarea:focus, .f-field select:focus { outline: none; border-color: var(--ink); }
+  .f-field textarea { resize: vertical; min-height: 64px; }
+  .f-select { position: relative; }
+  .f-select svg { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); }
+
+  .f-label-row { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  /* type chips */
+  .f-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .f-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 15px; border: 1px solid var(--line); color: var(--muted); border-radius: 100px; font-size: 13px; cursor: pointer; user-select: none; transition: all .15s; }
+  .f-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .f-chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* drop radio pair */
+  .f-radios { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .f-radio { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: border-color .15s; user-select: none; }
+  .f-radio.selected { border: 1.5px solid var(--ink); }
+  .f-radio .dot { flex-shrink: 0; width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--faint); margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .f-radio.selected .dot { border-color: var(--ink); }
+  .f-radio .dot i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); transform: scale(0); transition: transform .15s; }
+  .f-radio.selected .dot i { transform: scale(1); }
+  .f-radio-title { font-size: 13.5px; font-weight: 500; display: block; }
+  .f-radio-sub { font-size: 12px; color: var(--muted); }
+
+  .btn-save { background: #1a1a1a; color: #fff; border: none; padding: 11px 26px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity .2s; }
+  .btn-save:hover { opacity: 0.85; }
+  .btn-cancel { background: #fff; color: var(--ink); border: 1px solid var(--line); padding: 11px 22px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: border-color .15s; }
+  .btn-cancel:hover { border-color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .mobile-top { display: flex; }
+    .inner { padding: 22px 16px; }
+    .g-header { flex-wrap: wrap; gap: 14px; }
+    .g-avatar { width: 52px; height: 52px; }
+    .g-action { width: 100%; }
+    .g-action .btn-primary { width: 100%; justify-content: center; padding: 12px; }
+
+    /* modal becomes a full-height sheet */
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal { max-width: none; border-radius: 0; min-height: 100vh; display: flex; flex-direction: column; }
+    .modal-body { flex: 1; overflow-y: auto; }
+    .modal-head { position: sticky; top: 0; background: #fff; z-index: 2; }
+    .modal-foot { position: sticky; bottom: 0; background: #fff; }
+    .f-2 { grid-template-columns: 1fr; gap: 0; }
+    .f-radios { grid-template-columns: 1fr; }
+  }
+  :focus-visible { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+
+
   /* locked state */
   .locked { text-align: center; padding: 40px 20px 60px; max-width: 420px; margin: 0 auto; }
   .lock-ico { width: 68px; height: 68px; border-radius: 20px; background: var(--line-soft); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; color: var(--muted); }
