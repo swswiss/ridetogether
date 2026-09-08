@@ -1,0 +1,29 @@
+<div class="coming" id="event-coming">
+
+  <div class="coming-head">
+    <h3>Cine vine</h3>
+
+    <span class="num">
+      <%= going_count %> <%= going_count == 1 ? "confirmat" : "confirmați" %>
+    </span>
+  </div>
+
+  <div class="coming-list">
+
+    <% going_participants&.each do |participation| %>
+      <div class="coming-person">
+
+        <span class="cp-name">
+          <%= participation.user.name %>
+        </span>
+      </div>
+    <% end %>
+
+    <% if going_participants&.empty? %>
+      <div class="coming-more">
+        Încă nu s-a înscris nimeni.
+      </div>
+    <% end %>
+
+  </div>
+</div>

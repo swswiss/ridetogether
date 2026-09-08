@@ -42,7 +42,7 @@ class GroupsController < ApplicationController
   def create
     unless Current.user.can_create_group?
       redirect_to new_group_path,
-                  alert: "Poți crea maximum 2 grupuri."
+                  alert: "Poți crea doar un singur grup."
       return
     end
 

@@ -159,11 +159,11 @@
           <circle cx="30" cy="160" r="6" fill="#1a1a1a"/>
           <circle cx="370" cy="40" r="6" fill="#e5533d"/>
         </svg>
-        <span class="route-pin start">Rosetti</span>
-        <span class="route-pin end">Sculeni · 45 km</span>
+        <span class="route-pin start"><%= @event.title %></span>
+        <span class="route-pin end"><%= @event.distance_km %> km</span>
       </div>
       <div class="route-foot">
-        <span>Traseu · 45 km · 140 m urcare</span>
+        <span>Traseu · <%= @event.distance_km %> km</span>
         <a href="#" class="route-link">
           Vezi pe Strava
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
@@ -181,33 +181,14 @@
   <!-- RIGHT: RSVP + coming + organizer -->
   <div class="ev-side">
 
-    <div class="rsvp-box">
-      <h3>Vii la tură?</h3>
-      <p class="sub">Anunță-i pe ceilalți dacă vii.</p>
-      <div class="rsvp-btns">
-        <button class="rsvp-btn active">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-          Vin
-        </button>
-        <button class="rsvp-btn">Poate</button>
-        <button class="rsvp-btn">Nu vin</button>
-      </div>
-    </div>
+    <%= render "group_events/rsvp",
+           event: @event,
+           current_participation: @current_participation %>
 
-    <div class="coming">
-      <div class="coming-head">
-        <h3>Cine vine</h3>
-        <span class="num">11 confirmați</span>
-      </div>
-      <div class="coming-list">
-        <span class="cp-name">Silviu Stefanache</span>
-        <span class="cp-name">Andrei Popescu</span>
-        <span class="cp-name">Maria Ionescu</span>
-        <span class="cp-name">Dan Petrescu</span>
-        <span class="cp-name">Roxana Curcă</span>
-      </div>
-      <div class="coming-more">Vezi toti ciclistii</div>
-    </div>
+    <%= render "group_events/coming",
+           event: @event,
+           going_participants: @going_participants,
+           going_count: @going_count %>
 
     <div class="organizer">
       <h3>Organizator</h3>

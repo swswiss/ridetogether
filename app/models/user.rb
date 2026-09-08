@@ -14,6 +14,9 @@ class User < ApplicationRecord
   has_many :events,
            dependent: :destroy
 
+  has_many :event_participations,
+           dependent: :destroy
+
   validates :role, presence: true
   validates :email_address,
     presence: true,
@@ -33,6 +36,6 @@ class User < ApplicationRecord
   end
 
   def can_create_group?
-    admin? || created_groups.count < 2
+    admin? || created_groups.count < 1
   end
 end

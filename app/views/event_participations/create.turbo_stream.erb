@@ -1,0 +1,12 @@
+<%= turbo_stream.replace "event-rsvp" do %>
+  <%= render "group_events/rsvp",
+             event: @event,
+             current_participation: @current_participation %>
+<% end %>
+
+<%= turbo_stream.replace "event-coming" do %>
+  <%= render "group_events/coming",
+             event: @event,
+             going_participants: @going_participants,
+             going_count: @going_count %>
+<% end %>

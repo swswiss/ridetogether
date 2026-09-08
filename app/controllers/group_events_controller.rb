@@ -16,7 +16,17 @@ class GroupEventsController < ApplicationController
   end
 
   def show
-    @event = @group.events.find(params[:id])
+    @event = @group.events.includes(:user).find(params[:id])
+
+    @current_participation = @event.event_participations.find_by(
+      user: Current.user
+    )
+    @going_participants = @event.event_participations
+                                 .where(status: "going")
+                                 .includes(:user)
+                                 .order(created_at: :asc)
+  
+    @going_count = @going_participants.size
   end
 
   def create
