@@ -55,6 +55,7 @@ class GroupEventsController < ApplicationController
       :average_speed_kmh,
       :estimated_duration_minutes,
       :regime,
+      :strava_link,
       :description
     )
   end

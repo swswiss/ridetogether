@@ -34,4 +34,10 @@ class Event < ApplicationRecord
               only_integer: true,
               greater_than: 0
             }
+
+  validates :strava_link,
+            format: {
+              with: URI::DEFAULT_PARSER.make_regexp(%w[http https])
+            },
+            allow_blank: true
 end

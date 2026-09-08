@@ -164,10 +164,26 @@
       </div>
       <div class="route-foot">
         <span>Traseu · <%= @event.distance_km %> km</span>
-        <a href="#" class="route-link">
-          Vezi pe Strava
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
-        </a>
+        <% if @event.strava_link.present? %>
+          <%= link_to @event.strava_link,
+            class: "route-link",
+            target: "_blank",
+            rel: "noopener noreferrer" do %>
+
+            Vezi pe Strava
+
+            <svg width="14" height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+              <path d="M7 17L17 7M17 7H8M17 7v9"/>
+            </svg>
+
+          <% end %>
+        <% end %>
       </div>
     </div>
 
