@@ -5,12 +5,18 @@ class GroupEventsController < ApplicationController
   
   def index
     @upcoming_events = @group.events
+                             .includes(:user)
                              .where("date >= ?", Date.current)
                              .order(date: :asc, time: :asc)
   
     @past_events = @group.events
+                          .includes(:user)
                           .where("date < ?", Date.current)
                           .order(date: :desc, time: :desc)
+  end
+
+  def show
+    @event = @group.events.find(params[:id])
   end
 
   def create
@@ -37,6 +43,7 @@ class GroupEventsController < ApplicationController
       :start_location,
       :distance_km,
       :average_speed_kmh,
+      :estimated_duration_minutes,
       :regime,
       :description
     )

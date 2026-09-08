@@ -66,64 +66,59 @@
 <div class="ev-section">
   <div class="ev-section-head">
     <span class="ev-section-title">Care urmează</span>
-    <span class="ev-section-count">
-      <%= @upcoming_events.count %>
-    </span>
   </div>
 
 <% if @upcoming_events.any? %>
 
-<% @upcoming_events.each do |event| %>
-  <div class="ride">
+  <% @upcoming_events.each do |event| %>
+    <%= link_to group_event_path(@group, event),
+          class: "ride",
+          data: { turbo_frame: "_top" } do %>
 
-    <div>
-      <div class="ride-top">
-        <span class="ride-title">
-          <%= event.title %>
-        </span>
+      <div>
+        <div class="ride-top">
+          <span class="ride-title">
+            <%= event.title %>
+          </span>
 
-        <span class="ride-type">
-          <%= event.ride_type %>
+          <span class="ride-type">
+            <%= event.ride_type %>
+          </span>
+        </div>
+
+        <div class="ride-meta">
+          <%= l(event.date, format: "%a, %d %b") %>
+          ·
+          <%= event.time.strftime("%H:%M") %>
+          ·
+          start <%= event.start_location %>
+
+          <% if event.distance_km.present? %>
+            ·
+            <%= event.distance_km.to_f %> km
+          <% end %>
+
+          <% if event.average_speed_kmh.present? %>
+            ·
+            <%= event.average_speed_kmh.to_f %> km/h
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ride-right">
+        <span class="going-count">
+          0 vin
         </span>
       </div>
 
-      <div class="ride-meta">
-        <%= l(event.date, format: "%a, %d %b") %>
-        ·
-        <%= event.time.strftime("%H:%M") %>
-        ·
-        start <%= event.start_location %>
-
-        <% if event.distance_km.present? %>
-          ·
-          <%= event.distance_km.to_f %> km
-        <% end %>
-
-        <% if event.average_speed_kmh.present? %>
-          ·
-          <%= event.average_speed_kmh.to_f %> km/h
-        <% end %>
-      </div>
-    </div>
-
-    <div class="ride-right">
-      <span class="going-count">
-        0 vin
-      </span>
-
-      <button class="btn-rsvp">
-        Vin
-      </button>
-    </div>
-
-  </div>
-<% end %>
+    <% end %>
+  <% end %>
 
 <% else %>
 
-<div class="ride-empty">
-  Nu există ture programate.
-</div>
+  <div class="ride-empty">
+    Nu există ture programate.
+  </div>
 
 <% end %>
 

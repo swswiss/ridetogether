@@ -36,4 +36,58 @@ module ApplicationHelper
   
     "din #{months[date.month - 1]} #{date.year}"
   end
+
+  ROMANIAN_DAYS = [
+    "Duminică",
+    "Luni",
+    "Marți",
+    "Miercuri",
+    "Joi",
+    "Vineri",
+    "Sâmbătă"
+  ].freeze
+
+  ROMANIAN_MONTHS = [
+    nil,
+    "ianuarie",
+    "februarie",
+    "martie",
+    "aprilie",
+    "mai",
+    "iunie",
+    "iulie",
+    "august",
+    "septembrie",
+    "octombrie",
+    "noiembrie",
+    "decembrie"
+  ].freeze
+
+  def event_date_time(event)
+    date = event.date
+    time = event.time
+
+    "#{ROMANIAN_DAYS[date.wday]}, #{date.day} #{ROMANIAN_MONTHS[date.month]} · #{time.strftime("%H:%M")}"
+  end
+
+  def event_duration(event)
+    minutes = event.estimated_duration_minutes
+
+    return "-" if minutes.blank?
+
+    hours = minutes / 60
+    remaining_minutes = minutes % 60
+
+    parts = []
+
+    if hours.positive?
+      parts << "#{hours} #{hours == 1 ? 'oră' : 'ore'}"
+    end
+
+    if remaining_minutes.positive?
+      parts << "#{remaining_minutes} min"
+    end
+
+    parts.join(" și ")
+  end
 end

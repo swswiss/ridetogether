@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_065707) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_091522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_065707) do
     t.date "date", null: false
     t.text "description"
     t.decimal "distance_km", precision: 6, scale: 2
+    t.integer "estimated_duration_minutes"
     t.bigint "group_id", null: false
     t.string "regime", default: "no_drop", null: false
     t.string "ride_type", null: false

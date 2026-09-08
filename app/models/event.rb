@@ -20,4 +20,11 @@ class Event < ApplicationRecord
             inclusion: {
               in: %w[no_drop drop]
             }
+
+  validates :estimated_duration_minutes,
+            presence: true,
+            numericality: {
+              only_integer: true,
+              greater_than: 0
+            }
 end

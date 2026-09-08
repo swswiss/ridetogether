@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
     get "events", to: "group_events#index"
     post "events", to: "group_events#create"
+    get  "events/:id", to: "group_events#show", as: :event
 
     get "members",              to: "group_members#index"
     patch "members/:id/promote",

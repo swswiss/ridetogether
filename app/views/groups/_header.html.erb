@@ -116,6 +116,29 @@
 
       </div>
 
+      <div class="f-field f-2">
+        <div>
+          <label>Durată estimată</label>
+
+          <%= form.select :estimated_duration_minutes,
+            [
+              ["30 min", 30],
+              ["45 min", 45],
+              ["1 oră", 60],
+              ["1 oră și 15 min", 75],
+              ["1 oră și 30 min", 90],
+              ["1 oră și 45 min", 105],
+              ["2 ore", 120],
+              ["2 ore și 30 min", 150],
+              ["3 ore", 180],
+              ["4 ore", 240],
+              ["5 ore", 300]
+            ],
+            { prompt: "Alege durata" },
+            class: "f-select" %>
+        </div>
+      </div>
+
 
       <div class="f-field">
 
