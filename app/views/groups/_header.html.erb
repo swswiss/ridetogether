@@ -26,98 +26,366 @@
 
 
 <!-- ===== MODAL ===== -->
-  <div class="modal-overlay" id="rideModal">
-    <div class="modal">
-      <div class="modal-head">
-        <h2>Creează o tură</h2>
-        <button class="modal-close" onclick="document.getElementById('rideModal').classList.remove('open')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
+<div class="modal-overlay" id="rideModal">
+<div class="modal">
 
-      <div class="modal-body">
-        <form onsubmit="return false;">
-          <div class="f-field">
-            <label>Titlul turei</label>
-            <input type="text" placeholder="Tura de sâmbătă dimineața">
-          </div>
+  <div class="modal-head">
+    <h2>Creează o tură</h2>
 
-          <div class="f-field">
-            <p class="f-label-row">Tipul turei</p>
-            <div class="f-chips">
-              <span class="f-chip" data-chip>MTB</span>
-              <span class="f-chip selected" data-chip>Cursieră</span>
-              <span class="f-chip" data-chip>Plimbare</span>
-              <span class="f-chip" data-chip>Gravel</span>
-            </div>
-          </div>
+    <button
+      type="button"
+      class="modal-close"
+      onclick="document.getElementById('rideModal').classList.remove('open')">
 
-          <div class="f-field f-2">
-            <div>
-              <label>Data</label>
-              <input type="date" value="2028-08-22">
-            </div>
-            <div>
-              <label>Ora</label>
-              <input type="time" value="10:00">
-            </div>
-          </div>
+      <svg width="18" height="18" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor"
+           stroke-width="2.5" stroke-linecap="round"
+           stroke-linejoin="round">
 
-          <div class="f-field">
-            <label>Punct de start</label>
-            <input type="text" placeholder="Podul Rosetti, Iași">
-          </div>
+        <path d="M18 6L6 18M6 6l12 12"/>
 
-          <div class="f-field f-2">
-            <div>
-              <label>Distanță (km)</label>
-              <input type="number" placeholder="45">
-            </div>
-            <div>
-              <label>Ritm mediu (km/h)</label>
-              <input type="number" placeholder="28">
-            </div>
-          </div>
-
-          <div class="f-field">
-            <p class="f-label-row">Regim</p>
-            <div class="f-radios">
-              <label class="f-radio selected" data-radio="drop">
-                <span class="dot"><i></i></span>
-                <span><span class="f-radio-title">No-drop</span><span class="f-radio-sub">Așteptăm pe toți.</span></span>
-              </label>
-              <label class="f-radio" data-radio="drop">
-                <span class="dot"><i></i></span>
-                <span><span class="f-radio-title">Drop</span><span class="f-radio-sub">Fiecare în ritmul lui.</span></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="f-field" style="margin-bottom:0;">
-            <label>Detalii (opțional)</label>
-            <textarea placeholder="Ne oprim la cafea la jumate. Aduceți cameră de schimb..."></textarea>
-          </div>
-        </form>
-      </div>
-
-      <div class="modal-foot">
-        <button class="btn-cancel" onclick="document.getElementById('rideModal').classList.remove('open')">Anulează</button>
-        <button class="btn-save">Publică tura</button>
-      </div>
-    </div>
+      </svg>
+    </button>
   </div>
 
-  <script>
-    document.querySelectorAll('[data-chip]').forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('selected'); }); });
-    document.querySelectorAll('[data-radio]').forEach(function(r){
-      r.addEventListener('click', function(){
-        var name = r.getAttribute('data-radio');
-        document.querySelectorAll('[data-radio="'+name+'"]').forEach(function(x){ x.classList.remove('selected'); });
-        r.classList.add('selected');
+
+  <%= form_with model: [@group, Event.new],
+                url: group_events_path(@group),
+                method: :post,
+                local: true do |form| %>
+
+    <div class="modal-body">
+
+      <div class="f-field">
+        <%= form.label :title, "Titlul turei" %>
+
+        <%= form.text_field :title,
+              placeholder: "Tura de sâmbătă dimineața",
+              required: true %>
+      </div>
+
+
+      <div class="f-field">
+        <p class="f-label-row">Tipul turei</p>
+
+        <div class="f-chips">
+
+          <span class="f-chip selected"
+                data-ride-type="MTB">
+            MTB
+          </span>
+
+          <span class="f-chip"
+                data-ride-type="Cursieră">
+            Cursieră
+          </span>
+
+          <span class="f-chip"
+                data-ride-type="Plimbare">
+            Plimbare
+          </span>
+
+          <span class="f-chip"
+                data-ride-type="Gravel">
+            Gravel
+          </span>
+
+        </div>
+
+        <%= form.hidden_field :ride_type,
+              id: "event_ride_type",
+              value: "MTB" %>
+      </div>
+
+
+      <div class="f-field f-2">
+
+        <div>
+          <%= form.label :date, "Data" %>
+
+          <%= form.date_field :date,
+                required: true %>
+        </div>
+
+        <div>
+          <%= form.label :time, "Ora" %>
+
+          <%= form.time_field :time,
+                required: true %>
+        </div>
+
+      </div>
+
+
+      <div class="f-field">
+
+        <%= form.label :start_location, "Punct de start" %>
+
+        <%= form.text_field :start_location,
+              placeholder: "Podul Rosetti, Iași",
+              required: true %>
+
+      </div>
+
+
+      <div class="f-field f-2">
+
+        <div>
+          <%= form.label :distance_km, "Distanță (km)" %>
+
+          <%= form.number_field :distance_km,
+                placeholder: "45",
+                step: 0.01 %>
+        </div>
+
+
+        <div>
+          <%= form.label :average_speed_kmh,
+                "Ritm mediu (km/h)" %>
+
+          <%= form.number_field :average_speed_kmh,
+                placeholder: "28",
+                step: 0.01 %>
+        </div>
+
+      </div>
+
+
+      <div class="f-field">
+
+        <p class="f-label-row">Regim</p>
+
+        <div class="f-radios">
+
+          <label class="f-radio selected"
+                 data-regime="no_drop">
+
+            <span class="dot">
+              <i></i>
+            </span>
+
+            <span>
+              <span class="f-radio-title">
+                No-drop
+              </span>
+
+              <span class="f-radio-sub">
+                Așteptăm pe toți.
+              </span>
+            </span>
+
+          </label>
+
+
+          <label class="f-radio"
+                 data-regime="drop">
+
+            <span class="dot">
+              <i></i>
+            </span>
+
+            <span>
+              <span class="f-radio-title">
+                Drop
+              </span>
+
+              <span class="f-radio-sub">
+                Fiecare în ritmul lui.
+              </span>
+            </span>
+
+          </label>
+
+        </div>
+
+        <%= form.hidden_field :regime,
+              id: "event_regime",
+              value: "no_drop" %>
+
+      </div>
+
+
+      <div class="f-field"
+           style="margin-bottom:0;">
+
+        <%= form.label :description,
+              "Detalii (opțional)" %>
+
+        <%= form.text_area :description,
+              placeholder: "Ne oprim la cafea la jumate. Aduceți cameră de schimb..." %>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-foot">
+
+      <button type="button"
+              class="btn-cancel"
+              onclick="document.getElementById('rideModal').classList.remove('open')">
+
+        Anulează
+
+      </button>
+
+
+      <%= form.submit "Publică tura",
+            class: "btn-save" %>
+
+    </div>
+
+  <% end %>
+
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =========================================
+     RIDE TYPE CHIPS
+     ========================================= */
+
+  const rideTypeChips = document.querySelectorAll("[data-ride-type]");
+  const rideTypeInput = document.getElementById("event_ride_type");
+
+  rideTypeChips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+
+      // Deselect all
+      rideTypeChips.forEach(function (c) {
+        c.classList.remove("selected");
       });
+
+      // Select clicked chip
+      chip.classList.add("selected");
+
+      // Put selected value into hidden input
+      if (rideTypeInput) {
+        rideTypeInput.value = chip.dataset.rideType;
+      }
     });
-    // close on overlay click
-    document.getElementById('rideModal').addEventListener('click', function(e){
-      if (e.target === this) this.classList.remove('open');
+  });
+
+
+  /* =========================================
+     REGIME RADIO BUTTONS
+     ========================================= */
+
+  const regimeRadios = document.querySelectorAll("[data-regime]");
+  const regimeInput = document.getElementById("event_regime");
+
+  regimeRadios.forEach(function (radio) {
+    radio.addEventListener("click", function () {
+
+      // Deselect all
+      regimeRadios.forEach(function (r) {
+        r.classList.remove("selected");
+      });
+
+      // Select clicked radio
+      radio.classList.add("selected");
+
+      // Put selected value into hidden input
+      if (regimeInput) {
+        regimeInput.value = radio.dataset.regime;
+      }
     });
-  </script>
+  });
+
+
+  /* =========================================
+     CLOSE MODAL - CLICK ON OVERLAY
+     ========================================= */
+
+  const rideModal = document.getElementById("rideModal");
+
+  if (rideModal) {
+    rideModal.addEventListener("click", function (event) {
+
+      // Only close if clicking the dark overlay,
+      // not the modal itself
+      if (event.target === rideModal) {
+        rideModal.classList.remove("open");
+      }
+
+    });
+  }
+
+
+  /* =========================================
+     CLOSE MODAL - ESC KEY
+     ========================================= */
+
+  document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape" && rideModal) {
+      rideModal.classList.remove("open");
+    }
+
+  });
+
+
+  /* =========================================
+     CANCEL BUTTON
+     ========================================= */
+
+  const cancelButton = document.querySelector(".btn-cancel");
+
+  if (cancelButton) {
+    cancelButton.addEventListener("click", function () {
+      if (rideModal) {
+        rideModal.classList.remove("open");
+      }
+    });
+  }
+
+
+  /* =========================================
+     OPEN MODAL
+     ========================================= */
+
+  // Dacă ai un buton cu id="openRideModal"
+  const openButton = document.getElementById("openRideModal");
+
+  if (openButton) {
+    openButton.addEventListener("click", function () {
+      rideModal.classList.add("open");
+    });
+  }
+
+
+  /* =========================================
+     FORM SUBMIT
+     ========================================= */
+
+  const form = rideModal
+    ? rideModal.querySelector("form")
+    : null;
+
+  if (form) {
+
+    form.addEventListener("submit", function () {
+
+      // Prevent accidental double-click
+      const submitButton = form.querySelector(
+        'button[type="submit"], input[type="submit"]'
+      );
+
+      if (submitButton) {
+        submitButton.disabled = true;
+
+        if (submitButton.tagName === "INPUT") {
+          submitButton.value = "Se publică...";
+        } else {
+          submitButton.textContent = "Se publică...";
+        }
+      }
+
+    });
+
+  }
+
+});
+</script>

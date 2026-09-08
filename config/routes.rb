@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   resources :groups, only: [:index, :new, :create, :show] do
     resource :membership, only: [:create, :destroy]
 
-    get "events",               to: "group_events#index"
+    get "events", to: "group_events#index"
+    post "events", to: "group_events#create"
 
     get "members",              to: "group_members#index"
     patch "members/:id/promote",

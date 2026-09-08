@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_04_090823) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_065707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.decimal "average_speed_kmh", precision: 5, scale: 2
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.text "description"
+    t.decimal "distance_km", precision: 6, scale: 2
+    t.bigint "group_id", null: false
+    t.string "regime", default: "no_drop", null: false
+    t.string "ride_type", null: false
+    t.string "start_location", null: false
+    t.time "time", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["group_id", "date", "time"], name: "index_events_on_group_id_and_date_and_time"
+    t.index ["group_id"], name: "index_events_on_group_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
+  end
 
   create_table "group_memberships", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -61,6 +80,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_090823) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "events", "groups"
+  add_foreign_key "events", "users"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
   add_foreign_key "groups", "users"

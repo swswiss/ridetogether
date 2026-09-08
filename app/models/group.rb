@@ -14,6 +14,9 @@ class Group < ApplicationRecord
            through: :active_memberships,
            source: :user
 
+  has_many :events,
+           dependent: :destroy
+
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :ride_types, presence: true

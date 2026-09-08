@@ -1,6 +1,12 @@
 <!-- TAB MENU -->
 <div class="tabs" data-controller="tabs">
-  <span class="tab" data-tabs-target="tab" data-action="click->tabs#select">Evenimente</span>
+  <%= link_to group_events_path(@group),
+    class: "tab",
+    data: { turbo_frame: "group_content", tabs_target: "tab", action: "click->tabs#select", turbo_prefetch: false } do %>
+
+    Evenimente
+
+  <% end %>
   <span class="tab" data-tabs-target="tab" data-action="click->tabs#select">Feed</span>
   <%= link_to group_members_path(@group),
           class: "tab",

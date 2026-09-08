@@ -11,6 +11,9 @@ class User < ApplicationRecord
   has_many :groups,
            through: :group_memberships
 
+  has_many :events,
+           dependent: :destroy
+
   validates :role, presence: true
   validates :email_address,
     presence: true,
