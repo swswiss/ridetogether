@@ -26,15 +26,17 @@
   .a-month { font-size: 12px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; margin: 28px 0 6px; }
   .a-month:first-of-type { margin-top: 0; }
 
-  .a-ride { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--line-soft); text-decoration: none; color: var(--ink); transition: background .15s; }
-  .a-ride:hover { background: var(--hover); }
+  /* NEW: grid of rides — 3 columns on desktop */
+  .a-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  /* rides become bordered cards inside the grid */
+  .a-ride { display: block; padding: 16px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--ink); transition: border-color .15s, transform .15s; }
+  .a-ride:hover { border-color: #ddd; transform: translateY(-2px); background: #fff; }
   .a-ride > div:first-child { min-width: 0; }
-  .a-ride-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
-  .a-ride-title { font-size: 16px; font-weight: 500; }
+  .a-ride-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+  .a-ride-title { font-size: 15.5px; font-weight: 500; }
   .a-ride-type { font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); padding: 2px 9px; border-radius: 100px; white-space: nowrap; }
-  .a-ride-meta { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
-  .a-ride-went { font-size: 12.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-  .a-ride-went svg { color: var(--faint); }
+  .a-ride-meta { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; line-height: 1.5; }
 
   .a-empty { padding: 48px 20px; text-align: center; border: 1px dashed var(--line); border-radius: 14px; }
   .a-empty p { font-size: 14px; color: var(--muted); }
@@ -58,11 +60,17 @@
   .a-pagination .disabled { color: var(--faint); pointer-events: none; }
   .a-page-info { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 12px; }
 
+  /* tablet: 2 columns */
+  @media (max-width: 900px) {
+    .a-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  /* mobile: back to 1 column, rows like before */
   @media (max-width: 760px) {
     .inner { padding: 24px 16px 96px; }
     .a-head h1 { font-size: 25px; }
-    .a-ride { grid-template-columns: 1fr; gap: 8px; }
-    .a-ride-went { align-self: flex-start; }
+    .a-grid { grid-template-columns: 1fr; gap: 0; }
+    .a-ride { border: none; border-bottom: 1px solid var(--line-soft); border-radius: 0; padding: 16px 4px; }
+    .a-ride:hover { transform: none; border-color: transparent; border-bottom-color: var(--line-soft); background: var(--hover); }
   }
 </style>
 
@@ -81,23 +89,25 @@
 
       <p class="a-month"><%= month_label %></p>
 
-      <% events.each do |event| %>
-        <%= link_to group_event_path(event.group, event), class: "a-ride" do %>
-          <div>
-            <div class="a-ride-top">
-              <span class="a-ride-title"><%= event.title %></span>
-              <span class="a-ride-type"><%= event.ride_type.downcase %></span>
+      <div class="a-grid">
+        <% events.each do |event| %>
+          <%= link_to group_event_path(event.group, event), class: "a-ride" do %>
+            <div>
+              <div class="a-ride-top">
+                <span class="a-ride-title"><%= event.title %></span>
+                <span class="a-ride-type"><%= event.ride_type.downcase %></span>
+              </div>
+              <div class="a-ride-meta">
+                <%= I18n.l(event.date, format: "%-d %b") %> ·
+                <%= event.time.strftime("%H:%M") %> ·
+                <%= event.start_location %> ·
+                <%= event.distance_km.to_i %> km ·
+                <%= event.average_speed_kmh.to_i %> km/h
+              </div>
             </div>
-            <div class="a-ride-meta">
-              <%= I18n.l(event.date, format: "%-d %b") %> ·
-              <%= event.time.strftime("%H:%M") %> ·
-              <%= event.start_location %> ·
-              <%= event.distance_km.to_i %> km ·
-              <%= event.average_speed_kmh.to_i %> km/h
-            </div>
-          </div>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
 
     <% end %>
 
