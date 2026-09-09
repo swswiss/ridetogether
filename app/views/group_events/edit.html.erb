@@ -58,7 +58,7 @@
   .danger-zone h3 { font-size: 15px; font-weight: 500; color: var(--danger); margin-bottom: 4px; }
   .danger-zone p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
   .btn-danger { background: #fff; color: var(--danger); border: 1px solid #e8bbb6; padding: 10px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all .15s; }
-  .btn-danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+  .btn-danger:hover { background: var(--danger); color: red; border-color: var(--danger); }
 
   .bottom-nav { display: none; }
   @media (max-width: 900px) {
@@ -218,6 +218,21 @@
   </div>
 
 <% end %>
+
+<!-- delete zone -->
+<div class="danger-zone">
+  <h3>Șterge tura</h3>
+  <p>Ștergerea e permanentă. Participanții vor fi anunțați că tura a fost anulată.</p>
+  <%= button_to "Șterge tura",
+    group_event_path(@group, @event),
+    method: :delete,
+    class: "btn-danger",
+    form: {
+      data: {
+        turbo_confirm: "Ești sigur că vrei să ștergi această tură? Acțiunea este permanentă."
+      }
+    } %>
+</div>
 
 
 <script>

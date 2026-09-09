@@ -3,8 +3,8 @@ class GroupEventsController < ApplicationController
 
   layout "dashboard"
 
-  before_action :set_event, only: [:show, :edit, :update]
-  before_action :require_event_owner, only: [:edit, :update]
+  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :require_event_owner, only: [:edit, :update, :destroy]
   
   def index
     @upcoming_events = @group.events
@@ -65,6 +65,13 @@ class GroupEventsController < ApplicationController
       redirect_to group_path(@group),
                   alert: @event.errors.full_messages.to_sentence
     end
+  end
+
+  def destroy
+    @event.destroy
+  
+    redirect_to group_path(@group),
+                notice: "Tura a fost ștearsă cu succes."
   end
 
   private

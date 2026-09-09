@@ -28,6 +28,9 @@ Rails.application.routes.draw do
     patch "events/:id",
       to: "group_events#update",
       as: :update_event
+    delete "events/:id",
+       to: "group_events#destroy",
+       as: :destroy_event
 
     post "events/:event_id/participation",
        to: "event_participations#create",

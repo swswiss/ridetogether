@@ -11,8 +11,6 @@
 <style>
   :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; }
 
-  .inner { padding: 40px 56px; max-width: 900px; }
-
   .a-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .15s; }
   .a-back:hover { color: var(--ink); }
   .a-head { margin-bottom: 26px; }
@@ -42,7 +40,7 @@
   .a-empty p { font-size: 14px; color: var(--muted); }
 
   /* pagination (Pagy) */
-  .a-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .a-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 36px; padding-top: 24px; flex-wrap: wrap; }
   .a-pagination .pagy .page a,
   .a-pagination .pagy .page.active a,
   .a-pagination .pagy .prev a,
@@ -68,25 +66,13 @@
   }
 </style>
 
-<div class="inner">
   <%= link_to group_path(@group), class: "a-back" do %>
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     Înapoi
   <% end %>
 
   <div class="a-head">
-    <p class="a-head-eyebrow">Istoricul turelor</p>
     <h1>Arhivă</h1>
-  </div>
-
-  <%# filtre pe tip — fiecare link adaugă ?ride_type= la URL %>
-  <div class="a-filters">
-    <%= link_to "Toate", url_for(request.params.except(:ride_type, :page)),
-                class: "a-chip #{'active' unless params[:ride_type]}" %>
-    <% %w[MTB Cursieră Plimbare Gravel].each do |type| %>
-      <%= link_to type, url_for(request.params.merge(ride_type: type).except(:page)),
-                  class: "a-chip #{'active' if params[:ride_type] == type}" %>
-    <% end %>
   </div>
 
   <% if @past_events.any? %>
@@ -117,8 +103,9 @@
 
     <%# paginare Pagy %>
     <div class="a-pagination">
-      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+      <%== @pagy.series_nav if @pagy.pages > 1 %>
     </div>
+
     <p class="a-page-info">
       Pagina <%= @pagy.page %> din <%= @pagy.pages %> · <%= @pagy.count %> ture arhivate
     </p>
@@ -128,4 +115,3 @@
       <p>Nu există ture arhivate încă.</p>
     </div>
   <% end %>
-</div>
