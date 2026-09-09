@@ -1,4 +1,5 @@
 module ApplicationHelper
+
   def nav_item_class(path)
     active =
       current_page?(path) ||

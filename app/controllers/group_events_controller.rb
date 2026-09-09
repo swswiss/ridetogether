@@ -2,6 +2,9 @@ class GroupEventsController < ApplicationController
   include GroupContext
 
   layout "dashboard"
+
+  before_action :set_event, only: [:show, :edit, :update]
+  before_action :require_event_owner, only: [:edit, :update]
   
   def index
     @upcoming_events = @group.events
@@ -13,11 +16,10 @@ class GroupEventsController < ApplicationController
                           .includes(:user)
                           .where("date < ?", Date.current)
                           .order(date: :desc, time: :desc)
+                          .limit(5)
   end
 
   def show
-    @event = @group.events.includes(:user).find(params[:id])
-
     @current_participation = @event.event_participations.find_by(
       user: Current.user
     )
@@ -27,6 +29,29 @@ class GroupEventsController < ApplicationController
                                  .order(created_at: :asc)
   
     @going_count = @going_participants.size
+  end
+
+  def edit
+  end
+
+  def update
+    if @event.update(event_params)
+      redirect_to group_event_path(@group, @event),
+                  notice: "Tura a fost actualizată cu succes."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def archive
+    @pagy, @past_events = pagy(
+      :offset,
+      @group.events
+           .includes(:user)
+           .where("date < ?", Date.current)
+           .order(date: :desc, time: :desc),
+      limit: 10
+    )
   end
 
   def create
@@ -43,6 +68,17 @@ class GroupEventsController < ApplicationController
   end
 
   private
+
+  def set_event
+    @event = @group.events.find(params[:id])
+  end
+
+  def require_event_owner
+    unless @event.user_id == Current.user.id
+      redirect_to group_event_path(@group, @event),
+                  alert: "Nu ai permisiunea să editezi această tură."
+    end
+  end
 
   def event_params
     params.require(:event).permit(

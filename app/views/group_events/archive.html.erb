@@ -1,0 +1,131 @@
+<%#
+  Arhivă ture trecute — app/views/.../index.html.erb (sau parțial)
+  Presupune în controller:
+    @pagy, @past_events = pagy(
+      Event.where("date < ?", Date.current).order(date: :desc, time: :desc),
+      items: 15
+    )
+  (ajustează scope-ul după nevoie: pe grup, pe oraș, pe user etc.)
+%>
+
+<style>
+  :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; }
+
+  .inner { padding: 40px 56px; max-width: 900px; }
+
+  .a-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .15s; }
+  .a-back:hover { color: var(--ink); }
+  .a-head { margin-bottom: 26px; }
+  .a-head-eyebrow { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
+  .a-head h1 { font-size: 30px; font-weight: 300; letter-spacing: -0.02em; }
+
+  /* filters */
+  .a-filters { display: flex; gap: 10px; margin-bottom: 34px; flex-wrap: wrap; }
+  .a-chip { font-size: 13.5px; padding: 8px 18px; border-radius: 100px; border: 1px solid var(--line); color: var(--muted); cursor: pointer; background: #fff; text-decoration: none; transition: all .15s; }
+  .a-chip:hover { border-color: #ddd; color: var(--ink); }
+  .a-chip.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+
+  .a-month { font-size: 12px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; margin: 28px 0 6px; }
+  .a-month:first-of-type { margin-top: 0; }
+
+  .a-ride { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--line-soft); text-decoration: none; color: var(--ink); transition: background .15s; }
+  .a-ride:hover { background: var(--hover); }
+  .a-ride > div:first-child { min-width: 0; }
+  .a-ride-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .a-ride-title { font-size: 16px; font-weight: 500; }
+  .a-ride-type { font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); padding: 2px 9px; border-radius: 100px; white-space: nowrap; }
+  .a-ride-meta { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+  .a-ride-went { font-size: 12.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .a-ride-went svg { color: var(--faint); }
+
+  .a-empty { padding: 48px 20px; text-align: center; border: 1px dashed var(--line); border-radius: 14px; }
+  .a-empty p { font-size: 14px; color: var(--muted); }
+
+  /* pagination (Pagy) */
+  .a-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .a-pagination .pagy .page a,
+  .a-pagination .pagy .page.active a,
+  .a-pagination .pagy .prev a,
+  .a-pagination .pagy .next a,
+  .a-pagination .pagy .prev.disabled,
+  .a-pagination .pagy .next.disabled,
+  .a-pagination a, .a-pagination span {
+    min-width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+    padding: 0 12px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+    border-radius: 10px; font-size: 14px; text-decoration: none; transition: all .15s;
+  }
+  .a-pagination a:hover { border-color: var(--ink); }
+  .a-pagination .active, .a-pagination .current { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .a-pagination .gap { border: none; color: var(--faint); min-width: auto; }
+  .a-pagination .disabled { color: var(--faint); pointer-events: none; }
+  .a-page-info { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 12px; }
+
+  @media (max-width: 760px) {
+    .inner { padding: 24px 16px 96px; }
+    .a-head h1 { font-size: 25px; }
+    .a-ride { grid-template-columns: 1fr; gap: 8px; }
+    .a-ride-went { align-self: flex-start; }
+  }
+</style>
+
+<div class="inner">
+  <%= link_to group_path(@group), class: "a-back" do %>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    Înapoi
+  <% end %>
+
+  <div class="a-head">
+    <p class="a-head-eyebrow">Istoricul turelor</p>
+    <h1>Arhivă</h1>
+  </div>
+
+  <%# filtre pe tip — fiecare link adaugă ?ride_type= la URL %>
+  <div class="a-filters">
+    <%= link_to "Toate", url_for(request.params.except(:ride_type, :page)),
+                class: "a-chip #{'active' unless params[:ride_type]}" %>
+    <% %w[MTB Cursieră Plimbare Gravel].each do |type| %>
+      <%= link_to type, url_for(request.params.merge(ride_type: type).except(:page)),
+                  class: "a-chip #{'active' if params[:ride_type] == type}" %>
+    <% end %>
+  </div>
+
+  <% if @past_events.any? %>
+    <%# grupăm pe „Luna An" în ordinea în care vin (deja sortate desc) %>
+    <% @past_events.group_by { |e| I18n.l(e.date, format: "%B %Y").capitalize }.each do |month_label, events| %>
+
+      <p class="a-month"><%= month_label %></p>
+
+      <% events.each do |event| %>
+        <%= link_to group_event_path(event.group, event), class: "a-ride" do %>
+          <div>
+            <div class="a-ride-top">
+              <span class="a-ride-title"><%= event.title %></span>
+              <span class="a-ride-type"><%= event.ride_type.downcase %></span>
+            </div>
+            <div class="a-ride-meta">
+              <%= I18n.l(event.date, format: "%-d %b") %> ·
+              <%= event.time.strftime("%H:%M") %> ·
+              <%= event.start_location %> ·
+              <%= event.distance_km.to_i %> km ·
+              <%= event.average_speed_kmh.to_i %> km/h
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+    <%# paginare Pagy %>
+    <div class="a-pagination">
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </div>
+    <p class="a-page-info">
+      Pagina <%= @pagy.page %> din <%= @pagy.pages %> · <%= @pagy.count %> ture arhivate
+    </p>
+
+  <% else %>
+    <div class="a-empty">
+      <p>Nu există ture arhivate încă.</p>
+    </div>
+  <% end %>
+</div>

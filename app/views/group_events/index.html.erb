@@ -123,16 +123,18 @@
   <div class="ev-section-head">
     <span class="ev-section-title">Ture trecute</span>
 
-<span class="ev-section-count">
-  arhivă
-</span>
-
+    <span class="ev-section-count">
+      arhivă
+    </span>
+    <%= link_to "vezi toate", group_events_archive_path(@group), class: "ev-section-count", data: { turbo_frame: "_top" } %>
   </div>
 
 <% if @past_events.any? %>
 
 <% @past_events.each do |event| %>
-  <div class="ride ride-past">
+  <%= link_to group_event_path(@group, event),
+          class: "ride ride-past",
+          data: { turbo_frame: "_top" } do %>
 
     <div>
       <div class="ride-top">
@@ -163,25 +165,7 @@
         <% end %>
       </div>
     </div>
-
-    <div class="ride-right">
-      <span class="went">
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M20 6L9 17l-5-5"/>
-        </svg>
-
-        0 au fost
-      </span>
-    </div>
+  <% end %>
 
   </div>
 <% end %>

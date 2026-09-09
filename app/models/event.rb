@@ -2,6 +2,8 @@ class Event < ApplicationRecord
   belongs_to :group
   belongs_to :user
 
+  RIDE_TYPES = %w[MTB Cursieră Plimbare Gravel].freeze
+
   has_many :event_participations,
            dependent: :destroy
 

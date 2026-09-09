@@ -20,7 +20,14 @@ Rails.application.routes.draw do
 
     get "events", to: "group_events#index"
     post "events", to: "group_events#create"
+    get "events/archive", to: "group_events#archive", as: :events_archive
     get  "events/:id", to: "group_events#show", as: :event
+    get "events/:id/edit",
+      to: "group_events#edit",
+      as: :edit_event
+    patch "events/:id",
+      to: "group_events#update",
+      as: :update_event
 
     post "events/:event_id/participation",
        to: "event_participations#create",

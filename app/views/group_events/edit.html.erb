@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideTogether — Editează tura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  .e-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .15s; }
+  .e-back:hover { color: var(--ink); }
+  .e-title { font-size: 27px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .e-lede { font-size: 14.5px; color: var(--muted); margin-bottom: 34px; }
+
+  .e-card { border: 1px solid var(--line); border-radius: 14px; padding: 26px; margin-bottom: 28px; }
+
+  .f-field { margin-bottom: 20px; }
+  .f-field:last-child { margin-bottom: 0; }
+  .f-field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
+  .f-field input, .f-field textarea, .f-field select {
+    width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+    font-size: 15px; font-family: inherit; color: var(--ink); background: #fff; transition: border-color .15s; appearance: none;
+  }
+  .f-field input:focus, .f-field textarea:focus, .f-field select:focus { outline: none; border-color: var(--ink); }
+  .f-field textarea { resize: vertical; min-height: 76px; }
+
+  /* rows of fields */
+  .f-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .f-row.two { grid-template-columns: 1fr 1fr; }
+
+  .f-label-row { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  /* type chips */
+  .f-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .f-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 15px; border: 1px solid var(--line); color: var(--muted); border-radius: 100px; font-size: 13px; cursor: pointer; user-select: none; transition: all .15s; }
+  .f-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .f-chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* drop radios */
+  .f-radios { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .f-radio { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: border-color .15s; user-select: none; }
+  .f-radio.selected { border: 1.5px solid var(--ink); }
+  .f-radio .dot { flex-shrink: 0; width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--faint); margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .f-radio.selected .dot { border-color: var(--ink); }
+  .f-radio .dot i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); transform: scale(0); transition: transform .15s; }
+  .f-radio.selected .dot i { transform: scale(1); }
+  .f-radio-title { font-size: 13.5px; font-weight: 500; display: block; }
+  .f-radio-sub { font-size: 12px; color: var(--muted); }
+
+  .e-actions { display: flex; gap: 12px; }
+  .btn-save { background: #1a1a1a; color: #fff; border: none; padding: 13px 30px; border-radius: 100px; font-size: 14.5px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity .2s; }
+  .btn-save:hover { opacity: 0.85; }
+  .btn-cancel { background: #fff; color: var(--ink); border: 1px solid var(--line); padding: 13px 26px; border-radius: 100px; font-size: 14.5px; font-weight: 500; cursor: pointer; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; transition: border-color .15s; }
+  .btn-cancel:hover { border-color: var(--ink); }
+
+  /* delete zone */
+  .danger-zone { border: 1px solid #f2d4d1; border-radius: 12px; padding: 20px; margin-top: 32px; }
+  .danger-zone h3 { font-size: 15px; font-weight: 500; color: var(--danger); margin-bottom: 4px; }
+  .danger-zone p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .btn-danger { background: #fff; color: var(--danger); border: 1px solid #e8bbb6; padding: 10px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .btn-danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+  .bottom-nav { display: none; }
+  @media (max-width: 900px) {
+    .f-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .mobile-top { display: flex; }
+    .inner { padding: 24px 16px 96px; }
+    .e-title { font-size: 22px; }
+    .f-row, .f-row.two { grid-template-columns: 1fr; gap: 20px; }
+    .f-radios { grid-template-columns: 1fr; }
+    .e-actions { flex-direction: column-reverse; }
+    .btn-save, .btn-cancel { width: 100%; justify-content: center; text-align: center; }
+    .bottom-nav { display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 20; }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--faint); text-decoration: none; font-size: 10px; font-weight: 500; padding: 4px 12px; }
+    .bottom-nav a.active { color: var(--ink); }
+    .bottom-nav a.create { background: #1a1a1a; color: #fff; width: 46px; height: 46px; border-radius: 50%; justify-content: center; margin-top: -22px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .bottom-nav a.create span { display: none; }
+  }
+  :focus-visible { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+</style>
+</head>
+
+<%= link_to group_event_path(@group, @event), class: "e-back" do %>
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 18l-6-6 6-6"/>
+  </svg>
+  <%= @event.title %>
+<% end %>
+
+<h1 class="e-title">Editează tura</h1>
+<p class="e-lede">Modifică detaliile turei. Participanții vor vedea schimbările.</p>
+
+<%= form_with model: [@group, @event] do |form| %>
+
+  <div class="e-card">
+
+    <div class="f-field">
+      <%= form.label :title, "Titlul turei" %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div class="f-field">
+      <p class="f-label-row">Tipul turei</p>
+
+      <div class="f-chips">
+        <% Event::RIDE_TYPES.each do |ride_type| %>
+          <span
+            class="f-chip <%= @event.ride_type == ride_type ? 'selected' : '' %>"
+            data-chip
+            data-value="<%= ride_type %>">
+            <%= ride_type %>
+          </span>
+        <% end %>
+
+        <%= form.hidden_field :ride_type, id: "event_ride_type" %>
+      </div>
+    </div>
+
+    <div class="f-field f-row">
+      <div>
+        <%= form.label :date, "Data" %>
+        <%= form.date_field :date %>
+      </div>
+
+      <div>
+        <%= form.label :time, "Ora" %>
+        <%= form.time_field :time %>
+      </div>
+
+      <div>
+        <%= form.label :start_location, "Punct de start" %>
+        <%= form.text_field :start_location %>
+      </div>
+    </div>
+
+    <div class="f-field f-row two">
+      <div>
+        <%= form.label :distance_km, "Distanță (km)" %>
+        <%= form.number_field :distance_km, step: 0.01 %>
+      </div>
+
+      <div>
+        <%= form.label :average_speed_kmh, "Ritm mediu (km/h)" %>
+        <%= form.number_field :average_speed_kmh, step: 0.01 %>
+      </div>
+    </div>
+
+    <div class="f-field">
+      <p class="f-label-row">Regim</p>
+
+      <div class="f-radios">
+        <label
+          class="f-radio <%= @event.regime == 'no_drop' ? 'selected' : '' %>"
+          data-radio="regime"
+          data-value="no_drop">
+          <span class="dot"><i></i></span>
+          <span>
+            <span class="f-radio-title">No-drop</span>
+            <span class="f-radio-sub">Așteptăm pe toți.</span>
+          </span>
+        </label>
+
+        <label
+          class="f-radio <%= @event.regime == 'drop' ? 'selected' : '' %>"
+          data-radio="regime"
+          data-value="drop">
+          <span class="dot"><i></i></span>
+          <span>
+            <span class="f-radio-title">Drop</span>
+            <span class="f-radio-sub">Fiecare în ritmul lui.</span>
+          </span>
+        </label>
+
+        <%= form.hidden_field :regime, id: "event_regime" %>
+      </div>
+    </div>
+
+    <div class="f-field">
+      <%= form.label :estimated_duration_minutes, "Durată estimată" %>
+
+      <%= form.select :estimated_duration_minutes,
+        [
+          ["30 min", 30],
+          ["45 min", 45],
+          ["1 oră", 60],
+          ["1 oră și 15 min", 75],
+          ["1 oră și 30 min", 90],
+          ["1 oră și 45 min", 105],
+          ["2 ore", 120],
+          ["2 ore și 30 min", 150],
+          ["3 ore", 180],
+          ["4 ore", 240],
+          ["5 ore", 300]
+        ],
+        { prompt: "Alege durata" } %>
+    </div>
+
+    <div class="f-field">
+      <%= form.label :strava_link, "Link Strava" %>
+      <%= form.url_field :strava_link %>
+    </div>
+
+    <div class="f-field">
+      <%= form.label :description, "Detalii (opțional)" %>
+      <%= form.text_area :description %>
+    </div>
+
+  </div>
+
+  <div class="e-actions">
+    <%= link_to "Anulează", group_event_path(@group, @event), class: "btn-cancel" %>
+
+    <%= form.submit "Salvează modificările", class: "btn-save" %>
+  </div>
+
+<% end %>
+
+
+<script>
+  document.querySelectorAll('[data-chip]').forEach(function(c) {
+    c.addEventListener('click', function() {
+      document.querySelectorAll('[data-chip]').forEach(function(x) {
+        x.classList.remove('selected');
+      });
+
+      c.classList.add('selected');
+
+      document.getElementById('event_ride_type').value =
+        c.getAttribute('data-value');
+    });
+  });
+
+  document.querySelectorAll('[data-radio]').forEach(function(r) {
+    r.addEventListener('click', function() {
+      var name = r.getAttribute('data-radio');
+
+      document.querySelectorAll('[data-radio="' + name + '"]').forEach(function(x) {
+        x.classList.remove('selected');
+      });
+
+      r.classList.add('selected');
+
+      document.getElementById('event_regime').value =
+        r.getAttribute('data-value');
+    });
+  });
+</script>
+
+</html>
