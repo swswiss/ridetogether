@@ -42,4 +42,8 @@ class Event < ApplicationRecord
               with: URI::DEFAULT_PARSER.make_regexp(%w[http https])
             },
             allow_blank: true
+  validates :date, uniqueness: {
+              scope: [:group_id, :user_id],
+              message: "Ai deja o tură creată pentru această zi."
+            }
 end

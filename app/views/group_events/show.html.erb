@@ -89,6 +89,40 @@
   .rsvp-btn:hover { border-color: var(--ink); }
   .rsvp-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
 
+  /* ===== INTEGRATED FEED ===== */
+  .feed { margin-top: 44px; padding-top: 32px; border-top: 1px solid var(--line); }
+  .feed-title { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 20px; }
+  .feed-title .n { font-size: 14px; color: var(--faint); font-weight: 400; margin-left: 6px; }
+
+  .composer { display: flex; gap: 10px; align-items: center; margin-bottom: 26px; }
+  .composer .avatar { width: 38px; height: 38px; font-size: 13px; background: var(--line-soft); color: var(--muted); }
+  .composer input { flex: 1; border: 1px solid var(--line); border-radius: 100px; padding: 11px 18px; font-size: 14.5px; font-family: inherit; transition: border-color .15s; }
+  .composer input:focus { outline: none; border-color: var(--ink); }
+  .composer button { background: var(--ink); color: #fff; border: none; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; flex-shrink: 0; transition: opacity .2s; }
+  .composer button:hover { opacity: 0.85; }
+
+  .post { padding: 16px 0; border-bottom: 1px solid var(--line-soft); }
+  .post-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .post-av { width: 36px; height: 36px; border-radius: 50%; background: var(--line-soft); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--muted); flex-shrink: 0; }
+  .post-author { font-size: 14px; font-weight: 500; }
+  .post-time { font-size: 12px; color: var(--faint); }
+  .post-body { font-size: 14.5px; color: var(--ink); line-height: 1.6; margin-bottom: 10px; }
+  .post-actions { display: flex; align-items: center; gap: 22px; }
+  .post-action { display: inline-flex; align-items: center; gap: 6px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-family: inherit; font-size: 13px; padding: 2px 0; transition: color .15s; }
+  .post-action:hover { color: var(--ink); }
+  .post-action.liked { color: var(--accent); }
+  .post-action.liked svg { fill: var(--accent); stroke: var(--accent); }
+
+  .replies { margin-top: 12px; padding-left: 46px; display: none; }
+  .replies.open { display: block; }
+  .reply { padding: 8px 0; }
+  .reply-line { font-size: 13.5px; line-height: 1.5; }
+  .reply-author { font-weight: 500; }
+  .reply-composer { display: flex; gap: 8px; margin-top: 6px; }
+  .reply-composer input { flex: 1; border: 1px solid var(--line); border-radius: 100px; padding: 8px 14px; font-size: 13px; font-family: inherit; transition: border-color .15s; }
+  .reply-composer input:focus { outline: none; border-color: var(--ink); }
+  .reply-composer button { background: var(--ink); color: #fff; border: none; padding: 8px 14px; border-radius: 100px; font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+
   /* who's coming */
   .coming { border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
   .coming-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
@@ -252,3 +286,67 @@
 
   </div>
 </div>
+
+<!-- ===== INTEGRATED FEED ===== -->
+  <div class="feed">
+    <h2 class="feed-title">Discuție</h2>
+
+    <div class="composer">
+      <div class="avatar"><%= group_initials(Current.user.name) %></div>
+      <input type="text" placeholder="Întreabă ceva despre tură...">
+      <button>Trimite</button>
+    </div>
+
+    <!-- post 1 -->
+    <div class="post">
+      <div class="post-head">
+        <div class="post-av">AP</div>
+        <div><span class="post-author">Andrei Popescu</span><span class="post-time"> · acum 1 oră</span></div>
+      </div>
+      <div class="post-body">Se merge și dacă plouă ușor, sau anulăm?</div>
+      <div class="post-actions">
+        <button class="post-action" data-like>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></svg>
+          <span data-like-count>3</span>
+        </button>
+        <button class="post-action" data-reply-toggle>Răspunde · 1</button>
+      </div>
+      <div class="replies open" data-replies>
+        <div class="reply"><p class="reply-line"><span class="reply-author">Roxana Curcă</span> Mergem oricum, doar dacă e furtună anunțăm dimineața 👍</p></div>
+        <div class="reply-composer"><input type="text" placeholder="Scrie un răspuns..."><button>Trimite</button></div>
+      </div>
+    </div>
+
+    <!-- post 2 -->
+    <div class="post">
+      <div class="post-head">
+        <div class="post-av">MI</div>
+        <div><span class="post-author">Maria Ionescu</span><span class="post-time"> · acum 40 min</span></div>
+      </div>
+      <div class="post-body">Cineva vine dinspre Copou? Putem merge împreună la start.</div>
+      <div class="post-actions">
+        <button class="post-action liked" data-like>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></svg>
+          <span data-like-count>2</span>
+        </button>
+        <button class="post-action" data-reply-toggle>Răspunde · 0</button>
+      </div>
+      <div class="replies" data-replies>
+        <div class="reply-composer"><input type="text" placeholder="Scrie un răspuns..."><button>Trimite</button></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll('[data-like]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var c = btn.querySelector('[data-like-count]'); var n = parseInt(c.textContent,10);
+        if (btn.classList.contains('liked')) { btn.classList.remove('liked'); c.textContent = n-1; }
+        else { btn.classList.add('liked'); c.textContent = n+1; }
+      });
+    });
+    document.querySelectorAll('[data-reply-toggle]').forEach(function(btn){
+      btn.addEventListener('click', function(){ btn.closest('.post').querySelector('[data-replies]').classList.toggle('open'); });
+    });
+  </script>
