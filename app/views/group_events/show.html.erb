@@ -288,65 +288,30 @@
 </div>
 
 <!-- ===== INTEGRATED FEED ===== -->
-  <div class="feed">
-    <h2 class="feed-title">Discuție</h2>
+<div class="feed">
+  <h2 class="feed-title">Discuție</h2>
 
-    <div class="composer">
-      <div class="avatar"><%= group_initials(Current.user.name) %></div>
-      <input type="text" placeholder="Întreabă ceva despre tură...">
-      <button>Trimite</button>
+  <div class="composer">
+    <div class="avatar">
+      <%= group_initials(Current.user.name) %>
     </div>
 
-    <!-- post 1 -->
-    <div class="post">
-      <div class="post-head">
-        <div class="post-av">AP</div>
-        <div><span class="post-author">Andrei Popescu</span><span class="post-time"> · acum 1 oră</span></div>
-      </div>
-      <div class="post-body">Se merge și dacă plouă ușor, sau anulăm?</div>
-      <div class="post-actions">
-        <button class="post-action" data-like>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></svg>
-          <span data-like-count>3</span>
-        </button>
-        <button class="post-action" data-reply-toggle>Răspunde · 1</button>
-      </div>
-      <div class="replies open" data-replies>
-        <div class="reply"><p class="reply-line"><span class="reply-author">Roxana Curcă</span> Mergem oricum, doar dacă e furtună anunțăm dimineața 👍</p></div>
-        <div class="reply-composer"><input type="text" placeholder="Scrie un răspuns..."><button>Trimite</button></div>
-      </div>
-    </div>
+    <%= form_with model: @post,
+                  url: group_event_posts_path(@group, @event),
+                  id: "new_post" do |form| %>
 
-    <!-- post 2 -->
-    <div class="post">
-      <div class="post-head">
-        <div class="post-av">MI</div>
-        <div><span class="post-author">Maria Ionescu</span><span class="post-time"> · acum 40 min</span></div>
-      </div>
-      <div class="post-body">Cineva vine dinspre Copou? Putem merge împreună la start.</div>
-      <div class="post-actions">
-        <button class="post-action liked" data-like>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></svg>
-          <span data-like-count>2</span>
-        </button>
-        <button class="post-action" data-reply-toggle>Răspunde · 0</button>
-      </div>
-      <div class="replies" data-replies>
-        <div class="reply-composer"><input type="text" placeholder="Scrie un răspuns..."><button>Trimite</button></div>
-      </div>
-    </div>
+      <%= form.text_field :body,
+            placeholder: "Întreabă ceva despre tură...",
+            autocomplete: "off" %>
 
+      <%= form.submit "Trimite" %>
+
+    <% end %>
   </div>
 
-  <script>
-    document.querySelectorAll('[data-like]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var c = btn.querySelector('[data-like-count]'); var n = parseInt(c.textContent,10);
-        if (btn.classList.contains('liked')) { btn.classList.remove('liked'); c.textContent = n-1; }
-        else { btn.classList.add('liked'); c.textContent = n+1; }
-      });
-    });
-    document.querySelectorAll('[data-reply-toggle]').forEach(function(btn){
-      btn.addEventListener('click', function(){ btn.closest('.post').querySelector('[data-replies]').classList.toggle('open'); });
-    });
-  </script>
+  <div id="event-posts">
+    <% @posts.each do |post| %>
+      <%= render "posts/post", post: post %>
+    <% end %>
+  </div>
+</div>

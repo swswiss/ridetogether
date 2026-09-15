@@ -7,15 +7,13 @@ class User < ApplicationRecord
            dependent: :destroy
   has_many :group_memberships,
             dependent: :destroy
-
   has_many :groups,
            through: :group_memberships
-
   has_many :events,
            dependent: :destroy
-
   has_many :event_participations,
            dependent: :destroy
+  has_many :posts, dependent: :destroy
 
   validates :role, presence: true
   validates :email_address,

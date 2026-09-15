@@ -1,0 +1,17 @@
+<%= turbo_stream.append "event-posts" do %>
+  <%= render "posts/post", post: @post %>
+<% end %>
+
+<%= turbo_stream.replace "new_post" do %>
+  <%= form_with model: @event.posts.build,
+                url: group_event_posts_path(@group, @event),
+                id: "new_post" do |form| %>
+
+    <%= form.text_field :body,
+          placeholder: "Întreabă ceva despre tură...",
+          autocomplete: "off" %>
+
+    <%= form.submit "Trimite" %>
+
+  <% end %>
+<% end %>

@@ -32,6 +32,10 @@ Rails.application.routes.draw do
        to: "group_events#destroy",
        as: :destroy_event
 
+    post "events/:event_id/posts",
+       to: "posts#create",
+       as: :event_posts
+
     post "events/:event_id/participation",
        to: "event_participations#create",
        as: :event_participation

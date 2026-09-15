@@ -6,10 +6,10 @@ class Event < ApplicationRecord
 
   has_many :event_participations,
            dependent: :destroy
-
   has_many :participants,
            through: :event_participations,
            source: :user
+  has_many :posts, dependent: :destroy
 
   validates :title, presence: true
   validates :ride_type, presence: true

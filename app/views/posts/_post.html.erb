@@ -1,0 +1,33 @@
+<div class="post" id="<%= dom_id(post) %>">
+
+  <div class="post-head">
+    <div class="post-av">
+      <%= group_initials(post.user.name) %>
+    </div>
+
+    <div>
+      <span class="post-author">
+        <%= post.user.name %>
+      </span>
+
+      <span class="post-time">
+        · <%= time_ago_in_words(post.created_at) %> în urmă
+      </span>
+    </div>
+  </div>
+
+  <div class="post-body">
+    <%= post.body %>
+  </div>
+
+  <div class="post-actions">
+    <button class="post-action">
+      ♡ <span>0</span>
+    </button>
+
+    <button class="post-action">
+      Răspunde · 0
+    </button>
+  </div>
+
+</div>

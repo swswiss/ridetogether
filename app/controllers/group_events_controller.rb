@@ -29,6 +29,12 @@ class GroupEventsController < ApplicationController
                                  .order(created_at: :asc)
   
     @going_count = @going_participants.size
+
+    @posts = @event.posts
+                 .includes(:user)
+                 .order(created_at: :asc)
+
+    @post = @event.posts.build
   end
 
   def edit
