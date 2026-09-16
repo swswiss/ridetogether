@@ -14,6 +14,18 @@
         · <%= time_ago_in_words(post.created_at) %> în urmă
       </span>
     </div>
+
+    <% if post.user_id == Current.user.id %>
+      <%= button_to "Șterge",
+          group_event_post_path(@group, @event, post),
+          method: :delete,
+          class: "post-delete",
+          form: {
+            data: {
+              turbo_confirm: "Ești sigur că vrei să ștergi această postare?"
+            }
+          } %>
+    <% end %>
   </div>
 
   <div class="post-body">
@@ -26,8 +38,33 @@
     </button>
 
     <button class="post-action">
-      Răspunde · 0
+      Răspunde · <%= post.post_replies.size %>
     </button>
+  </div>
+
+  <div class="post-replies" id="<%= dom_id(post, :replies) %>">
+
+    <% post.post_replies.each do |reply| %>
+      <%= render "post_replies/reply", reply: reply %>
+    <% end %>
+
+  </div>
+  <div class="post-replies">
+    <%= form_with model: PostReply.new,
+                  url: group_event_post_replies_path(
+                    @group,
+                    @event,
+                    post
+                  ),
+                  class: "reply-composer" do |form| %>
+      
+      <%= form.text_field :body,
+            placeholder: "Răspunde...",
+            autocomplete: "off" %>
+      
+      <%= form.submit "Trimite" %>
+
+    <% end %>
   </div>
 
 </div>

@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :event_participations,
            dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :post_replies, dependent: :destroy
 
   validates :role, presence: true
   validates :email_address,

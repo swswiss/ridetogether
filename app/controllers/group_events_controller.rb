@@ -31,7 +31,7 @@ class GroupEventsController < ApplicationController
     @going_count = @going_participants.size
 
     @posts = @event.posts
-                 .includes(:user)
+                 .includes(:user, post_replies: :user)
                  .order(created_at: :asc)
 
     @post = @event.posts.build

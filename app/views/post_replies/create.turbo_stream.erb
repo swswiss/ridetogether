@@ -1,0 +1,3 @@
+<%= turbo_stream.append dom_id(@post, :replies) do %>
+  <%= render "post_replies/reply", reply: @reply %>
+<% end %>

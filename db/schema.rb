@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_192152) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_182721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -74,6 +74,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_192152) do
     t.index ["user_id"], name: "index_groups_on_user_id"
   end
 
+  create_table "post_replies", force: :cascade do |t|
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["post_id"], name: "index_post_replies_on_post_id"
+    t.index ["user_id"], name: "index_post_replies_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -111,6 +121,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_192152) do
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
   add_foreign_key "groups", "users"
+  add_foreign_key "post_replies", "posts"
+  add_foreign_key "post_replies", "users"
   add_foreign_key "posts", "events"
   add_foreign_key "posts", "users"
   add_foreign_key "sessions", "users"

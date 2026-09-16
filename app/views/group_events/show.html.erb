@@ -89,6 +89,102 @@
   .rsvp-btn:hover { border-color: var(--ink); }
   .rsvp-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
 
+  .post-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-replies {
+  margin-top: 14px;
+  margin-left: 42px;
+}
+
+.post-reply {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.reply-av {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--soft);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.reply-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.reply-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reply-author {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reply-time {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.reply-body {
+  margin-top: 3px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.reply-delete {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.reply-delete:hover {
+  color: var(--ink);
+}
+
+.reply-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  margin-left: 42px;
+}
+
+.reply-form input[type="text"] {
+  flex: 1;
+}
+
+
+.post-delete {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.post-delete:hover {
+  color: var(--ink);
+}
+
   /* ===== INTEGRATED FEED ===== */
   .feed { margin-top: 44px; padding-top: 32px; border-top: 1px solid var(--line); }
   .feed-title { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 20px; }
@@ -237,7 +333,7 @@
             target: "_blank",
             rel: "noopener noreferrer" do %>
 
-            Vezi pe Strava
+            Vezi pe traseu
 
             <svg width="14" height="14"
                 viewBox="0 0 24 24"

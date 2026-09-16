@@ -1,0 +1,38 @@
+<div class="post-reply" id="<%= dom_id(reply) %>">
+
+  <div class="reply-content">
+
+    <div class="reply-head">
+      <span class="reply-author">
+        <%= reply.user.name %>
+      </span>
+
+      <span class="reply-time">
+        · <%= time_ago_in_words(reply.created_at) %> în urmă
+      </span>
+
+      <% if reply.user_id == Current.user.id %>
+        <%= button_to "Șterge",
+            group_event_post_reply_path(
+              @group,
+              @event,
+              reply.post,
+              reply
+            ),
+            method: :delete,
+            class: "reply-delete",
+            form: {
+              data: {
+                turbo_confirm: "Ștergi acest răspuns?"
+              }
+            } %>
+      <% end %>
+    </div>
+
+    <div class="reply-body">
+      <%= reply.body %>
+    </div>
+
+  </div>
+
+</div>

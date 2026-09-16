@@ -35,6 +35,16 @@ Rails.application.routes.draw do
     post "events/:event_id/posts",
        to: "posts#create",
        as: :event_posts
+    delete "events/:event_id/posts/:id",
+       to: "posts#destroy",
+       as: :event_post
+
+    post "events/:event_id/posts/:post_id/replies",
+      to: "post_replies#create",
+      as: :event_post_replies
+    delete "events/:event_id/posts/:post_id/replies/:id",
+      to: "post_replies#destroy",
+      as: :event_post_reply
 
     post "events/:event_id/participation",
        to: "event_participations#create",
