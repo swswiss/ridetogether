@@ -39,15 +39,10 @@
   </div>
 
   <div class="post-actions">
-    <button class="post-action">
-      ♡ <span>0</span>
-    </button>
+    <%# butonul de like — extras în partial, actualizat prin Turbo Stream %>
+    <%= render "posts/like_button", post: post %>
 
-    <%#
-      Butonul „Răspunde": la click, Stimulus arată panoul care conține
-      turbo_frame-ul. Frame-ul, fiind gol + cu src, se încarcă din backend
-      DOAR acum (lazy) — nu la randarea paginii.
-    %>
+    <%# butonul de răspuns (lazy load reply-uri) %>
     <button type="button"
             class="post-action"
             data-action="replies#toggle">

@@ -1,0 +1,17 @@
+<%= turbo_frame_tag dom_id(post, :like_button) do %>
+  <% liked = post.post_likes.exists?(user: Current.user) %>
+
+  <%= button_to group_event_post_likes_path(@group, @event, post),
+        method: :post,
+        class: "post-action#{' liked' if liked}" do %>
+
+    <% if liked %>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></svg>
+    <% else %>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></svg>
+    <% end %>
+
+    <span><%= post.post_likes_count %></span>
+
+  <% end %>
+<% end %>

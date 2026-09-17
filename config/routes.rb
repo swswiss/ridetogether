@@ -49,6 +49,10 @@ Rails.application.routes.draw do
       to: "post_replies#index",
       as: :event_post_replies_ajax
 
+    post "events/:event_id/posts/:post_id/likes",
+      to: "post_likes#create",
+      as: :event_post_likes
+
     post "events/:event_id/participation",
        to: "event_participations#create",
        as: :event_participation
