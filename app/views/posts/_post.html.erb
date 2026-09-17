@@ -1,4 +1,10 @@
-<div class="post" id="<%= dom_id(post) %>">
+<%# app/views/posts/_post.html.erb %>
+<%#
+  Reply-urile NU mai sunt randate aici. În locul lor e un turbo_frame gol,
+  cu un link care îl încarcă din backend (acțiunea replies#index) abia la click.
+  Astfel, la încărcarea paginii show, reply-urile NU ating baza de date.
+%>
+<div class="post" id="<%= dom_id(post) %>" data-controller="replies">
 
   <div class="post-head">
     <div class="post-av">
@@ -37,33 +43,24 @@
       ♡ <span>0</span>
     </button>
 
-    <button class="post-action">
-      Răspunde · <%= post.post_replies.size %>
+    <%#
+      Butonul „Răspunde": la click, Stimulus arată panoul care conține
+      turbo_frame-ul. Frame-ul, fiind gol + cu src, se încarcă din backend
+      DOAR acum (lazy) — nu la randarea paginii.
+    %>
+    <button type="button"
+            class="post-action"
+            data-action="replies#toggle">
+      Răspunde · <%= post.post_replies_count || post.post_replies.size %>
     </button>
   </div>
 
-  <div class="post-replies" id="<%= dom_id(post, :replies) %>">
-
-    <% post.post_replies.each do |reply| %>
-      <%= render "post_replies/reply", reply: reply %>
-    <% end %>
-
-  </div>
-  <div class="post-replies">
-    <%= form_with model: PostReply.new,
-                  url: group_event_post_replies_path(
-                    @group,
-                    @event,
-                    post
-                  ),
-                  class: "reply-composer" do |form| %>
-      
-      <%= form.text_field :body,
-            placeholder: "Răspunde...",
-            autocomplete: "off" %>
-      
-      <%= form.submit "Trimite" %>
-
+  <%# ── panoul e ascuns; când se deschide, turbo-frame-ul își încarcă src-ul ── %>
+  <div data-replies-target="panel" hidden>
+    <%= turbo_frame_tag dom_id(post, :replies),
+          src: group_event_post_replies_path(@group, @event, post),
+          loading: :lazy do %>
+      <p class="replies-loading">Se încarcă răspunsurile…</p>
     <% end %>
   </div>
 

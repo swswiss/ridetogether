@@ -1,0 +1,23 @@
+<%= turbo_frame_tag dom_id(@post, :replies) do %>
+
+  <div class="post-replies">
+    <%= form_with model: PostReply.new,
+                  url: group_event_post_replies_path(@group, @event, @post),
+                  class: "reply-composer" do |form| %>
+
+      <%= form.text_field :body,
+            placeholder: "Răspunde...",
+            autocomplete: "off" %>
+
+      <%= form.submit "Postează", class: "reply-submit" %>
+
+    <% end %>
+  </div>
+
+  <div class="post-replies" id="<%= dom_id(@post, :replies_list) %>">
+    <% @post.post_replies.includes(:user).order(created_at: :asc).each do |reply| %>
+      <%= render "post_replies/reply", reply: reply %>
+    <% end %>
+  </div>
+
+<% end %>

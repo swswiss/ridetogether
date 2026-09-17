@@ -8,6 +8,12 @@ class PostRepliesController < ApplicationController
   before_action :set_reply, only: :destroy
   before_action :require_reply_owner, only: :destroy
 
+  # NOU: încarcă reply-urile unui post, doar când turbo-frame-ul le cere (lazy).
+  # Randează într-un turbo_frame, fără layout (e conținut parțial de pagină).
+  def index
+    render layout: false
+  end
+
   def create
     @reply = @post.post_replies.build(reply_params)
     @reply.user = Current.user

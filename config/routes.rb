@@ -45,6 +45,9 @@ Rails.application.routes.draw do
     delete "events/:event_id/posts/:post_id/replies/:id",
       to: "post_replies#destroy",
       as: :event_post_reply
+    get "events/:event_id/posts/:post_id/replies",
+      to: "post_replies#index",
+      as: :event_post_replies_ajax
 
     post "events/:event_id/participation",
        to: "event_participations#create",
