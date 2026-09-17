@@ -3,15 +3,29 @@ module ApplicationHelper
   def nav_item_class(path)
     active =
       current_page?(path) ||
-      (path == new_group_path && controller_name == "groups" && action_name == "create")
-
+      (path == new_group_path &&
+        controller_name == "groups" &&
+        action_name == "create") ||
+      (path == my_groups_path &&
+        my_groups_section?)
+  
     class_names("nav-item", active: active)
+  end
+  
+  def my_groups_section?
+    return true if request.path == my_groups_path
+  
+    request.path.match?(%r{\A/groups/\d+(/|$)})
   end
 
   def nav_item_class_bottom(path)
     active =
       current_page?(path) ||
-      (path == new_group_path && controller_name == "groups" && action_name == "create")
+      (path == new_group_path &&
+        controller_name == "groups" &&
+        action_name == "create") ||
+      (path == my_groups_path &&
+        my_groups_section?)
 
     class_names(active: active)
   end
