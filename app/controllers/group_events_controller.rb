@@ -105,6 +105,7 @@ class GroupEventsController < ApplicationController
       :estimated_duration_minutes,
       :regime,
       :strava_link,
+      :route_id,
       :description
     )
   end

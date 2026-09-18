@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_205656) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_132759) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -35,6 +35,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_205656) do
     t.bigint "group_id", null: false
     t.string "regime", default: "no_drop", null: false
     t.string "ride_type", null: false
+    t.bigint "route_id"
     t.string "start_location", null: false
     t.string "strava_link"
     t.time "time", null: false
@@ -44,6 +45,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_205656) do
     t.index ["group_id", "date", "time"], name: "index_events_on_group_id_and_date_and_time"
     t.index ["group_id", "user_id", "date"], name: "index_events_on_group_user_date_unique", unique: true
     t.index ["group_id"], name: "index_events_on_group_id"
+    t.index ["route_id"], name: "index_events_on_route_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -106,6 +108,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_205656) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "routes", force: :cascade do |t|
+    t.jsonb "coordinates", default: [], null: false
+    t.datetime "created_at", null: false
+    t.decimal "distance_km", precision: 6, scale: 2, default: "0.0"
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_routes_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -129,6 +141,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_205656) do
   add_foreign_key "event_participations", "events"
   add_foreign_key "event_participations", "users"
   add_foreign_key "events", "groups"
+  add_foreign_key "events", "routes"
   add_foreign_key "events", "users"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
@@ -139,5 +152,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_205656) do
   add_foreign_key "post_replies", "users"
   add_foreign_key "posts", "events"
   add_foreign_key "posts", "users"
+  add_foreign_key "routes", "users"
   add_foreign_key "sessions", "users"
 end

@@ -20,6 +20,12 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
     <%= javascript_importmap_tags %>
   </head>
   <style>
@@ -236,10 +242,10 @@
             </svg>
             Descopera grupuri
           <% end %>
-          <a href="#" class="nav-item">
+          <%= link_to routes_path, class: nav_item_class(routes_path) do %>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5-3V4l5 3 6-3 5 3v13l-5-3-6 3z"/><path d="M9 7v13M15 4v13"/></svg>
               Turele tale
-          </a>
+          <% end %>
           <%= link_to new_group_path, class: nav_item_class(new_group_path) do %>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
             Creează un grup

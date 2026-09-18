@@ -84,6 +84,7 @@ Rails.application.routes.draw do
           as: :reject_membership_request
   end
   get "my_groups", to: "groups#my_groups"
+  resources :routes, only: [:index, :new, :create, :destroy]
   resource :profile, only: [:show, :edit, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

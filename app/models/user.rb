@@ -15,6 +15,7 @@ class User < ApplicationRecord
            dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :post_replies, dependent: :destroy
+  has_many :routes
 
   validates :role, presence: true
   validates :email_address,

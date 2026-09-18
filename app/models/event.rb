@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   belongs_to :group
   belongs_to :user
+  belongs_to :route, optional: true
 
   RIDE_TYPES = %w[MTB Cursieră Plimbare Gravel].freeze
 

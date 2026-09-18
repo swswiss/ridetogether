@@ -1,0 +1,96 @@
+<%# app/views/routes/index.html.erb — „Turele mele" %>
+<style>
+  :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; }
+  .r-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 30px; gap: 16px; flex-wrap: wrap; }
+  .r-eyebrow { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
+  .r-title { font-size: 30px; font-weight: 300; letter-spacing: -0.02em; }
+  .r-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #fff; background: #1a1a1a; text-decoration: none; padding: 12px 22px; border-radius: 100px; white-space: nowrap; }
+  .r-btn:hover { opacity: .85; }
+
+  .r-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .r-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; transition: border-color .15s, transform .15s; }
+  .r-card:hover { border-color: #ddd; transform: translateY(-2px); }
+  .r-card-link { display: block; text-decoration: none; color: inherit; }
+  .r-map { height: 160px; width: 100%; background: var(--line-soft); pointer-events: none; z-index: 0; }
+  .r-info { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .r-name { font-size: 15.5px; font-weight: 500; }
+  .r-dist { font-size: 13px; color: var(--muted); }
+  .r-chev { color: var(--faint); flex-shrink: 0; }
+
+  /* ===== EMPTY STATE frumos ===== */
+  .r-empty { border: 1px solid var(--line); border-radius: 20px; padding: 52px 32px; text-align: center; background: var(--hover); }
+  .r-empty-ico {
+    width: 120px; height: 120px; margin: 0 auto 26px; border-radius: 24px;
+    background: #fff; border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .r-empty h2 { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .r-empty p { font-size: 14.5px; color: var(--muted); line-height: 1.6; margin: 0 auto 26px; max-width: 36ch; }
+  .r-empty-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #fff; background: #1a1a1a; text-decoration: none; padding: 13px 28px; border-radius: 100px; transition: opacity .2s; }
+  .r-empty-btn:hover { opacity: .85; }
+
+  @media (max-width: 760px) { .r-grid { grid-template-columns: 1fr; } }
+</style>
+
+<div class="inner">
+  <div class="r-head">
+    <div>
+      <h1 class="r-title">Turele mele</h1>
+    </div>
+    <%= link_to new_route_path, class: "r-btn" do %>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Creează traseu
+    <% end %>
+  </div>
+
+  <% if @routes.any? %>
+    <div class="r-grid">
+      <% @routes.each do |route| %>
+        <div class="r-card">
+          <%# mini-hartă read-only cu traseul %>
+          <div class="r-map"
+               data-controller="route-show"
+               data-route-show-coordinates-value="<%= route.coordinates.to_json %>">
+          </div>
+          <div class="r-info">
+            <div>
+              <div class="r-name"><%= route.name %></div>
+              <div class="r-dist"><%= route.distance_km %> km</div>
+            </div>
+            <div class="r-del">
+              <%= button_to route_path(route),
+                    method: :delete,
+                    form: { data: { turbo_confirm: "Ștergi traseul „#{route.name}”?" } } do %>
+                Șterge
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <%# ── EMPTY STATE ── %>
+    <div class="r-empty">
+      <div class="r-empty-ico">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <%# grid subtil de hartă %>
+          <line x1="0" y1="40" x2="120" y2="40" stroke="#eee" stroke-width="1"/>
+          <line x1="0" y1="80" x2="120" y2="80" stroke="#eee" stroke-width="1"/>
+          <line x1="40" y1="0" x2="40" y2="120" stroke="#eee" stroke-width="1"/>
+          <line x1="80" y1="0" x2="80" y2="120" stroke="#eee" stroke-width="1"/>
+          <%# traseul punctat %>
+          <path d="M28 88 Q45 55 62 62 T96 34" fill="none" stroke="#e5533d" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/>
+          <%# start (negru) și final (portocaliu) %>
+          <circle cx="28" cy="88" r="6" fill="#1a1a1a"/>
+          <circle cx="96" cy="34" r="6" fill="#e5533d"/>
+        </svg>
+      </div>
+      <h2>Niciun traseu încă</h2>
+      <p>Desenează-ți traseele preferate pe hartă și folosește-le rapid când creezi o tură nouă.</p>
+      <%= link_to new_route_path, class: "r-empty-btn" do %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Desenează primul traseu
+      <% end %>
+    </div>
+  <% end %>
+</div>
