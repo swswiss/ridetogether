@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideTogether — Participanți</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; max-width: 100%; }
+  :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #fff; color: var(--ink); line-height: 1.6; font-weight: 400; -webkit-font-smoothing: antialiased; }
+
+  .mobile-top { display: none; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #fff; z-index: 10; }
+  .mobile-top .avatar { width: 30px; height: 30px; }
+
+  .e-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .15s; }
+  .e-back:hover { color: var(--ink); }
+  
+  main { padding: 0; max-width: 860px; min-width: 0; }
+  .inner { padding: 40px 56px; }
+
+  .p-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; transition: color .15s; }
+  .p-back:hover { color: var(--ink); }
+  .p-title { font-size: 27px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .p-sub { font-size: 14.5px; color: var(--muted); margin-bottom: 30px; }
+
+  /* grid de carduri — 3 coloane */
+  .p-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .p-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px;
+    transition: border-color .15s;
+  }
+  .p-card:hover { border-color: #ddd; }
+  .p-av { width: 42px; height: 42px; border-radius: 50%; background: var(--line-soft); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500; color: var(--muted); flex-shrink: 0; }
+  .p-info { min-width: 0; }
+  .p-name { font-size: 14.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .p-status { font-size: 12px; color: var(--muted); }
+  .p-status.maybe { color: var(--faint); }
+  .p-you { font-size: 11px; color: var(--faint); }
+
+  /* paginare */
+  .p-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 34px; }
+  .page-btn { min-width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 10px; font-size: 14px; text-decoration: none; cursor: pointer; transition: all .15s; }
+  .page-btn:hover { border-color: var(--ink); }
+  .page-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .page-btn.disabled { color: var(--faint); pointer-events: none; }
+  .page-dots { color: var(--faint); padding: 0 4px; }
+  .p-page-info { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 12px; }
+
+  .bottom-nav { display: none; }
+  @media (max-width: 900px) { .p-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .mobile-top { display: flex; }
+    .inner { padding: 22px 16px 96px; }
+    .p-title { font-size: 24px; }
+    .p-grid { grid-template-columns: 1fr; }
+    .bottom-nav { display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 20; }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--faint); text-decoration: none; font-size: 10px; font-weight: 500; padding: 4px 12px; }
+    .bottom-nav a.active { color: var(--ink); }
+    .bottom-nav a.create { background: #1a1a1a; color: #fff; width: 46px; height: 46px; border-radius: 50%; justify-content: center; margin-top: -22px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .bottom-nav a.create span { display: none; }
+  }
+  :focus-visible { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+</style>
+</head>
+<main>
+  <div class="inner">
+    <%= link_to group_event_path(@group, @event), class: "e-back" do %>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+      <%= @event.title %>
+    <% end %>
+
+    <h1 class="p-title">Participanți</h1>
+
+    <div class="p-grid">
+      <% @going_participants&.each do |participation| %>
+        <div class="p-card">
+          <div class="p-info"><div class="p-name"><%= participation.user.name %></div></div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- PAGINARE -->
+    <div class="p-pagination">
+      <span class="page-btn disabled"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
+      <a href="#" class="page-btn active">1</a>
+      <a href="#" class="page-btn">2</a>
+      <a href="#" class="page-btn">3</a>
+      <a href="#" class="page-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <p class="p-page-info">Pagina 1 din 3 · 14 participanți</p>
+  </div>
+</main>
+</div>
+</div>

@@ -1,0 +1,183 @@
+<%# app/views/group_events/new.html.erb — creează o tură (pagină, nu modal) %>
+<style>
+  :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; }
+  .e-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; }
+  .e-back:hover { color: var(--ink); }
+  .e-title { font-size: 27px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .e-lede { font-size: 14.5px; color: var(--muted); margin-bottom: 28px; }
+
+  .e-errors { background: #fbeae6; border: 1px solid #f2d4d1; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+  .e-errors p { font-size: 13.5px; color: #b3392c; margin: 0; }
+
+  .e-card { border: 1px solid var(--line); border-radius: 14px; padding: 26px; margin-bottom: 24px; }
+  .f-field { margin-bottom: 20px; }
+  .f-field:last-child { margin-bottom: 0; }
+  .f-field > label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
+  .f-field input[type="text"], .f-field input[type="date"], .f-field input[type="time"],
+  .f-field input[type="number"], .f-field input[type="url"], .f-field textarea, .f-field select {
+    width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+    font-size: 15px; font-family: inherit; color: var(--ink); background: #fff; transition: border-color .15s; appearance: none;
+  }
+  .f-field input:focus, .f-field textarea:focus, .f-field select:focus { outline: none; border-color: var(--ink); }
+  .f-field textarea { resize: vertical; min-height: 76px; }
+  .f-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .f-row.two { grid-template-columns: 1fr 1fr; }
+  .f-select { position: relative; }
+  .f-select svg { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); }
+  .f-hint { font-size: 12px; color: var(--faint); margin-top: 6px; }
+  .f-hint a { color: var(--muted); }
+
+  /* type chips + regime radios */
+  .f-label-row { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  .f-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .f-chip { display: inline-flex; align-items: center; padding: 8px 15px; border: 1px solid var(--line); color: var(--muted); border-radius: 100px; font-size: 13px; cursor: pointer; user-select: none; transition: all .15s; }
+  .f-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .f-chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .f-radios { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .f-radio { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: border-color .15s; user-select: none; }
+  .f-radio.selected { border: 1.5px solid var(--ink); }
+  .f-radio .dot { flex-shrink: 0; width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--faint); margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .f-radio.selected .dot { border-color: var(--ink); }
+  .f-radio .dot i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); transform: scale(0); transition: transform .15s; }
+  .f-radio.selected .dot i { transform: scale(1); }
+  .f-radio-title { font-size: 13.5px; font-weight: 500; display: block; }
+  .f-radio-sub { font-size: 12px; color: var(--muted); }
+
+  .e-actions { display: flex; gap: 12px; max-width: 720px; }
+  .btn-save { background: #1a1a1a; color: #fff; border: none; padding: 13px 30px; border-radius: 100px; font-size: 14.5px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .btn-save:hover { opacity: .85; }
+  .btn-cancel { background: #fff; color: var(--ink); border: 1px solid var(--line); padding: 13px 26px; border-radius: 100px; font-size: 14.5px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; }
+  .btn-cancel:hover { border-color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .f-row, .f-row.two { grid-template-columns: 1fr; gap: 20px; }
+    .f-radios { grid-template-columns: 1fr; }
+    .e-actions { flex-direction: column-reverse; }
+    .btn-save, .btn-cancel { width: 100%; justify-content: center; text-align: center; }
+  }
+</style>
+
+<div class="inner" data-controller="event-form">
+  <%= link_to group_path(@group), class: "e-back" do %>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    <%= @group.name %>
+  <% end %>
+
+  <h1 class="e-title">Creează o tură</h1>
+  <p class="e-lede">Completează detaliile turei. Membrii grupului o vor vedea imediat.</p>
+
+  <% if @event.errors.any? %>
+    <div class="e-errors">
+      <% @event.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= form_with model: @event, url: group_events_path(@group) do |form| %>
+    <div class="e-card">
+
+      <div class="f-field">
+        <%= form.label :title, "Titlul turei" %>
+        <%= form.text_field :title, placeholder: "Tura de sâmbătă dimineața" %>
+      </div>
+
+      <%# TIP — chips + hidden field completat de Stimulus %>
+      <div class="f-field">
+        <p class="f-label-row">Tipul turei</p>
+        <div class="f-chips">
+          <% %w[MTB Cursieră Plimbare Gravel].each do |type| %>
+            <span class="f-chip <%= 'selected' if @event.ride_type == type %>"
+                  data-event-form-target="chip"
+                  data-value="<%= type %>"
+                  data-action="click->event-form#selectType">
+              <%= type %>
+            </span>
+          <% end %>
+        </div>
+        <%= form.hidden_field :ride_type, data: { event_form_target: "rideType" } %>
+      </div>
+
+      <div class="f-field f-row">
+        <div>
+          <%= form.label :date, "Data" %>
+          <%= form.date_field :date %>
+        </div>
+        <div>
+          <%= form.label :time, "Ora" %>
+          <%= form.time_field :time %>
+        </div>
+        <div>
+          <%= form.label :start_location, "Punct de start" %>
+          <%= form.text_field :start_location, placeholder: "Podul Rosetti" %>
+        </div>
+      </div>
+
+      <div class="f-field f-row two">
+        <div>
+          <%= form.label :distance_km, "Distanță (km)" %>
+          <%= form.number_field :distance_km, step: :any, placeholder: "45" %>
+        </div>
+        <div>
+          <%= form.label :average_speed_kmh, "Ritm mediu (km/h)" %>
+          <%= form.number_field :average_speed_kmh, step: :any, placeholder: "28" %>
+        </div>
+      </div>
+
+      <%# REGIM — radios + hidden field %>
+      <div class="f-field">
+        <p class="f-label-row">Regim</p>
+        <div class="f-radios">
+          <label class="f-radio <%= 'selected' if @event.regime == 'no_drop' || @event.regime.blank? %>"
+                 data-event-form-target="regime" data-value="no_drop"
+                 data-action="click->event-form#selectRegime">
+            <span class="dot"><i></i></span>
+            <span><span class="f-radio-title">No-drop</span><span class="f-radio-sub">Așteptăm pe toți.</span></span>
+          </label>
+          <label class="f-radio <%= 'selected' if @event.regime == 'drop' %>"
+                 data-event-form-target="regime" data-value="drop"
+                 data-action="click->event-form#selectRegime">
+            <span class="dot"><i></i></span>
+            <span><span class="f-radio-title">Drop</span><span class="f-radio-sub">Fiecare în ritmul lui.</span></span>
+          </label>
+        </div>
+        <%= form.hidden_field :regime, value: (@event.regime.presence || "no_drop"), data: { event_form_target: "regimeInput" } %>
+      </div>
+
+      <%# TRASEU — dropdown cu traseele mele %>
+      <div class="f-field">
+        <%= form.label :route_id, "Traseu (opțional)" %>
+        <div class="f-select">
+          <%= form.collection_select :route_id,
+                @my_routes,
+                :id,
+                ->(r) { "#{r.name} · #{r.distance_km} km" },
+                { include_blank: "Fără traseu" } %>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <p class="f-hint">Alege din „Turele mele”, sau <%= link_to "creează un traseu", new_route_path, target: "_blank" %>.</p>
+      </div>
+
+      <div class="f-field">
+        <%= form.label :estimated_duration_minutes, "Durată estimată (minute)" %>
+        <%= form.number_field :estimated_duration_minutes, placeholder: "105" %>
+      </div>
+
+      <div class="f-field">
+        <%= form.label :strava_link, "Link Strava (opțional)" %>
+        <%= form.url_field :strava_link, placeholder: "https://strava.com/..." %>
+      </div>
+
+      <div class="f-field">
+        <%= form.label :description, "Detalii (opțional)" %>
+        <%= form.text_area :description, placeholder: "Ne oprim la cafea la jumate. Aduceți cameră de schimb..." %>
+      </div>
+    </div>
+
+    <div class="e-actions">
+      <%= link_to "Anulează", group_path(@group), class: "btn-cancel" %>
+      <%= form.submit "Publică tura", class: "btn-save" %>
+    </div>
+  <% end %>
+</div>

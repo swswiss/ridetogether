@@ -15,6 +15,10 @@
   .ev-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .15s; }
   .ev-back:hover { color: var(--ink); }
 
+  .ev-route { margin-bottom: 28px; }
+  .ev-route-label { font-size: 13px; color: #c4c4c4; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .ev-route-map { height: 260px; width: 100%; border: 1px solid #eee; border-radius: 14px; z-index: 0; }
+
   /* event header */
   .ev-top {
   display: flex;
@@ -357,40 +361,50 @@
     </div>
 
     <!-- route -->
-    <div class="route">
-      <div class="route-map">
-        <svg class="path" viewBox="0 0 400 200" preserveAspectRatio="none">
-          <path d="M30 160 C 100 130, 120 60, 190 75 S 300 140, 370 40" fill="none" stroke="#e5533d" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 7"/>
-          <circle cx="30" cy="160" r="6" fill="#1a1a1a"/>
-          <circle cx="370" cy="40" r="6" fill="#e5533d"/>
-        </svg>
-        <span class="route-pin start"><%= @event.title %></span>
-        <span class="route-pin end"><%= @event.distance_km %> km</span>
+    <% if @event.route.present? %>
+      <div class="ev-route">
+        <h3 class="ev-route-label">Traseu · <%= @event.route.name %> · <%= @event.route.distance_km %> km</h3>
+        <div class="ev-route-map"
+            data-controller="route-show"
+            data-route-show-coordinates-value="<%= @event.route.coordinates.to_json %>">
+        </div>
       </div>
-      <div class="route-foot">
-        <span>Traseu · <%= @event.distance_km %> km</span>
-        <% if @event.strava_link.present? %>
-          <%= link_to @event.strava_link,
-            class: "route-link",
-            target: "_blank",
-            rel: "noopener noreferrer" do %>
+    <% else %>
+      <div class="route">
+        <div class="route-map">
+          <svg class="path" viewBox="0 0 400 200" preserveAspectRatio="none">
+            <path d="M30 160 C 100 130, 120 60, 190 75 S 300 140, 370 40" fill="none" stroke="#e5533d" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 7"/>
+            <circle cx="30" cy="160" r="6" fill="#1a1a1a"/>
+            <circle cx="370" cy="40" r="6" fill="#e5533d"/>
+          </svg>
+          <span class="route-pin start"><%= @event.title %></span>
+          <span class="route-pin end"><%= @event.distance_km %> km</span>
+        </div>
+        <div class="route-foot">
+          <span>Traseu · <%= @event.distance_km %> km</span>
+          <% if @event.strava_link.present? %>
+            <%= link_to @event.strava_link,
+              class: "route-link",
+              target: "_blank",
+              rel: "noopener noreferrer" do %>
 
-            Vezi pe traseu
+              Vezi pe traseu
 
-            <svg width="14" height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round">
-              <path d="M7 17L17 7M17 7H8M17 7v9"/>
-            </svg>
+              <svg width="14" height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                <path d="M7 17L17 7M17 7H8M17 7v9"/>
+              </svg>
 
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
 
     <!-- description -->
     <div class="ev-desc">

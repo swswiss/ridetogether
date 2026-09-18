@@ -199,6 +199,18 @@
         { prompt: "Alege durata" } %>
     </div>
 
+    <%# TRASEU — dropdown cu traseele mele %>
+    <div class="f-field">
+      <%= form.label :route_id, "Traseu (opțional)" %>
+      <div class="f-select">
+        <%= form.collection_select :route_id,
+              @my_routes,
+              :id,
+              ->(r) { "#{r.name} · #{r.distance_km} km" },
+              { include_blank: "Fără traseu" } %>
+      </div>
+    </div>
+
     <div class="f-field">
       <%= form.label :strava_link, "Link Strava" %>
       <%= form.url_field :strava_link %>

@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     resource :membership, only: [:create, :destroy]
 
     get "events", to: "group_events#index"
+    get "events/new", to: "group_events#new", as: :new_event
+    get "events/:id/all_participants",
+      to: "group_events#all_participants",
+      as: :all_participants
     post "events", to: "group_events#create"
     get "events/archive", to: "group_events#archive", as: :events_archive
     get  "events/:id", to: "group_events#show", as: :event

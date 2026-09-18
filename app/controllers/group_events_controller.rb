@@ -3,7 +3,7 @@ class GroupEventsController < ApplicationController
 
   layout "dashboard"
 
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :all_participants]
   before_action :require_event_owner, only: [:edit, :update, :destroy]
   
   def index
@@ -19,6 +19,18 @@ class GroupEventsController < ApplicationController
                           .limit(5)
   end
 
+  def new
+    @event = @group.events.build
+    @my_routes = Current.user.routes.order(name: :asc)
+  end
+
+  def all_participants
+    @going_participants = @event.event_participations
+                                 .where(status: "going")
+                                 .includes(:user)
+                                 .order(created_at: :asc)
+  end
+
   def show
     @current_participation = @event.event_participations.find_by(
       user: Current.user
@@ -27,6 +39,7 @@ class GroupEventsController < ApplicationController
                                  .where(status: "going")
                                  .includes(:user)
                                  .order(created_at: :asc)
+                                 .limit(10)
   
     @going_count = @going_participants.size
 
@@ -38,6 +51,7 @@ class GroupEventsController < ApplicationController
   end
 
   def edit
+    @my_routes = Current.user.routes.order(name: :asc)
   end
 
   def update
@@ -68,7 +82,7 @@ class GroupEventsController < ApplicationController
       redirect_to group_path(@group),
                   notice: "Tura a fost publicată cu succes."
     else
-      redirect_to group_path(@group),
+      redirect_to group_new_event_path(@group),
                   alert: @event.errors.full_messages.to_sentence
     end
   end

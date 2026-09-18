@@ -3,9 +3,10 @@
   <div class="coming-head">
     <h3>Cine vine</h3>
 
-    <span class="num">
+    <%= link_to group_all_participants_path(@group, @event),
+            class: "num" do %>
       <%= going_count %> <%= going_count == 1 ? "confirmat" : "confirmați" %>
-    </span>
+    <% end %>
   </div>
 
   <div class="coming-list">
