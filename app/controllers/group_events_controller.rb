@@ -25,23 +25,28 @@ class GroupEventsController < ApplicationController
   end
 
   def all_participants
-    @going_participants = @event.event_participations
-                                 .where(status: "going")
-                                 .includes(:user)
-                                 .order(created_at: :asc)
+    @pagy, @going_participants = pagy(
+      :offset,
+      @event.event_participations
+            .where(status: "going")
+            .includes(:user)
+            .order(created_at: :asc),
+      limit: 27
+    )
   end
 
   def show
     @current_participation = @event.event_participations.find_by(
       user: Current.user
     )
-    @going_participants = @event.event_participations
+    @going_participants_for_count = @event.event_participations
                                  .where(status: "going")
                                  .includes(:user)
                                  .order(created_at: :asc)
-                                 .limit(10)
+
+    @going_participants = @going_participants_for_count.limit(10)
   
-    @going_count = @going_participants.size
+    @going_count = @going_participants_for_count.size
 
     @posts = @event.posts
                  .includes(:user)

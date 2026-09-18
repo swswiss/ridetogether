@@ -96,8 +96,6 @@
 
 <%= form_with model: [@group, @event] do |form| %>
 
-  <div class="e-card">
-
     <div class="f-field">
       <%= form.label :title, "Titlul turei" %>
       <%= form.text_field :title %>
@@ -220,8 +218,6 @@
       <%= form.label :description, "Detalii (opțional)" %>
       <%= form.text_area :description %>
     </div>
-
-  </div>
 
   <div class="e-actions">
     <%= link_to "Anulează", group_event_path(@group, @event), class: "btn-cancel" %>

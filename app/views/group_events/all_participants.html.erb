@@ -19,9 +19,18 @@
 
   .e-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .15s; }
   .e-back:hover { color: var(--ink); }
-  
+
   main { padding: 0; max-width: 860px; min-width: 0; }
   .inner { padding: 40px 56px; }
+
+  /* paginare */
+  .p-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 34px; }
+  .page-btn { min-width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 10px; font-size: 14px; text-decoration: none; cursor: pointer; transition: all .15s; }
+  .page-btn:hover { border-color: var(--ink); }
+  .page-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .page-btn.disabled { color: var(--faint); pointer-events: none; }
+  .page-dots { color: var(--faint); padding: 0 4px; }
+  .p-page-info { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 12px; }
 
   .p-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; transition: color .15s; }
   .p-back:hover { color: var(--ink); }
@@ -89,15 +98,46 @@
       <% end %>
     </div>
 
-    <!-- PAGINARE -->
     <div class="p-pagination">
-      <span class="page-btn disabled"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
-      <a href="#" class="page-btn active">1</a>
-      <a href="#" class="page-btn">2</a>
-      <a href="#" class="page-btn">3</a>
-      <a href="#" class="page-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+      <% if @pagy.previous %>
+        <%= link_to url_for(page: @pagy.previous), class: "page-btn" do %>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        <% end %>
+      <% else %>
+        <span class="page-btn disabled">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </span>
+      <% end %>
+
+      <% (1..@pagy.pages).each do |page| %>
+        <%= link_to page,
+                    url_for(page: page),
+                    class: "page-btn #{'active' if page == @pagy.page}" %>
+      <% end %>
+
+      <% if @pagy.next %>
+        <%= link_to url_for(page: @pagy.next), class: "page-btn" do %>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        <% end %>
+      <% else %>
+        <span class="page-btn disabled">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </span>
+      <% end %>
     </div>
-    <p class="p-page-info">Pagina 1 din 3 · 14 participanți</p>
+
+    <p class="p-page-info">
+      Pagina <%= @pagy.page %> din <%= @pagy.pages %> · <%= @pagy.count %> participanți
+    </p>
+
   </div>
 </main>
 </div>

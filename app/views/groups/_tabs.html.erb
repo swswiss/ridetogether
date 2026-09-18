@@ -14,7 +14,13 @@
     Membrii
 
   <% end %>
-  <span class="tab" data-tabs-target="tab" data-action="click->tabs#select">Chat</span>
+  <%= link_to group_chat_path(@group),
+          class: "tab",
+          data: { turbo_frame: "group_content", tabs_target: "tab", action: "click->tabs#select", turbo_prefetch: false } do %>
+
+    Chat
+
+  <% end %>
   <% if !@membership&.member? %>
     <%= link_to group_membership_requests_path(@group),
             class: "tab",
