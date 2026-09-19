@@ -320,41 +320,19 @@ main { padding: 40px 56px; }
       <p class="grp-list-label">Grupurile tale</p>
 
       <% @groups.each do |group| %>
-
-        <%= link_to "#", class: "grp-row" do %>
-
+        <%= link_to group_path(group), class: "grp-row" do %>
           <div>
-
             <div class="grp-row-top">
               <span class="grp-row-name">
                 <%= group.name %>
               </span>
-
               <span class="grp-badge">admin</span>
             </div>
-
             <span class="grp-row-meta">
-              <%= group.city %> · 0 membri · 0 ture
+              <%= group.city %>
             </span>
-
           </div>
-
-          <svg
-            class="chev-r"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M9 6l6 6-6 6"/>
-          </svg>
-
         <% end %>
-
       <% end %>
 
     </div>

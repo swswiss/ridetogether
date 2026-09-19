@@ -440,34 +440,36 @@
 </div>
 
 <!-- ===== INTEGRATED FEED ===== -->
-<div class="feed">
-  <h2 class="feed-title">Discuție</h2>
+<% unless @event.date < Date.current %>
+  <div class="feed">
+    <h2 class="feed-title">Discuție</h2>
 
-  <div class="composer">
-    <div class="avatar">
-      <%= group_initials(Current.user.name) %>
-    </div>
+    <div class="composer">
+      <div class="avatar">
+        <%= group_initials(Current.user.name) %>
+      </div>
 
-    <div class="composer-main">
-      <%= form_with model: @post,
-                    url: group_event_posts_path(@group, @event),
-                    id: "new_post" do |form| %>
+      <div class="composer-main">
+        <%= form_with model: @post,
+                      url: group_event_posts_path(@group, @event),
+                      id: "new_post" do |form| %>
 
-        <%= form.text_area :body,
-              placeholder: "Scrie ceva grupului...",
-              autocomplete: "off" %>
+          <%= form.text_area :body,
+                placeholder: "Scrie ceva grupului...",
+                autocomplete: "off" %>
 
-        <div class="composer-foot">
-          <div class="composer-tools">
+          <div class="composer-foot">
+            <div class="composer-tools">
 
+            </div>
+
+            <%= form.submit "Postează", class: "composer-post" %>
           </div>
 
-          <%= form.submit "Postează", class: "composer-post" %>
-        </div>
-
-      <% end %>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
 
   <div id="event-posts">

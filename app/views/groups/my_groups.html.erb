@@ -92,14 +92,14 @@
             
               <div class="grid">
                 <% @my_own_groups.each do |group| %>
-                <%= link_to group_path(group), class: "gcard" do %>
-                  <div class="gcard-top">
-                    <div class="gcard-avatar"><%= group_initials(group.name) %></div>
-                    <span class="gcard-badge badge-admin">admin</span>
-                  </div>
-                  <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
-                <% end %>
+                  <%= link_to group_path(group), class: "gcard" do %>
+                    <div class="gcard-top">
+                      <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                      <span class="gcard-badge badge-admin">admin</span>
+                    </div>
+                    <div class="gcard-name"><%= group.name %></div>
+                    <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+                  <% end %>
                 <% end %>
               </div>
             

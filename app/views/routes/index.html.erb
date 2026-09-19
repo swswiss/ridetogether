@@ -37,6 +37,10 @@
     <div>
       <h1 class="r-title">Turele mele</h1>
     </div>
+    <%= link_to new_route_path, class: "r-btn" do %>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Creează traseu
+    <% end %>
   </div>
 
   <% if @routes.any? %>
