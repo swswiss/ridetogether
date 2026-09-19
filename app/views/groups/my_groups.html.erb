@@ -76,79 +76,79 @@
 <body>
 
 
-      <main>
-        <div class="head">
-          <div>
-            <h1>Grupurile mele</h1>
-          </div>
+  <main>
+    <div class="head">
+      <div>
+        <h1>Grupurile mele</h1>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <% if @my_own_groups.present? %>
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Unde sunt admin</span>
         </div>
-
-        <!-- ADMIN -->
-        <% if @my_own_groups.present? %>
-          <div class="section">
-            <div class="section-head">
-              <span class="section-title">Unde sunt admin</span>
-            </div>
-            
-              <div class="grid">
-                <% @my_own_groups.each do |group| %>
-                  <%= link_to group_path(group), class: "gcard" do %>
-                    <div class="gcard-top">
-                      <div class="gcard-avatar"><%= group_initials(group.name) %></div>
-                      <span class="gcard-badge badge-admin">admin</span>
-                    </div>
-                    <div class="gcard-name"><%= group.name %></div>
-                    <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
-                  <% end %>
-                <% end %>
-              </div>
-            
+        
+          <div class="grid">
+            <% @my_own_groups.each do |group| %>
+              <%= link_to group_path(group), class: "gcard" do %>
+                <div class="gcard-top">
+                  <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                  <span class="gcard-badge badge-admin">admin</span>
+                </div>
+                <div class="gcard-name"><%= group.name %></div>
+                <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+              <% end %>
+            <% end %>
           </div>
-        <% end %>
+        
+      </div>
+    <% end %>
 
-        <!-- MEMBER -->
-        <% if @my_groups_member.present? %>
-          <div class="section">
-            <div class="section-head">
-              <span class="section-title">Unde sunt membru</span>
-            </div>
-            
-              <div class="grid">
-                  <% @my_groups_member.each do |group| %>
-                <%= link_to group_path(group), class: "gcard" do %>
-                  <div class="gcard-top">
-                    <div class="gcard-avatar"><%= group_initials(group.name) %></div>
-                    <span class="gcard-badge badge-admin">member</span>
-                  </div>
-                  <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
-                <% end %>
-                <% end %>
+    <!-- MEMBER -->
+    <% if @my_groups_member.present? %>
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Unde sunt membru</span>
+        </div>
+        
+          <div class="grid">
+              <% @my_groups_member.each do |group| %>
+            <%= link_to group_path(group), class: "gcard" do %>
+              <div class="gcard-top">
+                <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                <span class="gcard-badge badge-admin">member</span>
               </div>
+              <div class="gcard-name"><%= group.name %></div>
+              <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+            <% end %>
+            <% end %>
           </div>
-        <% end %>
+      </div>
+    <% end %>
 
-        <!-- MODERATOR -->
-        <% if @my_groups_moderator.present? %>
-          <div class="section">
-            <div class="section-head">
-              <span class="section-title">Unde sunt moderator</span>
-            </div>
-              <div class="grid">
-              <% @my_groups_moderator.each do |group| %>
-                <%= link_to group_path(group), class: "gcard" do %>
-                  <div class="gcard-top">
-                    <div class="gcard-avatar"><%= group_initials(group.name) %></div>
-                    <span class="gcard-badge badge-admin">moderator</span>
-                  </div>
-                  <div class="gcard-name"><%= group.name %></div>
-                  <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
-                <% end %>
-                <% end %>
+    <!-- MODERATOR -->
+    <% if @my_groups_moderator.present? %>
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Unde sunt moderator</span>
+        </div>
+          <div class="grid">
+          <% @my_groups_moderator.each do |group| %>
+            <%= link_to group_path(group), class: "gcard" do %>
+              <div class="gcard-top">
+                <div class="gcard-avatar"><%= group_initials(group.name) %></div>
+                <span class="gcard-badge badge-admin">moderator</span>
               </div>
+              <div class="gcard-name"><%= group.name %></div>
+              <div class="gcard-meta"><%= group.city %> · <%= group.active_members.count%> membri</div>
+            <% end %>
+            <% end %>
           </div>
-        <% end %>
-      </main>
+      </div>
+    <% end %>
+  </main>
   </div>
 </body>
 </html>

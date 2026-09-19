@@ -7,7 +7,9 @@ module ApplicationHelper
         controller_name == "groups" &&
         action_name == "create") ||
       (path == my_groups_path &&
-        my_groups_section?)
+        my_groups_section?) ||
+        (path == routes_path &&
+          my_routes_section?)
   
     class_names("nav-item", active: active)
   end
@@ -18,6 +20,18 @@ module ApplicationHelper
     request.path.match?(%r{\A/groups/\d+(/|$)})
   end
 
+  def my_routes_section?
+    return true if request.path == routes_path
+  
+    request.path.match?(%r{\A/routes/(?:\d+|new)(/|$)})
+  end
+
+  def my_profile_section?
+    return true if request.path == profile_path
+  
+    request.path.match?(%r{\A/profile/(?:\d+|new|edit)(/|$)})
+  end
+
   def nav_item_class_bottom(path)
     active =
       current_page?(path) ||
@@ -25,7 +39,11 @@ module ApplicationHelper
         controller_name == "groups" &&
         action_name == "create") ||
       (path == my_groups_path &&
-        my_groups_section?)
+        my_groups_section?) ||
+        (path == routes_path &&
+          my_routes_section?) || 
+          (path == profile_path &&
+          my_profile_section?)
 
     class_names(active: active)
   end
