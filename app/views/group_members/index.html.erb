@@ -23,6 +23,15 @@
   .badge-member { color: var(--muted); background: var(--line-soft); }
   .you-tag { font-size: 11px; color: var(--faint); }
 
+  /* paginare */
+  .p-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 34px; }
+  .page-btn { min-width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 10px; font-size: 14px; text-decoration: none; cursor: pointer; transition: all .15s; }
+  .page-btn:hover { border-color: var(--ink); }
+  .page-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .page-btn.disabled { color: var(--faint); pointer-events: none; }
+  .page-dots { color: var(--faint); padding: 0 4px; }
+  .p-page-info { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 12px; }
+
   /* ===== DROPDOWN MENU ===== */
   .member-menu-wrap { position: relative; }
   .member-menu { width: 30px; height: 30px; border: none; background: transparent; color: var(--faint); cursor: pointer; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }
@@ -95,17 +104,11 @@
     </div>
   </div>
 
-
-  <% admins = @memberships.select(&:admin?) %>
-  <% moderators = @memberships.select(&:moderator?) %>
-  <% members = @memberships.select(&:member?) %>
-
-
-  <% if admins.any? %>
+  <% if @admins.any? %>
 
     <p class="member-section-label">Administratori</p>
 
-    <% admins.each do |membership| %>
+    <% @admins.each do |membership| %>
 
       <div class="member-row">
 
@@ -130,11 +133,11 @@
   <% end %>
 
 
-  <% if moderators.any? %>
+  <% if @moderators.any? %>
 
     <p class="member-section-label">Moderatori</p>
 
-    <% moderators.each do |membership| %>
+    <% @moderators.each do |membership| %>
 
       <div class="member-row">
 
@@ -197,11 +200,11 @@
   <% end %>
 
 
-  <% if members.any? %>
+  <% if @members.any? %>
 
     <p class="member-section-label">Membri</p>
 
-    <% members.each do |membership| %>
+    <% @members.each do |membership| %>
 
       <div class="member-row">
 
@@ -258,6 +261,46 @@
       </div>
 
     <% end %>
+
+    <div class="p-pagination">
+      <% if @pagy.previous %>
+        <%= link_to url_for(page: @pagy.previous), class: "page-btn" do %>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        <% end %>
+      <% else %>
+        <span class="page-btn disabled">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </span>
+      <% end %>
+
+      <% (1..@pagy.pages).each do |page| %>
+        <%= link_to page,
+                    url_for(page: page),
+                    class: "page-btn #{'active' if page == @pagy.page}" %>
+      <% end %>
+
+      <% if @pagy.next %>
+        <%= link_to url_for(page: @pagy.next), class: "page-btn" do %>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        <% end %>
+      <% else %>
+        <span class="page-btn disabled">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </span>
+      <% end %>
+    </div>
+
+    <p class="p-page-info">
+      Pagina <%= @pagy.page %> din <%= @pagy.pages %> · <%= @pagy.count %> participanți
+    </p>
 
   <% end %>
 

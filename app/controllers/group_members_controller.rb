@@ -10,6 +10,15 @@ class GroupMembersController < ApplicationController
                          .where(status: "active")
                          .includes(:user)
                          .order(:created_at)
+
+    @admins = @memberships.select(&:admin?)
+    @moderators = @memberships.select(&:moderator?)
+
+    @pagy, @members = pagy(
+      :offset,
+      @memberships.where(role: "member"),
+      limit: 10
+    )
   end
 
   def promote
@@ -18,7 +27,7 @@ class GroupMembersController < ApplicationController
     membership.update!(role: new_role)
 
     redirect_to group_members_path(@group),
-                notice: "#{membership.user.name} este acum #{new_role == 'moderator' ? 'moderator' : 'member'}."
+                notice: "#{membership.user.name} este acum #{new_role == 'moderator' ? 'moderator' : 'membru'}."
   end
 
   def destroy

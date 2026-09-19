@@ -31,7 +31,6 @@
     <% end %>
   <% end %>
   <% if !@membership&.member? %>
-    <span class="tab" data-tabs-target="tab" data-action="click->tabs#select">
     <%= link_to group_settings_path(@group),
               class: "tab",
               data: { turbo_frame: "group_content", tabs_target: "tab", action: "click->tabs#select", turbo_prefetch: false } do %>
