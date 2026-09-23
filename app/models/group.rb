@@ -17,7 +17,7 @@ class Group < ApplicationRecord
   has_many :events,
            dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
   validates :ride_types, presence: true
   validates :city, presence: true

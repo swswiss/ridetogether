@@ -27,7 +27,7 @@ class GroupSettingsController < ApplicationController
 
     @group.destroy!
 
-    redirect_to groups_path,
+    redirect_to root_path,
                 notice: "Grupul a fost șters."
   end
 
