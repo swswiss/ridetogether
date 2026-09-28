@@ -181,7 +181,6 @@
   <div class="wrap">
     <section class="hero" style="padding-top:50px;">
       <div>
-        <p class="eyebrow">Ture de grup · Iași</p>
         <h1>Pedalăm <strong>împreună.</strong></h1>
         <p class="lede">Toate turele din orașul tău, într-un singur loc. Vezi cine vine, alătură-te, pleci la drum.</p>
         <div class="cta-row">
@@ -193,7 +192,7 @@
       <div class="ride-card">
         <div class="rc-head">
           <span class="rc-type">Cursieră</span>
-          <span class="rc-group">Grupul amuzanților</span>
+          <span class="rc-group">Grupul ciclistilor din Iasi</span>
         </div>
         <div class="rc-body">
           <div class="rc-title">Tura de sâmbătă</div>
@@ -297,9 +296,9 @@
           <h2 class="sec-title">Cicliști ca <strong>tine.</strong></h2>
           <p class="sec-sub">De la ture relaxate prin oraș la expediții în munți — găsești mereu cu cine să pedalezi.</p>
           <div class="stats-row">
-            <div class="stat-big"><div class="n">12+</div><div class="l">grupuri active</div></div>
-            <div class="stat-big"><div class="n">340</div><div class="l">cicliști</div></div>
-            <div class="stat-big"><div class="n">50+</div><div class="l">ture pe lună</div></div>
+            <div class="stat-big"><div class="n"><%= Group.all.size %>+</div><div class="l">grupuri active</div></div>
+            <div class="stat-big"><div class="n"><%= User.all.size %></div><div class="l">cicliști</div></div>
+            <div class="stat-big"><div class="n"><%= Event.all.size %>+</div><div class="l">ture pe lună</div></div>
           </div>
         </div>
         <div>
