@@ -21,8 +21,14 @@ default: &default
 
 
 development:
-  <<: *default
-  database: ridetogether_development
+  primary:
+    <<: *default
+    database: ridetogether_development
+
+  queue:
+    <<: *default
+    database: ridetogether_development_queue
+    migrations_paths: db/queue_migrate
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.

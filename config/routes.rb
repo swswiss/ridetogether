@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/jobs"
   get "profiles/show"
   get "profiles/edit"
   # get "group_settings/show"
@@ -86,7 +87,24 @@ Rails.application.routes.draw do
     patch "membership_requests/:id/reject",
           to: "group_membership_requests#reject",
           as: :reject_membership_request
+
+    get "events/:event_id/gallery",
+      to: "event_galleries#index",
+      as: :event_gallery
+
+    get "events/:event_id/gallery/signature",
+      to: "event_galleries#signature",
+      as: :event_gallery_signature
+
+    post "events/:event_id/gallery",
+      to: "event_galleries#create",
+      as: :event_gallery_photos
+
+    delete "events/:event_id/gallery/:id",
+      to: "event_galleries#destroy",
+      as: :event_gallery_photo
   end
+
   get "my_groups", to: "groups#my_groups"
   resources :routes, only: [:index, :new, :create, :destroy]
   resource :profile, only: [:show, :edit, :update]

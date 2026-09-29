@@ -11,6 +11,7 @@ class Event < ApplicationRecord
            through: :event_participations,
            source: :user
   has_many :posts, dependent: :destroy
+  has_many :event_photos, dependent: :destroy
 
   validates :title, presence: true
   validates :ride_type, presence: true

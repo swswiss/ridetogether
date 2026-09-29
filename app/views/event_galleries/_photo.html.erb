@@ -1,0 +1,18 @@
+<div class="g-photo" id="<%= dom_id(photo) %>">
+  <%# thumbnail optimizat, servit prin CDN Cloudinary %>
+  <img src="<%= photo.url(size: :thumb) %>"
+       alt="Poză de la <%= photo.event.title %>"
+       loading="lazy"
+       <%= "width=#{photo.width} height=#{photo.height}".html_safe if photo.width %>>
+
+  <%# ștergere — doar autorul sau organizatorul (controllerul verifică oricum) %>
+  <% if photo.user_id == Current.user.id || photo.event.user_id == Current.user.id %>
+    <div class="g-photo-del">
+      <%= button_to group_event_gallery_photo_path(@group, @event, photo),
+            method: :delete,
+            form: { data: { turbo_confirm: "Ștergi această poză?" } } do %>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      <% end %>
+    </div>
+  <% end %>
+</div>

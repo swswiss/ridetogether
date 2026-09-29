@@ -25,6 +25,9 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
+
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
 
@@ -54,6 +57,9 @@ Rails.application.configure do
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
+
+  config.mission_control.jobs.base_controller_class = "MissionControlController"
+  config.mission_control.jobs.http_basic_auth_enabled = false
 
   # Highlight code that triggered redirect in logs.
   config.action_dispatch.verbose_redirect_logs = true

@@ -1,0 +1,78 @@
+<%# ═══════════════════════════════════════════════════════ %>
+<%# PASUL 10a — Galeria (index) %>
+<%# app/views/event_galleries/index.html.erb %>
+<%# ═══════════════════════════════════════════════════════ %>
+<style>
+  :root { --ink:#1a1a1a; --muted:#9a9a9a; --faint:#c4c4c4; --line:#eee; --line-soft:#f4f4f4; --hover:#fafafa; --accent:#e5533d; }
+  .g-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); text-decoration:none; margin-bottom:20px; }
+  .g-back:hover { color:var(--ink); }
+  .g-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
+  .g-title { font-size:27px; font-weight:300; letter-spacing:-0.02em; margin-bottom:4px; }
+  .g-sub { font-size:14.5px; color:var(--muted); }
+  .g-upload-btn { display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:500; color:#fff; background:#1a1a1a; border:none; cursor:pointer; padding:12px 22px; border-radius:100px; font-family:inherit; white-space:nowrap; }
+  .g-upload-btn:hover { opacity:.85; }
+
+  /* zona de progres upload */
+  .up-area { margin-bottom:20px; }
+  .up-row { display:flex; align-items:center; gap:10px; padding:8px 0; font-size:12.5px; color:var(--muted); }
+  .up-name { flex:0 0 auto; max-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .up-bar { flex:1; height:6px; background:var(--line-soft); border-radius:100px; overflow:hidden; }
+  .up-fill { display:block; height:100%; width:0; background:var(--accent); transition:width .2s; }
+  .up-pct { flex:0 0 auto; width:44px; text-align:right; }
+  .up-error .up-pct { color:var(--accent); }
+
+  /* grila de poze */
+  .g-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .g-photo { position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:var(--line-soft); }
+  .g-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .g-photo-del { position:absolute; top:8px; right:8px; width:30px; height:30px; border:none; border-radius:50%; background:rgba(0,0,0,0.55); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s; }
+  .g-photo:hover .g-photo-del { opacity:1; }
+  .g-photo-del form { margin:0; }
+
+  .g-empty { border:1px dashed var(--line); border-radius:16px; padding:48px 20px; text-align:center; }
+  .g-empty p { font-size:14px; color:var(--muted); }
+
+  @media (max-width:600px) { .g-grid { grid-template-columns:repeat(2,1fr); } }
+</style>
+
+<div class="inner" data-controller="gallery-upload"
+     data-gallery-upload-signature-url-value="<%= group_event_gallery_signature_path(@group, @event) %>"
+     data-gallery-upload-create-url-value="<%= group_event_gallery_photos_path(@group, @event) %>">
+
+  <%= link_to group_event_path(@group, @event), class: "g-back" do %>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    <%= @event.title %>
+  <% end %>
+
+  <div class="g-head">
+    <div>
+      <h1 class="g-title">Galerie</h1>
+      <p class="g-sub"><%= @photos.size %> poze</p>
+    </div>
+
+    <%# input file ascuns + buton care-l declanșează %>
+    <input type="file" accept="image/*" multiple hidden
+           data-gallery-upload-target="input"
+           data-action="change->gallery-upload#upload">
+    <button type="button" class="g-upload-btn" data-action="gallery-upload#open">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Adaugă poze
+    </button>
+  </div>
+
+  <%# zona unde apar barele de progres %>
+  <div class="up-area" data-gallery-upload-target="progress"></div>
+
+  <%# grila de poze %>
+  <% if @photos.any? %>
+    <div class="g-grid" id="gallery-grid">
+      <% @photos.each do |photo| %>
+        <%= render "event_galleries/photo", photo: photo %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="g-empty" id="gallery-grid">
+      <p>Nicio poză încă. Fii primul care adaugă amintiri de la tură!</p>
+    </div>
+  <% end %>
+</div>
