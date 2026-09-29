@@ -1,17 +1,28 @@
-<div class="g-photo" id="<%= dom_id(photo) %>">
-  <%# thumbnail optimizat, servit prin CDN Cloudinary %>
-  <img src="<%= photo.url(size: :thumb) %>"
-       alt="Poză de la <%= photo.event.title %>"
-       loading="lazy"
-       <%= "width=#{photo.width} height=#{photo.height}".html_safe if photo.width %>>
+<div class="g-item"
+     id="<%= dom_id(photo) %>"
+     data-action="click->lightbox#open"
+     data-lightbox-type="<%= photo.resource_type %>"
+     data-lightbox-src="<%= photo.url(size: :large) %>">
 
-  <%# ștergere — doar autorul sau organizatorul (controllerul verifică oricum) %>
+  <% if photo.video? %>
+    <%# pentru video: arătăm poster-ul (un cadru) + iconiță play %>
+    <img src="<%= photo.poster_url %>" alt="Video de la <%= photo.event.title %>" loading="lazy">
+    <span class="play">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </span>
+  <% else %>
+    <img src="<%= photo.url(size: :thumb) %>"
+         alt="Poză de la <%= photo.event.title %>"
+         loading="lazy">
+  <% end %>
+
+  <%# ștergere individuală — autorul sau organizatorul %>
   <% if photo.user_id == Current.user.id || photo.event.user_id == Current.user.id %>
-    <div class="g-photo-del">
+    <div class="g-item-del" data-action="click->lightbox#stop">
       <%= button_to group_event_gallery_photo_path(@group, @event, photo),
             method: :delete,
-            form: { data: { turbo_confirm: "Ștergi această poză?" } } do %>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            form: { data: { turbo_confirm: "Ștergi acest fișier?" } } do %>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       <% end %>
     </div>
   <% end %>

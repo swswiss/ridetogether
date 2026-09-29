@@ -62,7 +62,7 @@ Rails.application.routes.draw do
        to: "event_participations#create",
        as: :event_participation
 
-    get "members",              to: "group_members#index"
+    get "members", to: "group_members#index"
     patch "members/:id/promote",
         to: "group_members#promote",
         as: :promote_member
@@ -70,7 +70,7 @@ Rails.application.routes.draw do
           to: "group_members#destroy",
           as: :remove_member
 
-    get "chat",                 to: "group_chats#show"
+    get "chat", to: "group_chats#show"
 
     get "settings",
         to: "group_settings#show"
@@ -103,6 +103,10 @@ Rails.application.routes.draw do
     delete "events/:event_id/gallery/:id",
       to: "event_galleries#destroy",
       as: :event_gallery_photo
+
+    delete "events/:event_id/gallery",
+      to: "event_galleries#destroy_all",
+      as: :event_gallery_destroy_all
   end
 
   get "my_groups", to: "groups#my_groups"
