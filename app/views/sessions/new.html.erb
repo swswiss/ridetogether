@@ -103,15 +103,17 @@
 </head>
 <body>
   <div class="topbar">
-    <div class="brand">
-      <svg width="34" height="21" viewBox="0 0 84 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="RideTogether">
-        <circle cx="18" cy="36" r="14" stroke="#1a1a1a" stroke-width="3"/>
-        <circle cx="66" cy="36" r="14" stroke="#1a1a1a" stroke-width="3"/>
-        <path d="M18 36 L38 36 L52 16 L30 16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M38 36 L52 16 M66 36 L52 16 M18 36 L28 16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
-      </svg>
-      <span class="brand-name">RideTogether</span>
-    </div>
+    <%= link_to root_path do %>
+      <div class="brand">
+        <svg width="34" height="21" viewBox="0 0 84 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="RideTogether">
+          <circle cx="18" cy="36" r="14" stroke="#1a1a1a" stroke-width="3"/>
+          <circle cx="66" cy="36" r="14" stroke="#1a1a1a" stroke-width="3"/>
+          <path d="M18 36 L38 36 L52 16 L30 16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M38 36 L52 16 M66 36 L52 16 M18 36 L28 16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-name">RideTogether</span>
+      </div>
+    <% end %>
   </div>
 
   <main>
