@@ -9,6 +9,8 @@ class User < ApplicationRecord
             dependent: :destroy
   has_many :groups,
            through: :group_memberships
+  has_many :group_memberships_active,
+           -> { where(status: "active") }, class_name: "GroupMembership"
   has_many :events,
            dependent: :destroy
   has_many :event_participations,

@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
 
   def show
     @user = Current.user
-    @groups = @user.groups.count
+    @groups = @user.group_memberships_active.count
   end
 
   def edit
