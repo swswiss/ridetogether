@@ -1,4 +1,12 @@
-<%# app/views/group_events/new.html.erb — creează o tură (pagină, nu modal) %>
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideTogether — Bine ai venit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root { --ink: #1a1a1a; --muted: #9a9a9a; --faint: #c4c4c4; --line: #eee; --line-soft: #f4f4f4; --hover: #fafafa; --accent: #e5533d; }
   .e-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; }
@@ -57,6 +65,7 @@
     .btn-save, .btn-cancel { width: 100%; justify-content: center; text-align: center; }
   }
 </style>
+</head>
 
 <div class="inner" data-controller="event-form">
   <%= link_to group_path(@group), class: "e-back" do %>
@@ -122,6 +131,10 @@
           <%= form.label :average_speed_kmh, "Ritm mediu (km/h)" %>
           <%= form.number_field :average_speed_kmh, step: :any, placeholder: "28" %>
         </div>
+        <div>
+          <%= form.label :elevation, "Elevatie" %>
+          <%= form.number_field :elevation, step: :any, placeholder: "0" %>
+        </div>
       </div>
 
       <%# REGIM — radios + hidden field %>
@@ -179,3 +192,4 @@
     </div>
   <% end %>
 </div>
+</html>

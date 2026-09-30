@@ -106,7 +106,7 @@ class GroupEventsController < ApplicationController
   end
 
   def require_event_owner
-    unless @event.user_id == Current.user.id
+    unless @event.user_id == Current.user.id || @group.user_id == Current.user.id
       redirect_to group_event_path(@group, @event),
                   alert: "Nu ai permisiunea să editezi această tură."
     end
@@ -121,6 +121,7 @@ class GroupEventsController < ApplicationController
       :start_location,
       :distance_km,
       :average_speed_kmh,
+      :elevation,
       :estimated_duration_minutes,
       :regime,
       :strava_link,

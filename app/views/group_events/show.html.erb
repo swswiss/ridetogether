@@ -361,7 +361,7 @@
   </div>
 
   <div class="ev-actions">
-    <% if @event.user_id == Current.user.id && @event.date >= Date.current %>
+    <% if (@event.user_id == Current.user.id || @group.user_id == Current.user.id ) && @event.date >= Date.current %>
       <%= link_to group_edit_event_path(@group, @event), class: "ev-edit" do %>
         <svg width="15" height="15"
             viewBox="0 0 24 24"
@@ -412,7 +412,7 @@
     <div class="stats-grid">
       <div class="stat-cell"><div class="l">Distanță</div><div class="v"><%= @event.distance_km %></div></div>
       <div class="stat-cell"><div class="l">Ritm mediu</div><div class="v"><%= @event.average_speed_kmh %> km/h</div></div>
-      <div class="stat-cell"><div class="l">Urcare</div><div class="v">140 m</div></div>
+      <div class="stat-cell"><div class="l">Urcare</div><div class="v"><%= @event.elevation %> m</div></div>
       <div class="stat-cell"><div class="l">Durată est.</div><div class="v">~<%= event_duration(@event) %></div></div>
       <div class="stat-cell"><div class="l">Tip</div><div class="v"><%= @event.ride_type %></div></div>
       <div class="stat-cell"><div class="l">Regim</div><div class="v drop"><%= @event.regime == 'no_drop' ? 'No drop' : 'Drop' %></div></div>
