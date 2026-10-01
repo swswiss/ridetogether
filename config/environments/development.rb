@@ -60,6 +60,7 @@ Rails.application.configure do
 
   config.mission_control.jobs.base_controller_class = "MissionControlController"
   config.mission_control.jobs.http_basic_auth_enabled = false
+  config.solid_queue.clear_finished_jobs_after = 1.day
 
   # Highlight code that triggered redirect in logs.
   config.action_dispatch.verbose_redirect_logs = true
