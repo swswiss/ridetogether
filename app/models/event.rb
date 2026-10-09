@@ -47,5 +47,5 @@ class Event < ApplicationRecord
   validates :date, uniqueness: {
               scope: [:group_id, :user_id],
               message: "Ai deja o tură creată pentru această zi."
-            }
+            }, unless: -> { user&.role == "admin" }
 end

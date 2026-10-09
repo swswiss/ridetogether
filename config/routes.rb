@@ -79,6 +79,9 @@ Rails.application.routes.draw do
     delete "settings",
         to: "group_settings#destroy"
 
+    get "calendars",
+        to: "group_calendars#show"
+
     get "membership_requests",
           to: "group_membership_requests#index"
     patch "membership_requests/:id/approve",
@@ -107,6 +110,7 @@ Rails.application.routes.draw do
     delete "events/:event_id/gallery",
       to: "event_galleries#destroy_all",
       as: :event_gallery_destroy_all
+
   end
 
   get "my_groups", to: "groups#my_groups"

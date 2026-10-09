@@ -1,0 +1,129 @@
+<%= turbo_frame_tag "group_content" do %>
+  <%# ═══════════════════════════════════════════════════════ %>
+<%# app/views/group_calendars/show.html.erb %>
+<%# Calendar cu navigare CUSTOM (nu cea default a gem-ului) %>
+<%# ═══════════════════════════════════════════════════════ %>
+<style>
+  :root { --ink:#1a1a1a; --muted:#9a9a9a; --faint:#c4c4c4; --line:#eee; --line-soft:#f4f4f4; --hover:#fafafa; --accent:#e5533d; --accent-soft:#fbeae6; }
+
+  /* ── NAVIGARE CUSTOM (varianta B — segment grupat) ── */
+  .cal-topnav { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .cal-topnav h2 { font-size:20px; font-weight:500; letter-spacing:-0.01em; margin:0; }
+  .cal-seg { display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:100px; overflow:hidden; background:#fff; }
+  .cal-seg a, .cal-seg .cal-seg-today {
+    display:inline-flex; align-items:center; justify-content:center;
+    height:36px; border:none; background:transparent; cursor:pointer;
+    color:var(--muted); text-decoration:none; font-family:inherit; transition:background .15s, color .15s;
+  }
+  .cal-seg a.arrow { width:38px; }
+  .cal-seg .cal-seg-today { padding:0 16px; font-size:13px; color:var(--ink); }
+  .cal-seg a:hover, .cal-seg .cal-seg-today:hover { background:var(--hover); color:var(--ink); }
+  .cal-seg > *:not(:last-child) { border-right:1px solid var(--line); }
+
+  /* ── calendarul (ascundem header-ul default al gem-ului) ── */
+  .calendar-heading { display:none; }   /* ← ascunde „previous/next" default */
+
+  .simple-calendar table { width:100%; border-collapse:separate; border-spacing:4px; table-layout:fixed; }
+  .simple-calendar th { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:400; padding:4px 0; text-align:center; }
+  .simple-calendar td { vertical-align:top; aspect-ratio:1; border:1px solid var(--line); border-radius:9px; padding:5px 6px; background:#fff; }
+  .simple-calendar td.prev-month, .simple-calendar td.next-month { background:transparent; border-color:transparent; }
+  .simple-calendar td.prev-month .cal-daynum, .simple-calendar td.next-month .cal-daynum { color:var(--faint); }
+  .simple-calendar td.today { background:var(--ink); border-color:var(--ink); }
+  .simple-calendar td.today .cal-daynum { color:#fff; font-weight:600; }
+  .simple-calendar td.has-events { background:var(--accent-soft); border-color:transparent; cursor:pointer; }
+  .simple-calendar td.today.has-events { background:var(--ink); }
+  .cal-daynum { font-size:12px; }
+  .cal-dots { margin-top:6px; display:flex; gap:2px; flex-wrap:wrap; }
+  .cal-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); }
+  .simple-calendar td.today .cal-dot { background:#fff; }
+
+  .cal-list-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin:28px 0 12px; }
+  .cal-event { display:flex; align-items:center; gap:14px; padding:12px 4px; border-bottom:1px solid var(--line-soft); text-decoration:none; color:var(--ink); transition:background .15s; }
+  .cal-event:hover { background:var(--hover); }
+  .cal-event-date { flex-shrink:0; width:46px; text-align:center; }
+  .cal-event-date .d { font-size:18px; font-weight:500; line-height:1; }
+  .cal-event-date .m { font-size:11px; color:var(--muted); text-transform:uppercase; }
+  .cal-event-main { flex:1; min-width:0; }
+  .cal-event-title { font-size:14.5px; font-weight:500; }
+  .cal-event-sub { font-size:12.5px; color:var(--muted); }
+  .cal-event svg { color:var(--faint); flex-shrink:0; }
+  .cal-empty { padding:36px 20px; text-align:center; border:1px dashed var(--line); border-radius:12px; }
+  .cal-empty p { font-size:14px; color:var(--muted); }
+
+  @media (max-width:760px) {
+    .cal-topnav h2 { font-size:18px; }
+    .simple-calendar table { border-spacing:3px; }
+    .simple-calendar td { padding:3px 4px; border-radius:7px; }
+    .cal-daynum { font-size:11px; }
+    .cal-dots { margin-top:3px; }
+  }
+</style>
+
+<div class="inner">
+  <%# antet grup + tab-uri aici %>
+
+  <%
+    current = params.fetch(:start_date, Date.current).to_date
+    prev_month = current.beginning_of_month - 1.day
+    next_month = current.end_of_month + 1.day
+  %>
+
+  <%# ── NAVIGARE CUSTOM ── %>
+  <div class="cal-topnav">
+    <h2><%= l(current, format: "%B %Y").capitalize rescue current.strftime("%B %Y") %></h2>
+
+    <div class="cal-seg">
+      <%= link_to group_calendars_path(@group, start_date: prev_month), class: "arrow", aria: { label: "Luna anterioară" } do %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <% end %>
+
+      <%= link_to "Azi", group_calendars_path(@group, start_date: Date.current), class: "cal-seg-today" %>
+
+      <%= link_to group_calendars_path(@group, start_date: next_month), class: "arrow", aria: { label: "Luna următoare" } do %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <% end %>
+    </div>
+  </div>
+
+  <%
+    events_by_day = @events.group_by(&:date)
+    td_options = ->(start_date, current_date) {
+      { class: (events_by_day[current_date].present? ? "has-events" : "") }
+    }
+  %>
+
+  <%# header: false → NU mai generează navigarea default (o facem noi deasupra) %>
+  <%= month_calendar(events: @events, attribute: :date, td: td_options, header: false) do |date, events_in_day| %>
+    <span class="cal-daynum"><%= date.day %></span>
+    <% if events_in_day.any? %>
+      <div class="cal-dots">
+        <% events_in_day.first(4).each do %>
+          <span class="cal-dot"></span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%# ── LISTA turelor lunii ── %>
+  <p class="cal-list-label">Turele lunii</p>
+
+  <% if @month_events.any? %>
+    <% @month_events.each do |event| %>
+      <%= link_to group_event_path(@group, event), class: "cal-event", data: { turbo_frame: "_top" } do %>
+        <div class="cal-event-date">
+          <div class="d"><%= event.date.day %></div>
+          <div class="m"><%= event.date.strftime("%b") %></div>
+        </div>
+        <div class="cal-event-main">
+          <div class="cal-event-title"><%= event.title %></div>
+          <div class="cal-event-sub"><%= event.time.strftime("%H:%M") %> · <%= event.start_location %> · <%= event.ride_type.downcase %></div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="cal-empty"><p>Nicio tură în această lună.</p></div>
+  <% end %>
+</div>
+
+<% end %>
